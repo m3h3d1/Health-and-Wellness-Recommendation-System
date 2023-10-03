@@ -29,6 +29,7 @@ public class PostMapper {
         PostReadDTO postReadDTO = new PostReadDTO();
         postReadDTO.setPostId(post.getPostId());
         postReadDTO.setAuthorFullName(post.getAuthorFullName());
+        postReadDTO.setAuthorId(post.getUserId());
         postReadDTO.setContent(post.getContent());
         postReadDTO.setTimeCreated(post.getTimeCreated());
         postReadDTO.setPrivacy(post.getPrivacy());

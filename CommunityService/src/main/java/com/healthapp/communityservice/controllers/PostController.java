@@ -43,6 +43,12 @@ public class PostController {
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<List<PostReadDTO>> getAllPostsByUser(@PathVariable UUID userId) {
+        List<PostReadDTO> posts = postService.findByUser(userId);
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
     @PutMapping("/{postId}")
     public ResponseEntity<Void> updatePost(@PathVariable UUID postId, @RequestBody PostUpdateDTO postUpdateDTO) {
         postService.update(postId, postUpdateDTO);

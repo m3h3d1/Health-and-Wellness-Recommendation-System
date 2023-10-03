@@ -12,6 +12,7 @@ public interface PostService {
     public void create(PostCreateDTO postCreateDTO);
     public PostReadDTO read(UUID postId);
     public List<PostReadDTO> readAll();
+    public List<PostReadDTO> findByUser(UUID userId);
     public void update(UUID postId, PostUpdateDTO postUpdateDTO);
     public void delete(UUID postId);
 

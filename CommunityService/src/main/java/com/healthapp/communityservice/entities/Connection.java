@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity @Getter @Setter @RequiredArgsConstructor
-public class Follow {
+public class Connection {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "follow_id")
-    private Integer followId;
+    private Integer connectionsId;
 
     private UUID followerId;
     @OneToMany(cascade = CascadeType.ALL)

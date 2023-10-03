@@ -48,6 +48,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostReadDTO> findByUser(UUID userId) {
+        return postRepository.findByUserId(userId).stream().map(postMapper::getPostRead).collect(Collectors.toList());
+    }
+
+    @Override
     public void update(UUID postId, PostUpdateDTO postUpdateDTO) {
         Optional<Post> postOp = postRepository.findById(postId);
         if(postOp.isEmpty()){

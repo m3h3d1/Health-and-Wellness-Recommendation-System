@@ -14,6 +14,7 @@ import java.util.UUID;
 public class PostReadDTO {
     private UUID postId;
     private String authorFullName;
+    private UUID authorId;
     private String content;
     private LocalDateTime timeCreated;
     private PostPrivacy privacy;
