@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -16,10 +17,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MoodLog {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long moodLogId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID moodLogId;
     private LocalDateTime date;
     private BigDecimal moodRating;
     private String note;
-    private String userId;
+    private UUID userId;
 }

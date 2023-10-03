@@ -13,8 +13,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MentalHealthExercise {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mentalHealthExerciseId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID mentalHealthExerciseId;
     private String category;
     private String description;
     private int duration;
