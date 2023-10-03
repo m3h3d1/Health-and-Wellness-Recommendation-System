@@ -4,62 +4,7 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/APIGateway" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/APIGateway" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/CommunityService" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/CommunityService" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/ConfigServer" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/ConfigServer" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/DiscoveryServer" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/DiscoveryServer" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/MentalHealthService" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/MentalHealthService" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/NutritionService" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/NutritionService" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/UserService" />
-        <option name="gradleJvm" value="corretto-19" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/UserService" />
