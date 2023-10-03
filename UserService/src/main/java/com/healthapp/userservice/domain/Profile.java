@@ -26,11 +26,9 @@ public class Profile {
     @Column(name = "user-id", nullable = false)
     private UUID userId;
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Gender is required!")
     @Column(name = "gender", nullable = false)
     private Gender gender;
     @Column(name = "date-of-birth", nullable = false)
-    @NotBlank(message = "Gender is required!")
     private Date dateOfBirth;
     @Enumerated(EnumType.STRING)
     @Column(name = "blood-group", nullable = false)
@@ -38,9 +36,7 @@ public class Profile {
     @Column(name ="vegetarian", nullable = false)
     private Boolean vegetarian;
     @Column(name = "goal-weight", nullable = false)
-    @NotBlank(message = "Goal Weight is required!")
     private Integer goalWeight;
-    @NotBlank(message = "Target Period is required!")
     @Column(name = "target-period", nullable = false)
     private Integer targetPeriod;
     public enum Gender {

@@ -26,7 +26,6 @@ public class Contact {
     @Column(name = "user-id",nullable = false)
     private UUID userId;
     @Column(name = "phone-primary", nullable = false, unique = true)
-    @NotBlank(message = "Phone Number is required!")
     private String primaryPhoneNumber;
     @Column(name = "phone-optional", nullable = false, unique = true)
     private String optionalPhoneNumber;
