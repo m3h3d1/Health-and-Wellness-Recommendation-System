@@ -41,7 +41,7 @@ public class Health {
     private List<Diabetes> diabetes;
 
     @OneToMany(mappedBy = "health", cascade = CascadeType.ALL)
-    private List<BloodPressure> bloodPressures;
+    private List<BloodPressure> bloodPressures = new ArrayList<>();
 
     @OneToMany(mappedBy = "health", cascade = CascadeType.ALL)
     private List<HeartRate> heartRates;
