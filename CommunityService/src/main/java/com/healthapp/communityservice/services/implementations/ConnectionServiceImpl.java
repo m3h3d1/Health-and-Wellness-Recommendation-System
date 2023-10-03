@@ -3,6 +3,8 @@ package com.healthapp.communityservice.services.implementations;
 import com.healthapp.communityservice.entities.Connection;
 import com.healthapp.communityservice.entities.Following;
 import com.healthapp.communityservice.entities.Post;
+import com.healthapp.communityservice.exceptions.InvalidUnfollowException;
+import com.healthapp.communityservice.exceptions.MultipleFollowRequestException;
 import com.healthapp.communityservice.models.postdto.PostReadDTO;
 import com.healthapp.communityservice.repositories.ConnectionRepository;
 import com.healthapp.communityservice.services.interfaces.ConnectionService;
@@ -41,7 +43,7 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
         for(Following following: connection.getFollowing()){
             if(following.getFollowedUserId().equals(followingId)){
-                // Throw exception
+                throw new MultipleFollowRequestException("The requested user already follows the user with ID " + following.getFollowedUserId());
             }
         }
         Following newFollow = new Following();
@@ -64,10 +66,10 @@ public class ConnectionServiceImpl implements ConnectionService {
             if (removed) {
                 connectionRepository.save(connection);
             } else {
-                throw new IllegalStateException("User is not following the specified user.");
+                throw new InvalidUnfollowException("Requested user is not following the given user.");
             }
         } else {
-            throw new IllegalStateException("User does not have any connections.");
+            throw new InvalidUnfollowException("User does not have any connections.");
         }
     }
 

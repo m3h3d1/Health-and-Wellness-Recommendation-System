@@ -3,6 +3,7 @@ package com.healthapp.communityservice.services.implementations;
 import com.healthapp.communityservice.entities.Achievement;
 import com.healthapp.communityservice.entities.AchievementProgress;
 import com.healthapp.communityservice.entities.AchievementStatistics;
+import com.healthapp.communityservice.exceptions.AchievementNotFoundException;
 import com.healthapp.communityservice.models.acheivementdto.AchievementDTO;
 import com.healthapp.communityservice.models.acheivementdto.AchievementProgressCreateDTO;
 import com.healthapp.communityservice.models.acheivementdto.AchievementProgressReadDTO;
@@ -43,7 +44,7 @@ public class AchievementServiceImpl implements AchievementService {
     public Achievement read(UUID achievementId) {
         Optional<Achievement> achievement = achievementRepository.findById(achievementId);
         if(achievement.isEmpty()){
-            //throw exception.
+            throw new AchievementNotFoundException("Achievement with given ID does not exist.");
         }
         return achievement.get();
     }
