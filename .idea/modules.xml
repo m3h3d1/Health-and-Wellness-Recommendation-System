@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MentalHealthService.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MentalHealthService.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Mid project.iml" filepath="$PROJECT_DIR$/.idea/Mid project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/UserService.main.iml" filepath="$PROJECT_DIR$/.idea/modules/UserService.main.iml" />
     </modules>
   </component>
 </project>

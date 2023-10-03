@@ -1,5 +1,6 @@
 package com.healthapp.userservice.model;
 
+import com.healthapp.userservice.domain.Profile;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Builder
 public class ProfileRequestDto {
     private UUID userId;
-    private String gender;
+    private Profile.Gender gender;
     private Date dateOfBirth;
     private String bloodGroup;
     private Boolean vegetarian;

@@ -9,6 +9,7 @@ import com.healthapp.userservice.repository.ProfileRepository;
 import com.healthapp.userservice.repository.UserRepository;
 import com.healthapp.userservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,45 +29,48 @@ public class ProfileServiceImpl implements ProfileService {
             Profile profile = new Profile();
             profile.setUserId(profileRequestDto.getUserId());
             profile.setGender(profileRequestDto.getGender());
-            profile.setBloodGroup(profileRequestDto.getBloodGroup());
+            Profile.BloodGroup bloodGroup = Profile.BloodGroup.fromString(profileRequestDto.getBloodGroup());
+            profile.setBloodGroup(bloodGroup);
             profile.setDateOfBirth(profileRequestDto.getDateOfBirth());
             profile.setVegetarian(profileRequestDto.getVegetarian());
             profile.setGoalWeight(profileRequestDto.getGoalWeight());
             profile.setTargetPeriod(profileRequestDto.getTargetPeriod());
+            profileRepository.save(profile);
             optionalUser.get().setProfile(profile);
             userRepository.save(optionalUser.get());
-            profileRepository.save(profile);
+        }
+        else{
+            throw new EmptyResultDataAccessException("User",1);
         }
     }
 
     @Override
     public void updateProfile(ProfileUpdateDto profileUpdateDto, UUID userId) {
         Optional<UserEntity> user = userRepository.findById(userId);
-        if(user.isPresent()) {
-            profileRepository.findByUserId(userId).ifPresent(profile -> {
-                if (profileUpdateDto.getGender() != null) {
-                    profile.setGender(profileUpdateDto.getGender());
-                }
-                if (profileUpdateDto.getBloodGroup() != null) {
-                    profile.setBloodGroup(profileUpdateDto.getBloodGroup());
-                }
-                if (profileUpdateDto.getVegetarian() != null) {
-                    profile.setVegetarian(profileUpdateDto.getVegetarian());
-                }
-                if (profileUpdateDto.getDateOfBirth() != null) {
-                    profile.setBloodGroup(profileUpdateDto.getBloodGroup());
-                }
-                if (profileUpdateDto.getGoalWeight() != null) {
-                    profile.setGoalWeight(profileUpdateDto.getGoalWeight());
-                }
-                if (profileUpdateDto.getTargetPeriod() != null) {
-                    profile.setTargetPeriod(profileUpdateDto.getTargetPeriod());
-                }
-                user.get().setProfile(profile);
-                userRepository.save(user.get());
-                profileRepository.save(profile);
-            });
-        }
+        user.ifPresent(userEntity -> profileRepository.findByUserId(userId).ifPresent(profile -> {
+            if (profileUpdateDto.getGender() != null) {
+                profile.setGender(profileUpdateDto.getGender());
+            }
+            if (profileUpdateDto.getBloodGroup() != null) {
+                Profile.BloodGroup bloodGroup = Profile.BloodGroup.fromString(profileUpdateDto.getBloodGroup());
+                profile.setBloodGroup(bloodGroup);
+            }
+            if (profileUpdateDto.getVegetarian() != null) {
+                profile.setVegetarian(profileUpdateDto.getVegetarian());
+            }
+            if (profileUpdateDto.getDateOfBirth() != null) {
+                profile.setDateOfBirth(profileUpdateDto.getDateOfBirth());
+            }
+            if (profileUpdateDto.getGoalWeight() != null) {
+                profile.setGoalWeight(profileUpdateDto.getGoalWeight());
+            }
+            if (profileUpdateDto.getTargetPeriod() != null) {
+                profile.setTargetPeriod(profileUpdateDto.getTargetPeriod());
+            }
+            profileRepository.save(profile);
+            userEntity.setProfile(profile);
+            userRepository.save(userEntity);
+        }));
     }
 
     @Override
@@ -83,7 +87,9 @@ public class ProfileServiceImpl implements ProfileService {
             responseDto.setTargetPeriod(profile.getTargetPeriod());
             return responseDto;
         }
-        return null;
+        else{
+            throw new EmptyResultDataAccessException("User",1);
+        }
     }
 
     @Override

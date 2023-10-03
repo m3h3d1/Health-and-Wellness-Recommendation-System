@@ -46,7 +46,7 @@ public class UserController {
     public ResponseEntity<List<UserEntity>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(),HttpStatus.OK);
     }
-    @PutMapping("/change-password/{userId")
+    @PutMapping("/change-password/{userId}")
     public ResponseEntity<String> changePassword(
             @PathVariable UUID userId,
             @RequestBody ChangePasswordDto changePasswordDto) {

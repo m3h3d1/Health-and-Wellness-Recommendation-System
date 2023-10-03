@@ -1,77 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/APIGateway" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../gradle-8.2" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/APIGateway" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/CommunityService" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../gradle-8.2" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/CommunityService" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/ConfigServer" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../gradle-8.2" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/ConfigServer" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/DiscoveryServer" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../gradle-8.2" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/DiscoveryServer" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/MentalHealthService" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../gradle-8.2" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/MentalHealthService" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/NutritionService" />
-        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../gradle-8.2" />
-        <option name="gradleJvm" value="corretto-19" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/NutritionService" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/UserService" />
-<<<<<<< HEAD
-        <option name="gradleJvm" value="jbr-17" />
-=======
-        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../gradle-8.2" />
-        <option name="gradleJvm" value="corretto-19" />
->>>>>>> development
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/UserService" />

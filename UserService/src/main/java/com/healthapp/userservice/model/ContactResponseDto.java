@@ -14,4 +14,8 @@ public class ContactResponseDto {
     private String optionalPhoneNumber;
     private String country;
     private String city;
+    private String area;
+    private Integer roadNumber;
+    private Character blockNumber;
+    private Integer houseNumber;
 }

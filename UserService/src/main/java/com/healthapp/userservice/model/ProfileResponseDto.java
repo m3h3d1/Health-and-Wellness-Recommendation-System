@@ -1,5 +1,6 @@
 package com.healthapp.userservice.model;
 
+import com.healthapp.userservice.domain.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +13,9 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class ProfileResponseDto {
-    private String gender;
+    private Profile.Gender gender;
     private Date dateOfBirth;
-    private String bloodGroup;
+    private Profile.BloodGroup bloodGroup;
     private Boolean vegetarian;
     private Integer goalWeight;
     private Integer targetPeriod;
