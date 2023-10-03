@@ -5,11 +5,12 @@ import com.healthapp.mentalhealthservice.entity.MoodLog;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
-public abstract class MoodLogService {
-    protected abstract MoodLog createMoodLog(MoodLogDTO moodLogDTO);
-    abstract MoodLog updateMoodLog(Long id, MoodLogDTO moodLogDTO);
-    abstract MoodLog getMoodLogById(Long id);
-    abstract boolean deleteMoodLog(Long id);
-    abstract List<MoodLog> getAllMoodLogs();
+import java.util.UUID;
+
+public interface  MoodLogService {
+     MoodLog createMoodLog(MoodLogDTO moodLogDTO);
+     MoodLog updateMoodLog(UUID id, MoodLogDTO moodLogDTO);
+     MoodLog getMoodLogById(UUID id);
+     boolean deleteMoodLog(UUID id);
+     List<MoodLog> getAllMoodLogs();
 }

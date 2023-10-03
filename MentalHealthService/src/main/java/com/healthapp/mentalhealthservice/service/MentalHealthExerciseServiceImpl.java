@@ -1,5 +1,6 @@
 package com.healthapp.mentalhealthservice.service;
 
+
 import com.healthapp.mentalhealthservice.dto.MentalHealthExerciseDTO;
 import com.healthapp.mentalhealthservice.entity.MentalHealthExercise;
 import com.healthapp.mentalhealthservice.repository.MentalHealthExerciseRepository;
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 
 @Service
-public class MentalHealthExerciseServiceImpl extends MentalHealthExerciseService {
+public class MentalHealthExerciseServiceImpl implements MentalHealthExerciseService {
 
     private final MentalHealthExerciseRepository exerciseRepository;
 
@@ -33,7 +36,7 @@ public class MentalHealthExerciseServiceImpl extends MentalHealthExerciseService
     }
 
     @Override
-    public MentalHealthExercise updateMentalHealthExercise(Long id, MentalHealthExerciseDTO exerciseDTO) {
+    public MentalHealthExercise updateMentalHealthExercise(UUID id, MentalHealthExerciseDTO exerciseDTO) {
         Optional<MentalHealthExercise> exerciseOptional = exerciseRepository.findById(id);
         if (exerciseOptional.isPresent()) {
             MentalHealthExercise exercise = exerciseOptional.get();
@@ -50,13 +53,13 @@ public class MentalHealthExerciseServiceImpl extends MentalHealthExerciseService
     }
 
     @Override
-    public MentalHealthExercise getMentalHealthExerciseById(Long id) {
+    public MentalHealthExercise getMentalHealthExerciseById(UUID id) {
         Optional<MentalHealthExercise> exerciseOptional = exerciseRepository.findById(id);
         return exerciseOptional.orElse(null);
     }
 
     @Override
-    public boolean deleteMentalHealthExercise(Long id) {
+    public boolean deleteMentalHealthExercise(UUID id) {
         Optional<MentalHealthExercise> exerciseOptional = exerciseRepository.findById(id);
         if (exerciseOptional.isPresent()) {
             exerciseRepository.deleteById(id);
