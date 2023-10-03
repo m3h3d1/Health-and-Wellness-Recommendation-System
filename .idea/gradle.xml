@@ -75,8 +75,12 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/UserService" />
+<<<<<<< HEAD
+        <option name="gradleJvm" value="jbr-17" />
+=======
         <option name="gradleHome" value="$PROJECT_DIR$/../../../../../gradle-8.2" />
         <option name="gradleJvm" value="corretto-19" />
+>>>>>>> development
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/UserService" />
