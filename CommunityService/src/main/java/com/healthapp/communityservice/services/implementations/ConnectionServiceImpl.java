@@ -2,7 +2,6 @@ package com.healthapp.communityservice.services.implementations;
 
 import com.healthapp.communityservice.entities.Connection;
 import com.healthapp.communityservice.entities.Following;
-import com.healthapp.communityservice.entities.Post;
 import com.healthapp.communityservice.exceptions.InvalidUnfollowException;
 import com.healthapp.communityservice.exceptions.MultipleFollowRequestException;
 import com.healthapp.communityservice.models.postdto.PostReadDTO;
@@ -27,6 +26,13 @@ public class ConnectionServiceImpl implements ConnectionService {
         this.postService = postService;
     }
 
+    /**
+     * Follow a user.
+     *
+     * @param followerId   The UUID of the follower.
+     * @param followingId  The UUID of the user to follow.
+     * @throws MultipleFollowRequestException If the user is already being followed by the follower.
+     */
     @Override
     public void follow(UUID followerId, UUID followingId) {
         List<Connection> connections = connectionRepository.findAll()
@@ -54,6 +60,13 @@ public class ConnectionServiceImpl implements ConnectionService {
         connectionRepository.save(connection);
     }
 
+    /**
+     * Unfollow a user.
+     *
+     * @param followerId   The UUID of the follower.
+     * @param followingId  The UUID of the user to unfollow.
+     * @throws InvalidUnfollowException If the user is not being followed by the follower or has no connections.
+     */
     @Override
     public void unFollow(UUID followerId, UUID followingId) {
         List<Connection> connections = connectionRepository.findByFollowerId(followerId);
@@ -73,6 +86,12 @@ public class ConnectionServiceImpl implements ConnectionService {
         }
     }
 
+    /**
+     * Get the list of users followed by a follower.
+     *
+     * @param followerId The UUID of the follower.
+     * @return A list of Following entities.
+     */
     @Override
     public List<Following> following(UUID followerId) {
         List<Connection> connections = connectionRepository.findByFollowerId(followerId);
@@ -82,6 +101,12 @@ public class ConnectionServiceImpl implements ConnectionService {
         return connections.get(0).getFollowing();
     }
 
+    /**
+     * Get the feed of posts from users followed by a follower.
+     *
+     * @param followerId The UUID of the follower.
+     * @return A list of PostReadDTO containing posts from followed users.
+     */
     @Override
     public List<PostReadDTO> followingFeed(UUID followerId) {
         List<PostReadDTO> feeds = new ArrayList<>();

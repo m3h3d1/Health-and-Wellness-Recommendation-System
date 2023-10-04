@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ConnectionService {
+    // Connection CRUD Operations
     public void follow(UUID followerId, UUID followingId);
     public void unFollow(UUID followerId, UUID followingId);
     public List<Following> following(UUID followerId);
