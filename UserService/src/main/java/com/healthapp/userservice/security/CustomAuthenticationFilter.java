@@ -25,6 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -65,10 +66,10 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String user = ((User) authResult.getPrincipal()).getUsername();
-        String accessToken = JWTUtils.generateToken(user);
+        String userId = ((User) authResult.getPrincipal()).getUsername();
         UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
-        UserResponseDto userResponseDto = userService.getUserByEmail(user);
+        UserResponseDto userResponseDto = userService.getUserById(UUID.fromString(userId));
+        String accessToken = JWTUtils.generateToken(userId, userResponseDto.getRoles());
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("userName", userResponseDto.getUserName());

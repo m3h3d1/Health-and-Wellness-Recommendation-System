@@ -34,7 +34,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userEntity.setLastName(userRequestDto.getLastName());
         userEntity.setPassword(bCryptPasswordEncoder.encode(userRequestDto.getPassword()));
         userEntity.setEmail(userRequestDto.getEmail());
-        userEntity.setRoles(UserEntity.Roles.User);
+        List<UserEntity.Roles> roles = new ArrayList<>();
+        roles.add(UserEntity.Roles.User);
+        userEntity.setRoles(roles);
         userRepository.save(userEntity);
     }
 
@@ -72,9 +74,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             responseDto.setFirstName(user.getFirstName());
             responseDto.setLastName(user.getLastName());
             responseDto.setEmail(user.getEmail());
-            responseDto.setRoles(user.getRoles());
-            responseDto.setProfile(user.getProfile());
-            responseDto.setContact(user.getContact());
             return responseDto;
         }
         else{
@@ -104,7 +103,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Optional<UserEntity> optionalUser= userRepository.findById(userId);
         if(optionalUser.isPresent()){
             UserEntity user=optionalUser.get();
-            user.setRoles(assignRoleDto.getRole());
+            user.getRoles().add(assignRoleDto.getRole());
             userRepository.save(user);
         }
         else{
@@ -127,14 +126,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         optionalUser.ifPresent(userEntity -> userEntity.setRoles(null));
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByEmail(email).get();
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + user.getRoles().name());
-        authorities.add(grantedAuthority);
-        if (user == null) throw new UsernameNotFoundException(email);
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                true, true, true, true, authorities);
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        UserEntity user = userRepository.findByEmail(email).get();
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + user.getRoles().name());
+//        authorities.add(grantedAuthority);
+//        if (user == null) throw new UsernameNotFoundException(email);
+//        return new org.springframework.security.core.userdetails.User(user.getUser_Id().toString(), user.getPassword(),
+//                true, true, true, true, authorities);
+//    }
+     @Override
+     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+     UserEntity user = userRepository.findByEmail(email).get();
+     List<GrantedAuthority> roles = new ArrayList<>();
+     for(UserEntity.Roles role: user.getRoles()){
+         roles.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
+     }
+     return new org.springframework.security.core.userdetails.User(user.getUserId().toString(), user.getPassword(),
+            true, true, true, true,
+            roles);
+}
 }
