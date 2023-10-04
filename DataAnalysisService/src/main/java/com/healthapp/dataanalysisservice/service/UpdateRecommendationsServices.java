@@ -1,4 +1,4 @@
 package com.healthapp.dataanalysisservice.service;
 
-public class predictionsService {
+public class UpdateRecommendationsServices {
 }

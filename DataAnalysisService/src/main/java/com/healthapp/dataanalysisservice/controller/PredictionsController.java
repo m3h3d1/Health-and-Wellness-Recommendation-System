@@ -1,4 +1,4 @@
 package com.healthapp.dataanalysisservice.controller;
 
-public class analyzeController {
+public class PredictionsController {
 }

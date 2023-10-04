@@ -3,6 +3,7 @@ package com.healthapp.mentalhealthservice.service;
 
 import com.healthapp.mentalhealthservice.dto.MentalHealthExerciseDTO;
 import com.healthapp.mentalhealthservice.entity.MentalHealthExercise;
+import com.healthapp.mentalhealthservice.entity.MoodLog;
 import com.healthapp.mentalhealthservice.repository.MentalHealthExerciseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ public class MentalHealthExerciseServiceImpl implements MentalHealthExerciseServ
         exercise.setSuggestedForIssues(exerciseDTO.getSuggestedForIssues());
         exercise.setBenefits(exerciseDTO.getBenefits());
         exercise.setNotes(exerciseDTO.getNotes());
+        exercise.setUserId(exerciseDTO.getUserId());
         return exerciseRepository.save(exercise);
     }
 
@@ -47,6 +49,7 @@ public class MentalHealthExerciseServiceImpl implements MentalHealthExerciseServ
             exercise.setSuggestedForIssues(exerciseDTO.getSuggestedForIssues());
             exercise.setBenefits(exerciseDTO.getBenefits());
             exercise.setNotes(exerciseDTO.getNotes());
+            exercise.setUserId(exerciseDTO.getUserId());
             return exerciseRepository.save(exercise);
         }
         return null; // or throw an exception if mental health exercise with the given id is not found
@@ -56,6 +59,11 @@ public class MentalHealthExerciseServiceImpl implements MentalHealthExerciseServ
     public MentalHealthExercise getMentalHealthExerciseById(UUID id) {
         Optional<MentalHealthExercise> exerciseOptional = exerciseRepository.findById(id);
         return exerciseOptional.orElse(null);
+    }
+
+    @Override
+    public List<MentalHealthExercise> getMentalHealthExerciseByUserId(UUID userId) {
+        return exerciseRepository.findByUserId(userId);
     }
 
     @Override

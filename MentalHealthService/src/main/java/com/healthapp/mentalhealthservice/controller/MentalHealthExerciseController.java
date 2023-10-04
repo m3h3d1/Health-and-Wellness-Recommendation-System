@@ -3,6 +3,7 @@ package com.healthapp.mentalhealthservice.controller;
 
 import com.healthapp.mentalhealthservice.dto.MentalHealthExerciseDTO;
 import com.healthapp.mentalhealthservice.entity.MentalHealthExercise;
+import com.healthapp.mentalhealthservice.entity.MoodLog;
 import com.healthapp.mentalhealthservice.service.MentalHealthExerciseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,16 @@ public class MentalHealthExerciseController {
         MentalHealthExercise exercise = exerciseServiceImp.getMentalHealthExerciseById(id);
         if (exercise != null) {
             return new ResponseEntity<>(exercise, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<MentalHealthExercise>> getMoodLogsByUserId(@PathVariable UUID userId) {
+        List<MentalHealthExercise> exercises = exerciseServiceImp.getMentalHealthExerciseByUserId(userId);
+        if (exercises != null) {
+            return new ResponseEntity<>(exercises, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
