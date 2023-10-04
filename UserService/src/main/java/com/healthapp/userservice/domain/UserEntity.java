@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +19,7 @@ public class UserEntity {
     @Column(name = "user-id")
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID user_Id;
+    private UUID userId;
     @Column(name = "first-name", nullable = false)
     @Pattern(regexp = "^(|[^\\d]+)$", message = "First name cannot contain digits")
     private String firstName;
@@ -34,7 +35,7 @@ public class UserEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
-    private Roles roles;
+    private List<Roles> roles;
     @OneToOne
     private Contact contact;
     @OneToOne
