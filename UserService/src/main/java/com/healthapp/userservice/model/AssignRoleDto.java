@@ -1,5 +1,6 @@
 package com.healthapp.userservice.model;
 
+import com.healthapp.userservice.domain.RoleEnum;
 import com.healthapp.userservice.domain.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AssignRoleDto {
-    private UserEntity.Roles role;
+    private RoleEnum role;
 }
