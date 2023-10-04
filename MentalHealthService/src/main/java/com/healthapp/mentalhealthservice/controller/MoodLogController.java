@@ -21,12 +21,6 @@ public class MoodLogController {
         this.moodLogServiceImpl = moodLogServiceImpl;
     }
 
-//    @PostMapping("/create")
-//    public ResponseEntity<MoodLog> createMoodLog(@RequestBody MoodLogDTO moodLogDTO) {
-//        MoodLog createdMoodLog = moodLogServiceImpl.createMoodLog(moodLogDTO);
-//        return new ResponseEntity<>(createdMoodLog, HttpStatus.CREATED);
-////        return new ResponseEntity<>("Comment created successfully", HttpStatus.CREATED);
-//    }
 
     @PostMapping("/create")
     public ResponseEntity<String> createMoodLog(@RequestBody MoodLogDTO moodLogDTO) {
@@ -49,6 +43,16 @@ public class MoodLogController {
         MoodLog moodLog = moodLogServiceImpl.getMoodLogById(id);
         if (moodLog != null) {
             return new ResponseEntity<>(moodLog, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<MoodLog>> getMoodLogsByUserId(@PathVariable UUID userId) {
+        List<MoodLog> moodLogs = moodLogServiceImpl.getMoodLogsByUserId(userId);
+        if (moodLogs != null) {
+            return new ResponseEntity<>(moodLogs, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
