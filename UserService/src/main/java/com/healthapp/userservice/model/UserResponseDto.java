@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class UserResponseDto {
     private String lastName;
     private String userName;
     private String email;
-    private UserEntity.Roles roles;
+    private List<UserEntity.Roles> roles;
     private Contact contact;
     private Profile profile;
 }
