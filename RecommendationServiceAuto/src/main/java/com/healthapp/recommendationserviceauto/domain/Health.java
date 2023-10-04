@@ -21,6 +21,8 @@ public class Health {
     private String gender;
     private Boolean allergies;
     private Boolean smokingStatus;
+    private Integer goalWeight;
+    private Integer targetPeriod;
 
     @OneToMany(mappedBy = "health")
     private List<HealthNotes> healthNotes = new ArrayList<>();
@@ -41,10 +43,13 @@ public class Health {
     private List<Diabetes> diabetes;
 
     @OneToMany(mappedBy = "health", cascade = CascadeType.ALL)
-    private List<BloodPressure> bloodPressures = new ArrayList<>();
+    private List<BloodPressure> bloodPressures;
 
     @OneToMany(mappedBy = "health", cascade = CascadeType.ALL)
     private List<HeartRate> heartRates;
+
+    @OneToMany(mappedBy = "health", cascade = CascadeType.ALL)
+    private List<Disease> diseases;
 
     private UUID userId;
 }
