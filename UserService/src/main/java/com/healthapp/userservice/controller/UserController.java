@@ -22,9 +22,9 @@ public class UserController {
         return new ResponseEntity<>("User Created Successfully!",HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{userId}")
-    public ResponseEntity<String> updateUser(@RequestBody UserUpdateDto userUpdateDto, @PathVariable UUID userId) {
-        userService.updateUser(userUpdateDto, userId);
+    @PutMapping("/update")
+    public ResponseEntity<String> updateUser(@RequestBody UserUpdateDto userUpdateDto) {
+        userService.updateUser(userUpdateDto);
         return new ResponseEntity<>("User Updated Successfully!",HttpStatus.OK);
     }
 
@@ -46,11 +46,10 @@ public class UserController {
     public ResponseEntity<List<UserEntity>> getAllUsers(){
         return new ResponseEntity<>(userService.getAllUsers(),HttpStatus.OK);
     }
-    @PutMapping("/change-password/{userId}")
+    @PutMapping("/change-password")
     public ResponseEntity<String> changePassword(
-            @PathVariable UUID userId,
             @RequestBody ChangePasswordDto changePasswordDto) {
-        userService.changePassword(changePasswordDto, userId);
+        userService.changePassword(changePasswordDto);
         return new ResponseEntity<>("Password changed successfully!", HttpStatus.OK);
     }
     @PostMapping("/assign-role/{userId}")

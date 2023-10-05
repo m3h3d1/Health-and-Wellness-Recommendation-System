@@ -1,8 +1,5 @@
-package com.healthapp.recommendationserviceauto.model;
+package com.healthapp.userservice.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

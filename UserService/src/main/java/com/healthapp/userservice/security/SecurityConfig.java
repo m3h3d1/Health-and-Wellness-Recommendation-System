@@ -32,10 +32,7 @@ public class SecurityConfig {
 
                             // User Controller
                             .requestMatchers(HttpMethod.PUT, AppConstants.UPDATE_USER).hasRole("USER")
-                            .requestMatchers(HttpMethod.POST, AppConstants.REGISTER_USER).hasRole("ADMIN")
-                            .requestMatchers(HttpMethod.PUT, AppConstants.UPDATE_USER).hasRole("USER")
                             .requestMatchers(HttpMethod.DELETE, AppConstants.DELETE_USER).hasRole("ADMIN")
-                            .requestMatchers(HttpMethod.GET, AppConstants.GET_USER_BY_ID).hasRole("USER")
                             .requestMatchers(HttpMethod.GET, AppConstants.GET_ALL_USERS).hasRole("ADMIN")
                             .requestMatchers(HttpMethod.PUT, AppConstants.CHANGE_PASSWORD).hasRole("USER")
                             .requestMatchers(HttpMethod.POST, AppConstants.ASSIGN_ROLE).hasRole("ADMIN")
