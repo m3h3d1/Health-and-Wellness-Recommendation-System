@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             responseDto.setUserName(user.getUserName());
             responseDto.setFirstName(user.getFirstName());
             responseDto.setLastName(user.getLastName());
+            responseDto.setRoles(user.getRoles());
             responseDto.setEmail(user.getEmail());
             return responseDto;
         }
@@ -140,13 +141,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 //    }
      @Override
      public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        List<UserEntity> list = userRepository.findByEmail(email);
-        UserEntity user = list.get(0);
+         Optional<UserEntity> user = userRepository.findByEmail(email);
          List<GrantedAuthority> roles = new ArrayList<>();
-         for(Role role: user.getRoles()){
+         for(Role role: user.get().getRoles()){
              roles.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
          }
-     return new org.springframework.security.core.userdetails.User(user.getUserId().toString(), user.getPassword(),
+     return new org.springframework.security.core.userdetails.User(user.get().getUserId().toString(), user.get().getPassword(),
             true, true, true, true,
             roles);
 }

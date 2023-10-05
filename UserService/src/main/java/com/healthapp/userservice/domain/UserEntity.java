@@ -35,7 +35,7 @@ public class UserEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
     @OneToOne
     private Contact contact;
