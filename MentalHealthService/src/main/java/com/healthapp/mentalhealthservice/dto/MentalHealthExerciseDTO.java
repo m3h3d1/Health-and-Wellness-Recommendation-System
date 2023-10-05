@@ -4,6 +4,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -15,4 +17,5 @@ public class MentalHealthExerciseDTO {
     private String suggestedForIssues;
     private String benefits;
     private String notes;
+    private UUID userId;
 }

@@ -9,8 +9,9 @@ import java.util.UUID;
 
 public interface  MoodLogService {
      MoodLog createMoodLog(MoodLogDTO moodLogDTO);
-     MoodLog updateMoodLog(UUID id, MoodLogDTO moodLogDTO);
-     MoodLog getMoodLogById(UUID id);
-     boolean deleteMoodLog(UUID id);
+     MoodLog updateMoodLog(UUID moodLogId, MoodLogDTO moodLogDTO);
+     MoodLog getMoodLogById(UUID moodLogId);
+     List<MoodLog> getMoodLogsByUserId(UUID userId);
+     boolean deleteMoodLog(UUID moodLogId);
      List<MoodLog> getAllMoodLogs();
 }

@@ -1,7 +1,0 @@
-
-s
-java:S36550"VCall "achievement.isPresent()" or "!achievement.isEmpty()" before accessing the value.(ãˆ¼Ý8‡·Çü®1
-p
-java:S6204‚"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ª™¨¹8¥·Çü®1
-o
-java:S6204~"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(ÆÝÅß8¨·Çü®1
