@@ -38,18 +38,6 @@ public class SecurityConfig {
 //                            .requestMatchers(HttpMethod.PUT, "/books/update").hasRole("ADMIN")
 //                            .requestMatchers(HttpMethod.DELETE, "/books/delete").hasRole("ADMIN")
 //                            .requestMatchers(HttpMethod.GET, "books/all").authenticated()
-//
-//                            .requestMatchers(HttpMethod.POST, "/books/{bookId}/borrow").hasRole("CUSTOMER")
-//                            .requestMatchers(HttpMethod.PUT, "/books/{bookId}/return").hasRole("CUSTOMER")
-//                            .requestMatchers(HttpMethod.POST, "/books/{bookId}/reserve").hasRole("CUSTOMER")
-//                            .requestMatchers(HttpMethod.PUT, "/books/{bookId}/cancel-reservation").hasRole("CUSTOMER")
-//
-//                            .requestMatchers(HttpMethod.GET, "/books/{bookId}/reviews").authenticated()
-//                            .requestMatchers(HttpMethod.POST, "/books/{bookId}/reviews/create").hasRole("CUSTOMER")
-//                            .requestMatchers(HttpMethod.PUT, "/books/{bookId}/reviews/{reviewId}/update").hasRole("CUSTOMER")
-//                            .requestMatchers(HttpMethod.DELETE, "/books/{bookId}/reviews/{reviewId}/delete").hasRole("CUSTOMER")
-
-//                            .requestMatchers(HttpMethod.GET, "/users/{userId}/history").authenticated()
                             .anyRequest().permitAll();
                 })
                 .addFilter(new CustomAuthenticationFilter(authenticationManager))

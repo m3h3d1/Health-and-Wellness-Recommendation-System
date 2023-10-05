@@ -55,6 +55,10 @@ public class MoodLogServiceImpl implements MoodLogService {
         Optional<MoodLog> moodLogOptional = moodLogRepository.findById(id);
         return moodLogOptional.orElse(null);
     }
+    @Override
+    public List<MoodLog> getMoodLogsByUserId(UUID userId) {
+        return moodLogRepository.findByUserId(userId);
+    }
 
 
     @Override
