@@ -1,12 +1,19 @@
-package com.healthapp.feedbackprogress.network;
+package com.healthapp.feedbackprogress.dto.healthdto;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class HealthDTO {
+//    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID healthId;
     private Integer age;
     private String gender;

@@ -1,12 +1,15 @@
 package com.healthapp.feedbackprogress.network;
 
+import com.healthapp.feedbackprogress.dto.healthdto.HealthDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "ACCOUNTS-APP", configuration = CustomErrorDecoder.class)
+import java.util.UUID;
+
+@FeignClient(name = "recommendation-app", configuration = CustomErrorDecoder.class)
 public interface HealthServiceProxy {
-    @GetMapping("/api/internal/user/{userId}")
-    public ResponseEntity<HealthDTO> getUser(@PathVariable String userId);
+    @GetMapping("/health/{userId}")
+    public ResponseEntity<HealthDTO> getHealth(@PathVariable UUID userId);
 }

@@ -1,8 +1,10 @@
 package com.healthapp.feedbackprogress.service.implementation;
 
+import com.healthapp.feedbackprogress.dto.healthdto.HealthDTO;
 import com.healthapp.feedbackprogress.entity.Feedback;
 import com.healthapp.feedbackprogress.exception.FeedbackNotFoundException;
 import com.healthapp.feedbackprogress.exception.FeedbackServiceException;
+import com.healthapp.feedbackprogress.network.HealthServiceProxy;
 import com.healthapp.feedbackprogress.repository.FeedbackRepository;
 import com.healthapp.feedbackprogress.service.FeedbackService;
 import jakarta.transaction.Transactional;
@@ -18,6 +20,9 @@ import java.util.UUID;
 public class FeedbackServiceImpl implements FeedbackService {
     @Autowired
     private FeedbackRepository feedbackRepository;
+
+    @Autowired
+    private HealthServiceProxy healthServiceProxy;
 
     @Override
     public Feedback addFeedback(Feedback feedback) {
@@ -53,4 +58,16 @@ public class FeedbackServiceImpl implements FeedbackService {
             throw new FeedbackServiceException("Failed to delete food data. " + e.getMessage());
         }
     }
+
+    @Override
+    public HealthDTO getHealthById(UUID userId) {
+        return healthServiceProxy.getHealth(userId).getBody();
+    }
+
+//    @Override
+//    public Food getFoodById(UUID foodId) {
+//
+//        return foodRepository.findById(foodId).orElse(null);
+//    }
+
 }

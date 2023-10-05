@@ -1,5 +1,6 @@
 package com.healthapp.feedbackprogress.controller;
 
+import com.healthapp.feedbackprogress.dto.healthdto.HealthDTO;
 import com.healthapp.feedbackprogress.entity.Feedback;
 import com.healthapp.feedbackprogress.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,17 @@ public class FeedbackController {
             return new ResponseEntity<>("Feedback Data Deleted Successfully!", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Failed to delete feedback data", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("gethealth/{userId}")
+    public ResponseEntity<?> getHealthById(@PathVariable UUID userId) {
+        HealthDTO health = feedbackService.getHealthById(userId);
+
+        if (health != null) {
+            return new ResponseEntity<>(health, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
