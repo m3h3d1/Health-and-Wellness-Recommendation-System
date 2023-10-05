@@ -10,12 +10,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public interface GroupService {
-    public void create(GroupDTO groupDto);
+    // Group crud operations
+    public void create(GroupDTO groupDto, UUID ownerId);
     public boolean ifExists(UUID groupId);
-    public List<Group> getALl();
+    public List<Group> getAll();
     public Group getById(UUID groupId);
-    public void update(UUID groupId, GroupDTO groupDTO);
-    public void delete(UUID groupId);
+    public void update(UUID groupId, UUID requestUserId, GroupDTO groupDTO);
+    public void delete(UUID groupId, UUID requestUserId);
     public void addMember(UUID groupId, UUID userId, GroupMemberRole role);
     public void removeMember(UUID groupId, UUID userId);
 }

@@ -1,5 +1,7 @@
 package com.healthapp.userservice.service.impl;
 
+import com.healthapp.userservice.domain.Role;
+import com.healthapp.userservice.domain.RoleEnum;
 import com.healthapp.userservice.domain.UserEntity;
 import com.healthapp.userservice.model.*;
 import com.healthapp.userservice.repository.UserRepository;
@@ -34,7 +36,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userEntity.setLastName(userRequestDto.getLastName());
         userEntity.setPassword(bCryptPasswordEncoder.encode(userRequestDto.getPassword()));
         userEntity.setEmail(userRequestDto.getEmail());
-        userEntity.setRoles(UserEntity.Roles.User);
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role(RoleEnum.USER.toString()));
+
+        // For testing...
+        if(userEntity.getEmail().toLowerCase().equals("admin")){
+            roles.add(new Role(RoleEnum.ADMIN.toString()));
+        }
+
+        userEntity.setRoles(roles);
         userRepository.save(userEntity);
     }
 
@@ -71,10 +81,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             responseDto.setUserName(user.getUserName());
             responseDto.setFirstName(user.getFirstName());
             responseDto.setLastName(user.getLastName());
-            responseDto.setEmail(user.getEmail());
             responseDto.setRoles(user.getRoles());
-            responseDto.setProfile(user.getProfile());
-            responseDto.setContact(user.getContact());
+            responseDto.setEmail(user.getEmail());
             return responseDto;
         }
         else{
@@ -104,7 +112,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Optional<UserEntity> optionalUser= userRepository.findById(userId);
         if(optionalUser.isPresent()){
             UserEntity user=optionalUser.get();
-            user.setRoles(assignRoleDto.getRole());
+            user.getRoles().add(new Role(assignRoleDto.getRole().toString()));
             userRepository.save(user);
         }
         else{
@@ -114,8 +122,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserResponseDto getUserByEmail(String email) {
-        UserEntity user = userRepository.findByEmail(email).get();
-        if (user == null) throw new UsernameNotFoundException("No record found");
+        Optional<UserEntity> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) throw new UsernameNotFoundException("No record found");
         UserResponseDto returnValue = new UserResponseDto();
         BeanUtils.copyProperties(user, returnValue);
         return returnValue;
@@ -126,15 +134,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Optional<UserEntity> optionalUser= userRepository.findById(userId);
         optionalUser.ifPresent(userEntity -> userEntity.setRoles(null));
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByEmail(email).get();
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + user.getRoles().name());
-        authorities.add(grantedAuthority);
-        if (user == null) throw new UsernameNotFoundException(email);
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-                true, true, true, true, authorities);
-    }
+     @Override
+     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+         Optional<UserEntity> user = userRepository.findByEmail(email);
+         List<GrantedAuthority> roles = new ArrayList<>();
+         for(Role role: user.get().getRoles()){
+             roles.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+         }
+     return new org.springframework.security.core.userdetails.User(user.get().getUserId().toString(), user.get().getPassword(),
+            true, true, true, true,
+            roles);
+}
 }
