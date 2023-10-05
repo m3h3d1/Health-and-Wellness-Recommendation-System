@@ -38,6 +38,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userEntity.setEmail(userRequestDto.getEmail());
         List<Role> roles = new ArrayList<>();
         roles.add(new Role(RoleEnum.USER.toString()));
+
+        // For testing...
+        if(userEntity.getEmail().toLowerCase().equals("admin")){
+            roles.add(new Role(RoleEnum.ADMIN.toString()));
+        }
+
         userEntity.setRoles(roles);
         userRepository.save(userEntity);
     }
@@ -116,8 +122,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserResponseDto getUserByEmail(String email) {
-        UserEntity user = userRepository.findByEmail(email).get(0);
-        if (user == null) throw new UsernameNotFoundException("No record found");
+        Optional<UserEntity> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) throw new UsernameNotFoundException("No record found");
         UserResponseDto returnValue = new UserResponseDto();
         BeanUtils.copyProperties(user, returnValue);
         return returnValue;
@@ -128,17 +134,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Optional<UserEntity> optionalUser= userRepository.findById(userId);
         optionalUser.ifPresent(userEntity -> userEntity.setRoles(null));
     }
-
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        UserEntity user = userRepository.findByEmail(email).get();
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + user.getRoles().name());
-//        authorities.add(grantedAuthority);
-//        if (user == null) throw new UsernameNotFoundException(email);
-//        return new org.springframework.security.core.userdetails.User(user.getUser_Id().toString(), user.getPassword(),
-//                true, true, true, true, authorities);
-//    }
      @Override
      public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
          Optional<UserEntity> user = userRepository.findByEmail(email);
