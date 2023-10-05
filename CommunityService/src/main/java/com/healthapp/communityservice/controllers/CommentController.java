@@ -18,51 +18,60 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    // Create a new comment
     @PostMapping
     public ResponseEntity<String> createComment(@RequestBody CommentCreateDTO commentCreateDTO) {
         commentService.create(commentCreateDTO);
         return new ResponseEntity<>("Comment created successfully", HttpStatus.CREATED);
     }
 
+    // Get all comments for a specific post by post ID
     @GetMapping("/by/post/{postId}")
     public ResponseEntity<?> getAllCommentsByPost(@PathVariable UUID postId){
         return ResponseEntity.ok(commentService.getCommentsByPostId(postId));
     }
 
+    // Get a list of all comments
     @GetMapping
     public ResponseEntity<?> getAllComments(){
         return ResponseEntity.ok(commentService.readAll());
     }
 
+    // Get a comment by its ID
     @GetMapping("/{commentId}")
     public ResponseEntity<?> getCommentById(@PathVariable UUID commentId){
         return ResponseEntity.ok(commentService.read(commentId));
     }
 
+    // Update an existing comment by its ID
     @PutMapping("/{commentId}")
     public ResponseEntity<String> updateComment(@PathVariable UUID commentId, @RequestBody CommentUpdateDTO commentUpdateDTO) {
         commentService.update(commentId, commentUpdateDTO);
         return new ResponseEntity<>("Comment updated successfully", HttpStatus.OK);
     }
 
+    // Delete a comment by its ID
     @DeleteMapping("/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable UUID commentId) {
         commentService.delete(commentId);
         return new ResponseEntity<>("Comment deleted successfully", HttpStatus.NO_CONTENT);
     }
 
+    // Add a "like" interaction to a comment
     @PostMapping("/interactions/{commentId}/add-like/{userId}")
     public ResponseEntity<String> addLike(@PathVariable UUID commentId, @PathVariable UUID userId){
         commentService.addLike(commentId, userId);
         return new ResponseEntity<>("Comment liked.", HttpStatus.OK);
     }
 
+    // Add a "dislike" interaction to a comment
     @PostMapping("/interactions/{commentId}/add-dislike/{userId}")
     public ResponseEntity<String> addDislike(@PathVariable UUID commentId, @PathVariable UUID userId){
         commentService.addDislike(commentId, userId);
         return new ResponseEntity<>("Comment disliked.", HttpStatus.OK);
     }
 
+    // Remove a like or dislike interaction from a comment
     @DeleteMapping("/interactions/{commentId}/remove-interaction/{userId}")
     public ResponseEntity<String> removeInteraction(@PathVariable UUID commentId, @PathVariable UUID userId){
         commentService.removeInteraction(commentId, userId);

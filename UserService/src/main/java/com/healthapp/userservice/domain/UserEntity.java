@@ -35,17 +35,10 @@ public class UserEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
-    private List<Roles> roles;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Role> roles;
     @OneToOne
     private Contact contact;
     @OneToOne
     private Profile profile;
-    public enum Roles {
-        User,
-        Admin,
-        Doctor,
-        GymTrainer,
-        Psychologist,
-        Nutritionist
-    }
 }

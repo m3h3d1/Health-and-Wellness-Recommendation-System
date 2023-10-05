@@ -1,5 +1,7 @@
 package com.healthapp.userservice.service.impl;
 
+import com.healthapp.userservice.domain.Role;
+import com.healthapp.userservice.domain.RoleEnum;
 import com.healthapp.userservice.domain.UserEntity;
 import com.healthapp.userservice.model.*;
 import com.healthapp.userservice.repository.UserRepository;
@@ -34,8 +36,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userEntity.setLastName(userRequestDto.getLastName());
         userEntity.setPassword(bCryptPasswordEncoder.encode(userRequestDto.getPassword()));
         userEntity.setEmail(userRequestDto.getEmail());
-        List<UserEntity.Roles> roles = new ArrayList<>();
-        roles.add(UserEntity.Roles.User);
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role(RoleEnum.USER.toString()));
         userEntity.setRoles(roles);
         userRepository.save(userEntity);
     }
@@ -73,6 +75,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             responseDto.setUserName(user.getUserName());
             responseDto.setFirstName(user.getFirstName());
             responseDto.setLastName(user.getLastName());
+            responseDto.setRoles(user.getRoles());
             responseDto.setEmail(user.getEmail());
             return responseDto;
         }
@@ -103,7 +106,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Optional<UserEntity> optionalUser= userRepository.findById(userId);
         if(optionalUser.isPresent()){
             UserEntity user=optionalUser.get();
-            user.getRoles().add(assignRoleDto.getRole());
+            user.getRoles().add(new Role(assignRoleDto.getRole().toString()));
             userRepository.save(user);
         }
         else{
@@ -113,7 +116,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserResponseDto getUserByEmail(String email) {
-        UserEntity user = userRepository.findByEmail(email).get();
+        UserEntity user = userRepository.findByEmail(email).get(0);
         if (user == null) throw new UsernameNotFoundException("No record found");
         UserResponseDto returnValue = new UserResponseDto();
         BeanUtils.copyProperties(user, returnValue);
@@ -138,12 +141,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 //    }
      @Override
      public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-     UserEntity user = userRepository.findByEmail(email).get();
-     List<GrantedAuthority> roles = new ArrayList<>();
-     for(UserEntity.Roles role: user.getRoles()){
-         roles.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
-     }
-     return new org.springframework.security.core.userdetails.User(user.getUserId().toString(), user.getPassword(),
+         Optional<UserEntity> user = userRepository.findByEmail(email);
+         List<GrantedAuthority> roles = new ArrayList<>();
+         for(Role role: user.get().getRoles()){
+             roles.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName()));
+         }
+     return new org.springframework.security.core.userdetails.User(user.get().getUserId().toString(), user.get().getPassword(),
             true, true, true, true,
             roles);
 }

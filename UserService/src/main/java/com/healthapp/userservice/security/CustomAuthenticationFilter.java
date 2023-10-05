@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -69,7 +70,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String userId = ((User) authResult.getPrincipal()).getUsername();
         UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
         UserResponseDto userResponseDto = userService.getUserById(UUID.fromString(userId));
-        String accessToken = JWTUtils.generateToken(userId, userResponseDto.getRoles());
+        String accessToken = JWTUtils.generateToken(userId, userResponseDto.getRoles()
+                .stream().map(role -> role.getRoleName()).collect(Collectors.toList()));
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("userName", userResponseDto.getUserName());
