@@ -8,8 +8,11 @@ import com.healthapp.notificationservice.service.interfaces.NotificationService;
 import com.healthapp.notificationservice.service.interfaces.PreferenceService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,11 +32,13 @@ public class NotificationServiceImpl implements NotificationService {
             return;
         }
         notification.setUserId(userId);
+        notification.setTimeCreate(LocalDateTime.now());
+        notification.setSeen(false);
         notificationRepository.save(notification);
     }
 
     @Override
-    public List<Notification> getAllByUserId(UUID userId) {
+    public List<Notification> getFiltredByUserId(UUID userId) {
         // Get user preferences
         Preference userPreference = preferenceService.getByUserId(userId);
         // Get current time
@@ -43,7 +48,18 @@ public class NotificationServiceImpl implements NotificationService {
         // Apply preference filters
         if (userPreference.isDoNotDisturb()) {
             notifications.clear();
+            return notifications;
         }
+        if (userPreference.getMuteFrom() != null && userPreference.getMuteTo() != null) {
+            LocalDateTime muteFromDateTime = LocalDateTime.of(LocalDate.now(), userPreference.getMuteFrom());
+            LocalDateTime muteToDateTime = LocalDateTime.of(LocalDate.now(), userPreference.getMuteTo());
+
+            notifications.removeIf(notification -> {
+                LocalDateTime notificationTime = notification.getTimeCreate();
+                return notificationTime.isAfter(muteFromDateTime) && notificationTime.isBefore(muteToDateTime);
+            });
+        }
+
         if (!userPreference.isGetPostInteractionNotification()) {
             notifications.removeIf(notification -> notification.getType().equals("post_interaction"));
         }
@@ -63,7 +79,24 @@ public class NotificationServiceImpl implements NotificationService {
             notifications.removeIf(notification -> notification.getType().equals("account"));
         }
 
+        notifications.removeIf(Notification::isSeen);
+
         return notifications;
+    }
+
+    @Override
+    public void setSeen(UUID notificationId, UUID userId) throws IllegalAccessException {
+        Optional<Notification> notificationOp = notificationRepository.findById(notificationId);
+        if(notificationOp.isEmpty()) throw new IllegalAccessException();
+        Notification notification = notificationOp.get();
+        if(!notification.getUserId().equals(userId)) throw new IllegalAccessException();
+        notification.setSeen(true);
+        notificationRepository.save(notification);
+    }
+
+    @Override
+    public List<Notification> getAllByUserId(UUID userId) {
+        return notificationRepository.findByUserId(userId);
     }
 
     @Override

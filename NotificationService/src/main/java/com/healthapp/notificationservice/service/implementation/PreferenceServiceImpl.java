@@ -20,18 +20,38 @@ public class PreferenceServiceImpl implements PreferenceService {
     @Override
     public Preference getByUserId(UUID userId) {
         Optional<Preference> preferenceOp = preferenceRepository.findByUserId(userId);
-        return preferenceOp.orElseGet(() -> resetToDefault(userId));
+        if(preferenceOp.isEmpty()){
+            Preference preference = getDefaultSettings(userId);
+            preferenceRepository.save(preference);
+            return preference;
+        }
+        else return preferenceOp.get();
     }
 
     @Override
     public void update(UUID userId, Preference updatedPreference) {
         Preference preference = getByUserId(userId);
-        updatedPreference.setUserId(preference.getUserId());
-        preferenceRepository.save(updatedPreference);
+
+        preference.setDoNotDisturb(updatedPreference.isDoNotDisturb());
+        preference.setMuteFrom(updatedPreference.getMuteFrom());
+        preference.setMuteTo(updatedPreference.getMuteTo());
+        preference.setGetPostInteractionNotification(updatedPreference.isGetPostInteractionNotification());
+        preference.setGetConnectionInteractionNotification(updatedPreference.isGetConnectionInteractionNotification());
+        preference.setGetHealthFeedNotification(updatedPreference.isGetHealthFeedNotification());
+        preference.setGetRecommendationNotification(updatedPreference.isGetRecommendationNotification());
+        preference.setGetAccountNotification(updatedPreference.isGetAccountNotification());
+
+        preferenceRepository.save(preference);
     }
 
     @Override
     public Preference resetToDefault(UUID userId) {
+        getByUserId(userId);
+        update(userId, getDefaultSettings(userId));
+        return getDefaultSettings(userId);
+    }
+
+    private Preference getDefaultSettings(UUID userId) {
         // Create a new Preference object with default values
         Preference preference = new Preference();
 
@@ -47,9 +67,7 @@ public class PreferenceServiceImpl implements PreferenceService {
         preference.setGetHealthFeedNotification(true);
         preference.setGetRecommendationNotification(true);
         preference.setGetAccountNotification(true);
-        preferenceRepository.save(preference);
 
         return preference;
     }
-
 }
