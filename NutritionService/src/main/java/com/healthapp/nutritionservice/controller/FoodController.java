@@ -20,7 +20,7 @@ public class FoodController {
     private FoodService foodService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addNutrition(@RequestBody Food food) {
+    public ResponseEntity<String> addFood(@RequestBody Food food) {
         foodService.addFood(food);
         return new ResponseEntity<>("Food Data Added Successfully!", HttpStatus.CREATED);
     }
@@ -36,7 +36,7 @@ public class FoodController {
     }
 
     @GetMapping("/get/{foodId}")
-    public ResponseEntity<Food> getNutritionById(@PathVariable UUID foodId) {
+    public ResponseEntity<Food> getFoodById(@PathVariable UUID foodId) {
         Food food = foodService.getFoodById(foodId);
 
         if (food != null) {
@@ -47,7 +47,7 @@ public class FoodController {
     }
 
     @PutMapping("/update/{foodId}")
-    public ResponseEntity<String> updateNutrition(
+    public ResponseEntity<String> updateFood(
             @PathVariable UUID foodId,
             @RequestBody Food updatedFood) {
         foodService.updateFood(foodId, updatedFood);
@@ -55,7 +55,7 @@ public class FoodController {
     }
 
     @DeleteMapping("/delete/{foodId}")
-    public ResponseEntity<String> deleteNutrition(@PathVariable UUID foodId) {
+    public ResponseEntity<String> deleteFood(@PathVariable UUID foodId) {
         try {
             foodService.deleteFood(foodId);
             return new ResponseEntity<>("Food Data Deleted Successfully!", HttpStatus.OK);

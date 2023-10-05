@@ -31,7 +31,7 @@ public class JWTUtils {
 //                .signWith(SignatureAlgorithm.HS256, AppConstants.TOKEN_SECRET)
 //                .compact();
 //    }
-    public static String generateToken(String id, List<UserEntity.Roles> roles){
+    public static String generateToken(String id, List<String> roles){
         return Jwts.builder()
                 .setSubject(id)
                 .claim("roles", roles)

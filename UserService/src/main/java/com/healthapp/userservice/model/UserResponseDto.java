@@ -2,6 +2,7 @@ package com.healthapp.userservice.model;
 
 import com.healthapp.userservice.domain.Contact;
 import com.healthapp.userservice.domain.Profile;
+import com.healthapp.userservice.domain.Role;
 import com.healthapp.userservice.domain.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public class UserResponseDto {
     private String lastName;
     private String userName;
     private String email;
-    private List<UserEntity.Roles> roles;
+    private List<Role> roles;
     private Contact contact;
     private Profile profile;
 }
