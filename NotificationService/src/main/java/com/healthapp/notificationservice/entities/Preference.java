@@ -18,9 +18,11 @@ public class Preference {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID preferenceId;
     private UUID userId;
+    // Personalized time stamp
     private boolean doNotDisturb;
     private LocalTime muteFrom;
     private LocalTime muteTo;
+    // Personalized notification setting properties based on notification type
     private boolean getPostInteractionNotification;
     private boolean getConnectionInteractionNotification;
     private boolean getHealthFeedNotification;
