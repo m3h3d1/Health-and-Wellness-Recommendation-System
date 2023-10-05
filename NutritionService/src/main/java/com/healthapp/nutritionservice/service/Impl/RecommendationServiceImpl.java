@@ -80,7 +80,7 @@ public class RecommendationServiceImpl implements RecommendationService {
 
             recommendFoods.add(foodWithNutritionDTO);
 
-            if(++cnt==5) break;
+            if(++cnt==3) break;
         }
         return recommendFoods;
     }
