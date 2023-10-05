@@ -8,5 +8,5 @@ import java.util.List;
 @Setter
 public class FoodRecommendationResponseDTO {
     private String nutritionalCriterion;
-    private List<Food> recommendedFoods;
+    private List<FoodWithNutritionDTO> recommendedFoods;
 }

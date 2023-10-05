@@ -3,6 +3,6 @@ package com.healthapp.nutritionservice.dto;
 import lombok.Getter;
 
 @Getter
-public class FoodRecommendationRequestDTO {
+public class RecommendationRequestDTO {
     private String nutritionalCriterion;
 }
