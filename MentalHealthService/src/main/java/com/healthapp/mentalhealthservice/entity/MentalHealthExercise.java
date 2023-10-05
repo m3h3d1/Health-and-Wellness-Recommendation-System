@@ -21,5 +21,6 @@ public class MentalHealthExercise {
     private String suggestedForIssues;
     private String benefits;
     private String notes;
+    private UUID userId;
 
 }
