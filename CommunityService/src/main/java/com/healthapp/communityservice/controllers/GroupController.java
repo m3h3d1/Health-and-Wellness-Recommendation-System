@@ -3,6 +3,7 @@ package com.healthapp.communityservice.controllers;
 import com.healthapp.communityservice.enums.GroupMemberRole;
 import com.healthapp.communityservice.models.groupdto.GroupDTO;
 import com.healthapp.communityservice.services.interfaces.GroupService;
+import com.healthapp.communityservice.utilities.token.IDExtractor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class GroupController {
     // Create a new group by providing group details in the request body
     @PostMapping
     ResponseEntity<String> create(@RequestBody GroupDTO groupDTO){
-        groupService.create(groupDTO, UUID.randomUUID());
+        groupService.create(groupDTO, IDExtractor.getUserID());
         return ResponseEntity.ok("Group created successfully");
     }
 
@@ -40,14 +41,14 @@ public class GroupController {
     // Update group information by specifying the group's ID and providing updated details in the request body
     @PutMapping("/{groupId}")
     ResponseEntity<String> update(@PathVariable UUID groupId, @RequestBody GroupDTO groupDTO){
-        groupService.update(groupId, UUID.randomUUID(), groupDTO);
+        groupService.update(groupId, IDExtractor.getUserID(), groupDTO);
         return ResponseEntity.ok("Group updated successfully");
     }
 
     // Delete a group by specifying its unique ID
     @DeleteMapping("/{groupId}")
     ResponseEntity<String> delete(@PathVariable UUID groupId){
-        groupService.delete(groupId, UUID.randomUUID());
+        groupService.delete(groupId, IDExtractor.getUserID());
         return ResponseEntity.ok("Group deleted");
     }
 
