@@ -1,14 +1,17 @@
 package com.healthapp.dataanalysisservice.service;
 
+import com.healthapp.dataanalysisservice.model.ConvertToString;
 import com.healthapp.dataanalysisservice.network.MentalHealthExerciseServiceProxy;
 import com.healthapp.dataanalysisservice.network.MoodTrackingServiceProxy;
 import com.healthapp.dataanalysisservice.network.UserServiceProxy;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Service
 public class DataCollectorService {
     private final UserServiceProxy userServiceProxy;
     private final MoodTrackingServiceProxy moodTrackingServiceProxy;
@@ -32,7 +35,6 @@ public class DataCollectorService {
         unitedData.put("userData", userData );
 
 
-
 //        Mood Tracking Service Data
 
         ResponseEntity<Object> moodResponse;
@@ -41,14 +43,20 @@ public class DataCollectorService {
         unitedData.put("moodData", moodData );
 
 
-
-
 //        Mental Health Exerciser Tracking Service Data
         ResponseEntity<Object> exerciserResponse;
-        exerciserResponse = mentalHealthExerciseServiceProxy.getMoodTracking(userId);
+        exerciserResponse = mentalHealthExerciseServiceProxy.getMentalHealthExercise(userId);
         Object exerciserData = exerciserResponse.getBody();
-        unitedData.put("userData", userData );
+        unitedData.put("exerciserData", exerciserData );
+
+
+
+        // Convert unitedData to JSON string
+//        ConvertToString converter = new ConvertToString();
+//        return converter.objectToString(unitedData);
 
         return  unitedData;
+
+
     }
 }
