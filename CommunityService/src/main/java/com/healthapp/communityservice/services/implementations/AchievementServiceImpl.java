@@ -3,6 +3,7 @@ package com.healthapp.communityservice.services.implementations;
 import com.healthapp.communityservice.entities.Achievement;
 import com.healthapp.communityservice.entities.AchievementProgress;
 import com.healthapp.communityservice.entities.AchievementStatistics;
+import com.healthapp.communityservice.exceptions.AchievementNotFoundException;
 import com.healthapp.communityservice.models.acheivementdto.AchievementDTO;
 import com.healthapp.communityservice.models.acheivementdto.AchievementProgressCreateDTO;
 import com.healthapp.communityservice.models.acheivementdto.AchievementProgressReadDTO;
@@ -29,6 +30,11 @@ public class AchievementServiceImpl implements AchievementService {
         this.achievementStatisticsRepository = achievementStatisticsRepository;
     }
 
+    /**
+     * Create a new achievement.
+     *
+     * @param achievementDTO The DTO containing achievement creation data.
+     */
     @Override
     public void create(AchievementDTO achievementDTO) {
         Achievement achievement = new Achievement();
@@ -39,20 +45,39 @@ public class AchievementServiceImpl implements AchievementService {
         achievementRepository.save(achievement);
     }
 
+    /**
+     * Read an achievement by its ID.
+     *
+     * @param achievementId The UUID of the achievement to read.
+     * @return The Achievement object representing the achievement.
+     * @throws AchievementNotFoundException If the achievement does not exist.
+     */
     @Override
     public Achievement read(UUID achievementId) {
         Optional<Achievement> achievement = achievementRepository.findById(achievementId);
-        if(achievement.isEmpty()){
-            //throw exception.
+        if (achievement.isEmpty()) {
+            throw new AchievementNotFoundException("Achievement with given ID does not exist.");
         }
         return achievement.get();
     }
 
+    /**
+     * Get a list of all achievements.
+     *
+     * @return A list of Achievement objects representing all achievements.
+     */
     @Override
     public List<Achievement> readAll() {
         return achievementRepository.findAll();
     }
 
+    /**
+     * Update an achievement.
+     *
+     * @param achievementId    The UUID of the achievement to update.
+     * @param achievementDTO   The DTO containing updated achievement data.
+     * @throws AchievementNotFoundException If the achievement does not exist.
+     */
     @Override
     public void update(UUID achievementId, AchievementDTO achievementDTO) {
         Achievement achievement = read(achievementId);
@@ -63,12 +88,23 @@ public class AchievementServiceImpl implements AchievementService {
         achievementRepository.save(achievement);
     }
 
+    /**
+     * Delete an achievement by its ID.
+     *
+     * @param achievementId The UUID of the achievement to delete.
+     * @throws AchievementNotFoundException If the achievement does not exist.
+     */
     @Override
     public void delete(UUID achievementId) {
         read(achievementId);
         achievementRepository.deleteById(achievementId);
     }
 
+    /**
+     * Update achievement progress for a user.
+     *
+     * @param achievementProgressDTO The DTO containing the achievement progress data.
+     */
     @Override
     public void updateProgress(AchievementProgressCreateDTO achievementProgressDTO) {
         AchievementStatistics statistics = new AchievementStatistics();
@@ -77,16 +113,16 @@ public class AchievementServiceImpl implements AchievementService {
                 .findAll().stream()
                 .filter(stats -> stats.getUserId().equals(achievementProgressDTO.getUserId()))
                 .toList();
-        if(!statisticsList.isEmpty()){
+        if (!statisticsList.isEmpty()) {
             statistics = statisticsList.get(0);
         }
 
-        if(statistics.getProgresses() == null){
+        if (statistics.getProgresses() == null) {
             statistics.setProgresses(new ArrayList<>());
         }
-        for(AchievementProgress existingProgress: statistics.getProgresses()){
-            if(existingProgress.getAchievement().getAchievementId()
-                    .equals(achievementProgressDTO.getAchievementId())){
+        for (AchievementProgress existingProgress : statistics.getProgresses()) {
+            if (existingProgress.getAchievement().getAchievementId()
+                    .equals(achievementProgressDTO.getAchievementId())) {
                 existingProgress.setScore(existingProgress.getScore() + achievementProgressDTO.getScore());
                 achievementStatisticsRepository.save(statistics);
                 return;
@@ -102,6 +138,12 @@ public class AchievementServiceImpl implements AchievementService {
         achievementStatisticsRepository.save(statistics);
     }
 
+    /**
+     * Get achievement statistics for a user.
+     *
+     * @param userId The UUID of the user.
+     * @return A list of AchievementStatisticsReadDTO objects representing the user's achievement statistics.
+     */
     @Override
     public List<AchievementStatisticsReadDTO> getAchievementStatistics(UUID userId) {
         return achievementStatisticsRepository
@@ -121,7 +163,7 @@ public class AchievementServiceImpl implements AchievementService {
                                 Double completed = progress.getScore();
                                 double completeness = (target == 0 ? 0 : completed / target) * 100;
                                 completeness = completeness > 100 ? 100 : completeness;
-                                progressRead.setCompleteness(String.format("%.2f", completeness)+"%");
+                                progressRead.setCompleteness(String.format("%.2f", completeness) + "%");
                                 return progressRead;
                             }).collect(Collectors.toList())
                     );

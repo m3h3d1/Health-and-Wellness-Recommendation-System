@@ -1,6 +1,7 @@
 package com.healthapp.userservice.utils;
 
 import com.healthapp.userservice.constants.AppConstants;
+import com.healthapp.userservice.domain.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,10 +24,18 @@ public class JWTUtils {
         return tokenExpirationDate.before(today);
     }
 
-    public static String generateToken(String id) {
+//    public static String generateToken(String id) {
+//        return Jwts.builder()
+//                .setSubject(id)
+//                .setExpiration(new Date(System.currentTimeMillis() + AppConstants.EXPIRATION_TIME))
+//                .signWith(SignatureAlgorithm.HS256, AppConstants.TOKEN_SECRET)
+//                .compact();
+//    }
+    public static String generateToken(String id, List<String> roles){
         return Jwts.builder()
                 .setSubject(id)
-                .setExpiration(new Date(System.currentTimeMillis() + AppConstants.EXPIRATION_TIME))
+                .claim("roles", roles)
+                .setExpiration(new Date(System.currentTimeMillis()+ AppConstants.EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS256, AppConstants.TOKEN_SECRET)
                 .compact();
     }

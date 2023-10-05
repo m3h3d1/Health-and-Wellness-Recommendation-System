@@ -12,8 +12,9 @@ public interface PostService {
     public void create(PostCreateDTO postCreateDTO);
     public PostReadDTO read(UUID postId);
     public List<PostReadDTO> readAll();
-    public void update(UUID postId, PostUpdateDTO postUpdateDTO);
-    public void delete(UUID postId);
+    public List<PostReadDTO> findByUser(UUID userId);
+    public void update(UUID postId, UUID requestUserId, PostUpdateDTO postUpdateDTO);
+    public void delete(UUID postId, UUID requestUserId);
 
     // Partial operations
     public void addLike(UUID postId, UUID userId);
