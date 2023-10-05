@@ -11,29 +11,35 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        // Create and return an AuthenticationManager using the provided AuthenticationConfiguration.
         return authConfig.getAuthenticationManager();
     }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http,AuthenticationManager authenticationManager) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         http
+                // Disable CSRF protection.
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth->{
+                // Set session creation policy to STATELESS, as we are using JWT tokens.
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> {
                     auth
+                            // Require authentication for these endpoints with specific HTTP methods.
                             .requestMatchers(HttpMethod.GET, "/preferences/**").authenticated()
                             .requestMatchers(HttpMethod.POST, "/preferences/**").authenticated()
                             .requestMatchers(HttpMethod.POST, "/notifications/all").authenticated()
                             .requestMatchers(HttpMethod.DELETE, "/notifications/filtered").authenticated()
                             .requestMatchers(HttpMethod.PUT, "/notifications/set-seen/**").authenticated()
+                            // Allow any other requests without authentication.
                             .anyRequest().permitAll();
                 })
+                // Add the custom authorization filter before the UsernamePasswordAuthenticationFilter.
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

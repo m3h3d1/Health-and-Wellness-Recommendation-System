@@ -17,17 +17,30 @@ public class PreferenceServiceImpl implements PreferenceService {
         this.preferenceRepository = preferenceRepository;
     }
 
+    /**
+     * Get user preferences by user ID. If preferences don't exist, create default preferences.
+     *
+     * @param userId The UUID of the user.
+     * @return The user's preferences.
+     */
     @Override
     public Preference getByUserId(UUID userId) {
         Optional<Preference> preferenceOp = preferenceRepository.findByUserId(userId);
-        if(preferenceOp.isEmpty()){
+        if (preferenceOp.isEmpty()) {
             Preference preference = getDefaultSettings(userId);
             preferenceRepository.save(preference);
             return preference;
+        } else {
+            return preferenceOp.get();
         }
-        else return preferenceOp.get();
     }
 
+    /**
+     * Update user preferences.
+     *
+     * @param userId The UUID of the user.
+     * @param updatedPreference The updated preferences to save.
+     */
     @Override
     public void update(UUID userId, Preference updatedPreference) {
         Preference preference = getByUserId(userId);
@@ -44,6 +57,12 @@ public class PreferenceServiceImpl implements PreferenceService {
         preferenceRepository.save(preference);
     }
 
+    /**
+     * Reset user preferences to default settings.
+     *
+     * @param userId The UUID of the user.
+     * @return The user's preferences after resetting to default.
+     */
     @Override
     public Preference resetToDefault(UUID userId) {
         getByUserId(userId);
@@ -51,6 +70,12 @@ public class PreferenceServiceImpl implements PreferenceService {
         return getDefaultSettings(userId);
     }
 
+    /**
+     * Create and return default preferences for a user.
+     *
+     * @param userId The UUID of the user.
+     * @return Default preferences.
+     */
     private Preference getDefaultSettings(UUID userId) {
         // Create a new Preference object with default values
         Preference preference = new Preference();

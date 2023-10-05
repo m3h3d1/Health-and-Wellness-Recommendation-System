@@ -26,9 +26,16 @@ public class NotificationServiceImpl implements NotificationService {
         this.preferenceService = preferenceService;
     }
 
+    /**
+     * Create a new notification for a user.
+     *
+     * @param userId       The UUID of the user.
+     * @param key          The security key for validation.
+     * @param notification The notification to create.
+     */
     @Override
     public void create(UUID userId, String key, Notification notification) {
-        if(!key.equals(TokenConstants.TOKEN_SECRET)){
+        if (!key.equals(TokenConstants.TOKEN_SECRET)) {
             return;
         }
         notification.setUserId(userId);
@@ -37,6 +44,12 @@ public class NotificationServiceImpl implements NotificationService {
         notificationRepository.save(notification);
     }
 
+    /**
+     * Get filtered notifications for a user based on preferences.
+     *
+     * @param userId The UUID of the user.
+     * @return List of filtered notifications.
+     */
     @Override
     public List<Notification> getFiltredByUserId(UUID userId) {
         // Get user preferences
@@ -84,21 +97,39 @@ public class NotificationServiceImpl implements NotificationService {
         return notifications;
     }
 
+    /**
+     * Mark a notification as "seen" by a user.
+     *
+     * @param notificationId The UUID of the notification to mark as seen.
+     * @param userId         The UUID of the user.
+     * @throws IllegalAccessException If the notification is not found or doesn't belong to the user.
+     */
     @Override
     public void setSeen(UUID notificationId, UUID userId) throws IllegalAccessException {
         Optional<Notification> notificationOp = notificationRepository.findById(notificationId);
-        if(notificationOp.isEmpty()) throw new IllegalAccessException();
+        if (notificationOp.isEmpty()) throw new IllegalAccessException();
         Notification notification = notificationOp.get();
-        if(!notification.getUserId().equals(userId)) throw new IllegalAccessException();
+        if (!notification.getUserId().equals(userId)) throw new IllegalAccessException();
         notification.setSeen(true);
         notificationRepository.save(notification);
     }
 
+    /**
+     * Get all notifications for a user.
+     *
+     * @param userId The UUID of the user.
+     * @return List of all notifications for the user.
+     */
     @Override
     public List<Notification> getAllByUserId(UUID userId) {
         return notificationRepository.findByUserId(userId);
     }
 
+    /**
+     * Delete a notification by its UUID.
+     *
+     * @param notificationId The UUID of the notification to delete.
+     */
     @Override
     public void delete(UUID notificationId) {
         notificationRepository.deleteById(notificationId);

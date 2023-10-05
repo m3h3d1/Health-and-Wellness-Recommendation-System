@@ -14,8 +14,10 @@ import java.util.UUID;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    // References
     private UUID notificationId;
     private UUID userId;
+    // Notification properties
     private String text;
     private LocalDateTime timeCreate;
     private boolean seen;
