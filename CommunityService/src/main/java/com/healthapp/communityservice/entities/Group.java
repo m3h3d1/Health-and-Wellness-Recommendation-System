@@ -25,4 +25,5 @@ public class Group {
     List<Post> posts;
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL)
     private List<Membership> members;
+    private UUID ownerId;
 }
