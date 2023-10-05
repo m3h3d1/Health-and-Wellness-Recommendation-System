@@ -13,7 +13,6 @@ import java.util.UUID;
 @Setter
 @RequiredArgsConstructor
 public class BloodPressure {
-//    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private LocalDateTime dateTime;
     private Double pressure;

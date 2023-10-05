@@ -14,7 +14,6 @@ import java.util.UUID;
 @Setter
 @RequiredArgsConstructor
 public class ActivityFactor {
-//    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
     private Double factor;

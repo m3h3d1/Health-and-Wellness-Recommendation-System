@@ -13,7 +13,6 @@ import java.util.UUID;
 @Setter
 @RequiredArgsConstructor
 public class Disease {
-//    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private LocalDate date;
     private String diseaseName;

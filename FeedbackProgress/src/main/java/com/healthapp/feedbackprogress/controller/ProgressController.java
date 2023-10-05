@@ -1,5 +1,6 @@
 package com.healthapp.feedbackprogress.controller;
 
+import com.healthapp.feedbackprogress.dto.ProgressInsightDTO;
 import com.healthapp.feedbackprogress.dto.healthdto.HealthDTO;
 import com.healthapp.feedbackprogress.service.ProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,21 @@ public class ProgressController {
     ProgressService progressService;
 
     @GetMapping("/track/{userId}")
-    public ResponseEntity<?> getHealthById(@PathVariable UUID userId) {
+    public ResponseEntity<?> getProgressTrackById(@PathVariable UUID userId) {
         HealthDTO health = progressService.getProgressTrackById(userId);
 
         if (health != null) {
             return new ResponseEntity<>(health, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @GetMapping("/insight/{userId}")
+    public ResponseEntity<?> getProgressInsightById(@PathVariable UUID userId) {
+        ProgressInsightDTO insight = progressService.getProgressInsightById(userId);
+
+        if (insight != null) {
+            return new ResponseEntity<>(insight, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

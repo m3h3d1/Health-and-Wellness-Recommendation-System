@@ -11,7 +11,6 @@ import java.util.UUID;
 
 @Getter @Setter @RequiredArgsConstructor
 public class SleepSchedule {
-//    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private LocalTime bedTime;
     private LocalTime wakeTime;

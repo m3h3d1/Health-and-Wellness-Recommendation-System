@@ -13,7 +13,6 @@ import java.util.UUID;
 @Setter
 @RequiredArgsConstructor
 public class HealthDTO {
-//    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID healthId;
     private Integer age;
     private String gender;

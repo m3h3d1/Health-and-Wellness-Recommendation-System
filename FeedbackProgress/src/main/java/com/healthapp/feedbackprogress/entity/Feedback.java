@@ -1,15 +1,12 @@
 package com.healthapp.feedbackprogress.entity;
 
-import com.healthapp.feedbackprogress.enumss.RecommendationType;
+import com.healthapp.feedbackprogress.enums.RecommendationType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
