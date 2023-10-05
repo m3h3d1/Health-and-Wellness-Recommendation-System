@@ -2,6 +2,7 @@ package com.healthapp.notificationservice.controllers;
 
 import com.healthapp.notificationservice.entities.Preference;
 import com.healthapp.notificationservice.service.interfaces.PreferenceService;
+import com.healthapp.notificationservice.utilities.token.IDExtractor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +19,21 @@ public class PreferenceController {
         this.preferenceService = preferenceService;
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Preference> getPreferenceByUserId(@PathVariable UUID userId) {
-        Preference preference = preferenceService.getByUserId(userId);
+    @GetMapping
+    public ResponseEntity<Preference> getPreferenceByUserId() {
+        Preference preference = preferenceService.getByUserId(IDExtractor.getUserID());
         return ResponseEntity.ok(preference);
     }
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<String> updatePreference(@PathVariable UUID userId, @RequestBody Preference updatedPreference) {
-        preferenceService.update(userId, updatedPreference);
+    @PostMapping
+    public ResponseEntity<String> updatePreference(@RequestBody Preference updatedPreference) {
+        preferenceService.update(IDExtractor.getUserID(), updatedPreference);
         return new ResponseEntity<String>("Preference updated", HttpStatus.OK);
     }
 
-    @PostMapping("/{userId}/reset")
-    public ResponseEntity<Preference> resetPreferenceToDefault(@PathVariable UUID userId) {
-        Preference preference = preferenceService.resetToDefault(userId);
+    @PostMapping("/reset")
+    public ResponseEntity<Preference> resetPreferenceToDefault() {
+        Preference preference = preferenceService.resetToDefault(IDExtractor.getUserID());
         return ResponseEntity.ok(preference);
     }
 }

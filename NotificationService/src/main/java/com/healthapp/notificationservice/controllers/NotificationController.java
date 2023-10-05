@@ -2,6 +2,7 @@ package com.healthapp.notificationservice.controllers;
 
 import com.healthapp.notificationservice.entities.Notification;
 import com.healthapp.notificationservice.service.interfaces.NotificationService;
+import com.healthapp.notificationservice.utilities.token.IDExtractor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +26,14 @@ public class NotificationController {
         return new ResponseEntity<String>("Notification created", HttpStatus.CREATED);
     }
 
-    @GetMapping("/filtered/{userId}")
-    public List<Notification> getFilteredNotifications(@PathVariable UUID userId) {
-        return notificationService.getFiltredByUserId(userId);
+    @GetMapping("/filtered")
+    public List<Notification> getFilteredNotifications() {
+        return notificationService.getFiltredByUserId(IDExtractor.getUserID());
     }
 
-    @GetMapping("/all/{userId}")
-    public List<Notification> getAllNotifications(@PathVariable UUID userId) {
-        return notificationService.getAllByUserId(userId);
+    @GetMapping("/all")
+    public List<Notification> getAllNotifications() {
+        return notificationService.getAllByUserId(IDExtractor.getUserID());
     }
 
     @DeleteMapping("/{notificationId}")
@@ -41,9 +42,9 @@ public class NotificationController {
         return new ResponseEntity<String>("Notification created", HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/set-seen/{notificationId}/{userId}")
-    public ResponseEntity<String> setSeen(@PathVariable UUID notificationId, @PathVariable UUID userId) throws IllegalAccessException {
-        notificationService.setSeen(notificationId, userId);
+    @PutMapping("/set-seen/{notificationId}")
+    public ResponseEntity<String> setSeen(@PathVariable UUID notificationId) throws IllegalAccessException {
+        notificationService.setSeen(notificationId, IDExtractor.getUserID());
         return new ResponseEntity<String>("Notification updated to seen status", HttpStatus.OK);
     }
 }
