@@ -108,6 +108,7 @@ public class HealthServiceImpl implements HealthService {
             disease.setHealth(health);
             health.getDiseases().add(disease);
             diseaseRepository.save(disease);
+
             healthRepository.save(health);
         }
     }
