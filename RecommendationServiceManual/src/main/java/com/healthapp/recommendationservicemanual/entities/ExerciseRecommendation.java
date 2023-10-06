@@ -16,22 +16,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ExerciseRecommendation {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID exerciseRecommendationId;
     private UUID userId;
-    private LocalDateTime dateTime;
-    private Double sugarLevel;
-    private Double bloodPressure;
-    private Integer age;
-    private Double weight;
-    private Integer goalWeight;
-    private Integer targetPeriod;
+    private LocalDateTime recommendationTime;
     private String message;
     private String insights;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Exercise> exerciseList;
 
-    private UUID autoExerciseRecommendationId;
     private String healthNote;
     private UUID recommenderId;
 }

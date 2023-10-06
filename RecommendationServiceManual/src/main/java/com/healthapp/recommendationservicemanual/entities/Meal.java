@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @RequiredArgsConstructor
 @Entity
-public class Snacks {
+public class Meal {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

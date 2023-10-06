@@ -19,15 +19,7 @@ public class SleepRecommendation {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID sleepRecommendationId;
     private UUID userId;
-    private LocalDateTime dateTime;
-    private Integer age;
-    private String gender;
-    private Double weight;
-    private String message;
-    private String insights;
-    private Integer duration;
-    private LocalTime bedTime;
-    private LocalTime wakeTime;
+    private LocalDateTime recommendationTime;
 
     private UUID autoDietRecommendationId;
     private String healthNote;

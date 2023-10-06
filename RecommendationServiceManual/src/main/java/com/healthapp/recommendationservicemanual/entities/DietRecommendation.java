@@ -12,22 +12,19 @@ import java.util.UUID;
 @Entity @Setter @Getter @RequiredArgsConstructor
 public class DietRecommendation {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID dietRecommendationId;
+    private UUID userId;
     private String recommendationMessage;
     private LocalDateTime recommendationTime;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Insights> insights;
+    private List<Meal> breakfast;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Breakfast> breakfast;
+    private List<Meal> lunch;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Lunch> lunch;
+    private List<Meal> dinner;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Snacks> dinner;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Dinner> snacks;
+    private List<Meal> snacks;
 
-    private UUID autoDietRecommendationId;
     private String healthNote;
     private UUID recommenderId;
 }

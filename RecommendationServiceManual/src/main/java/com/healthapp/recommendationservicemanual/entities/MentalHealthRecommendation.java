@@ -18,7 +18,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MentalHealthRecommendation {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID mentalHealthRecId;
     String description;
 }
