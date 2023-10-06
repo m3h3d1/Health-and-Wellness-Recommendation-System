@@ -26,22 +26,6 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe addRecipe(Recipe recipe) {
         return recipeRepository.save(recipe);
     }
-//    @Override
-//    @Transactional // Ensure that this method runs within a transaction
-//    public Recipe addRecipe(Recipe recipe, Set<UUID> foodIds) {
-//        Set<Food> associatedFoods = new HashSet<>();
-//
-//        for (UUID foodId : foodIds) {
-//            Food food = foodRepository.findById(foodId)
-//                    .orElseThrow(() -> new FoodNotFoundException("Food not found with ID: " + foodId));
-//
-//            associatedFoods.add(food);
-//        }
-//
-//        recipe.setFoods(associatedFoods);
-//
-//        return recipeRepository.save(recipe);
-//    }
 
     @Override
     public List<Recipe> getAllRecipies() {

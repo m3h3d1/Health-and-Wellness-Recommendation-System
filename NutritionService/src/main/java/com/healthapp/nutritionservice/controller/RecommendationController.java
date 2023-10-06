@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/nutrition")
+@RequestMapping("/nutrition/recommendation")
 public class RecommendationController {
     @Autowired
     RecommendationService recommendationService;
 
-    @GetMapping("/recommendation/{criterion}")
-    public ResponseEntity<?> getAllRecipies(@PathVariable String criterion) {
+    @GetMapping("/{criterion}")
+    public ResponseEntity<?> getRecommendedFoods(@PathVariable String criterion) {
         List<FoodWithNutritionDTO> foodWithNutritionDTOs = recommendationService.getRecommendedFoods(criterion);
         return new ResponseEntity<>(foodWithNutritionDTOs, HttpStatus.OK);
     }
