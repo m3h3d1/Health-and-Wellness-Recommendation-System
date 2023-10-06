@@ -1,9 +1,7 @@
 package com.healthapp.recommendationserviceauto.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,6 +15,7 @@ import java.util.UUID;
 @Entity
 public class Height {
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private LocalDateTime dateTime;
     private double heightInCm;
