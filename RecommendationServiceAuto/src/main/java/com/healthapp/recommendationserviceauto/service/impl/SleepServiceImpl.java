@@ -97,6 +97,12 @@ public class SleepServiceImpl implements SleepService {
         }
         return null;
     }
+
+    @Override
+    public SleepRecommendation getRecommendationById(UUID recommendationId) {
+        return sleepRecommendationRepository.findById(recommendationId).get();
+    }
+
     private int calculateSleepDuration(int age, String gender, boolean isSmoker, boolean hasDisease) {
         int recommendedSleepDuration = 8; // Default sleep duration
 
