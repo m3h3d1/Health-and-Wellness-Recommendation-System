@@ -2,6 +2,7 @@ package com.healthapp.dataanalysisservice2.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.healthapp.dataanalysisservice2.service.PredictionsService;
+import com.healthapp.dataanalysisservice2.service.UpdateRecommendationsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,18 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/ml/predictions")
-public class UpController {
-    private final PredictionsService predictionsService;
+@RequestMapping("/ml/update-recommendations")
+public class UpdateRecommendationsController {
+    private final UpdateRecommendationsService updateRecommendationsService;
 
-    public UpController(PredictionsService predictionsService) {
-        this.predictionsService = predictionsService;
+    public UpdateRecommendationsController(UpdateRecommendationsService updateRecommendationsService) {
+        this.updateRecommendationsService = updateRecommendationsService;
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<String> predictionsData(@PathVariable UUID userId) throws JsonProcessingException {
 
-        String analysisResult = predictionsService.PredictionsData(userId);
+        String analysisResult = updateRecommendationsService.UpdateRecommendationsData(userId);
         if (analysisResult!=null) {
             String successMessage = "Data predictions completed successfully";
             return ResponseEntity.ok(successMessage + ": " + analysisResult);

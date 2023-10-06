@@ -1,4 +1,4 @@
-package com.healthapp.mentalhealthservice.exception;
+package com.healthapp.dataanalysisservice2.exception;
 
 
 import org.springframework.http.HttpStatus;

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class AnalyzeService {
+public class PredictionsService {
 
     private final String prefix = "The following text is a string of json data of a particular user,\n" +
                 "now observe the data carefully, what is there. Then analyse those and\n" +
@@ -23,25 +23,27 @@ public class AnalyzeService {
     private final GPTServiceProxy gptServiceProxy;
 
     @Autowired
-    public AnalyzeService(DataCollectorService dataCollectorService, GPTServiceProxy gptServiceProxy) {
+    public PredictionsService(DataCollectorService dataCollectorService, GPTServiceProxy gptServiceProxy) {
         this.dataCollectorService = dataCollectorService;
         this.gptServiceProxy = gptServiceProxy;
     }
 
-    public String AnalyzeData(UUID userId) throws JsonProcessingException {
+    public String PredictionsData(UUID userId) throws JsonProcessingException {
 
             // Step 1: Collect JSON data using DataCollectorService
             Object jsonData = dataCollectorService.CollectAllData(userId);
 
             // Serialize jsonData to JSON string
             String jsonDataString = new ObjectMapper().writeValueAsString(jsonData);
+            if(jsonDataString.length() < 40) return null;
+
             // Step 2: Call the GPT service to analyze the data
             String gptResponse = gptServiceProxy.getData(prefix+" Here is data: "+jsonDataString);
 
             return gptResponse;
     }
 
-    private String extractAnalyzedData(ResponseEntity<Object> gptResponse) {
+    private String extractPredictionsData(ResponseEntity<Object> gptResponse) {
         try {
             // Check if the response status is successful (e.g., HTTP 200)
             if (gptResponse.getStatusCode().is2xxSuccessful()) {

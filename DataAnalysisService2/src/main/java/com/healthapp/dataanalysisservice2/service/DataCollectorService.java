@@ -1,5 +1,6 @@
 package com.healthapp.dataanalysisservice2.service;
 
+import com.healthapp.dataanalysisservice2.network.InternalCommunicationException;
 import com.healthapp.dataanalysisservice2.network.MentalHealthExerciseServiceProxy;
 import com.healthapp.dataanalysisservice2.network.MoodTrackingServiceProxy;
 import com.healthapp.dataanalysisservice2.network.UserServiceProxy;
@@ -29,30 +30,38 @@ public class DataCollectorService {
         Map<String, Object> unitedData = new HashMap<>();
 
         ResponseEntity<Object> userResponse;
-        userResponse = userServiceProxy.getUser(userId);
-        Object userData = userResponse.getBody();
-        unitedData.put("userData", userData );
+        try{
+            userResponse = userServiceProxy.getUser(userId);
 
+            Object userData = userResponse.getBody();
+            unitedData.put("userData", userData );
+        }
+        catch (Exception ex){
+
+        }
 
 //        Mood Tracking Service Data
 
         ResponseEntity<Object> moodResponse;
-        moodResponse = moodTrackingServiceProxy.getMoodTracking(userId);
-        Object moodData = moodResponse.getBody();
-        unitedData.put("moodData", moodData );
+        try{
+            moodResponse = moodTrackingServiceProxy.getMoodTracking(userId);
+            Object moodData = moodResponse.getBody();
+            unitedData.put("moodData", moodData );
+        }catch (Exception ex){
 
+        }
 
 //        Mental Health Exerciser Tracking Service Data
         ResponseEntity<Object> exerciserResponse;
-        exerciserResponse = mentalHealthExerciseServiceProxy.getMentalHealthExercise(userId);
-        Object exerciserData = exerciserResponse.getBody();
-        unitedData.put("exerciserData", exerciserData );
+        try{
+            exerciserResponse = mentalHealthExerciseServiceProxy.getMentalHealthExercise(userId);
+            Object exerciserData = exerciserResponse.getBody();
+            unitedData.put("exerciserData", exerciserData );
+        }catch (Exception ex){
 
-
-
+        }
 
         return  unitedData;
-
 
     }
 }

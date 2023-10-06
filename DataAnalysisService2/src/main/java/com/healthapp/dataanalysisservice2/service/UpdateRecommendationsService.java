@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class RdictionsService {
+public class UpdateRecommendationsService {
 
     private final String prefix = "The following text is a string of json data of a particular user,\n" +
                 "now observe the data carefully, what is there. Then analyse those and\n" +
@@ -23,12 +23,12 @@ public class RdictionsService {
     private final GPTServiceProxy gptServiceProxy;
 
     @Autowired
-    public RdictionsService(DataCollectorService dataCollectorService, GPTServiceProxy gptServiceProxy) {
+    public UpdateRecommendationsService(DataCollectorService dataCollectorService, GPTServiceProxy gptServiceProxy) {
         this.dataCollectorService = dataCollectorService;
         this.gptServiceProxy = gptServiceProxy;
     }
 
-    public String PredictionsData(UUID userId) throws JsonProcessingException {
+    public String UpdateRecommendationsData(UUID userId) throws JsonProcessingException {
 
             // Step 1: Collect JSON data using DataCollectorService
             Object jsonData = dataCollectorService.CollectAllData(userId);
@@ -43,7 +43,7 @@ public class RdictionsService {
             return gptResponse;
     }
 
-    private String extractPredictionsData(ResponseEntity<Object> gptResponse) {
+    private String extractUpdateRecommendationsData(ResponseEntity<Object> gptResponse) {
         try {
             // Check if the response status is successful (e.g., HTTP 200)
             if (gptResponse.getStatusCode().is2xxSuccessful()) {
