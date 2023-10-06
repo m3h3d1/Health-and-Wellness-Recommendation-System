@@ -112,6 +112,11 @@ public class DietServiceImpl implements DietService {
         return null;
     }
 
+    @Override
+    public DietRecommendation getRecommendationById(UUID recommendationId) {
+        return dietRecommendationRepository.findById(recommendationId).get();
+    }
+
 
     private List<Meal> preferFood(Double targetCalorie, String category){
 

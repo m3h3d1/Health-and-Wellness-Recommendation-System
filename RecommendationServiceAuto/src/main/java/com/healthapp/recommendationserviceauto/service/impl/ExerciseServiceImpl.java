@@ -169,4 +169,9 @@ public class ExerciseServiceImpl implements ExerciseService {
     public List<ExerciseRecommendation> getAllExerciseRecommendations() {
         return exerciseRecommendationRepository.findAll();
     }
+
+    @Override
+    public ExerciseRecommendation getRecommendationById(UUID recommendationId) {
+        return exerciseRecommendationRepository.findById(recommendationId).get();
+    }
 }

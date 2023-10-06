@@ -1,5 +1,6 @@
 package com.healthapp.recommendationserviceauto.controller;
 
+import com.healthapp.recommendationserviceauto.domain.DietRecommendation;
 import com.healthapp.recommendationserviceauto.model.DietRecommendationDto;
 import com.healthapp.recommendationserviceauto.model.SleepRecommendationDto;
 import com.healthapp.recommendationserviceauto.service.DietService;
@@ -22,5 +23,9 @@ public class DietController {
     @GetMapping("/recommend/{userId}")
     public ResponseEntity<DietRecommendationDto> getRecommendation(@PathVariable UUID userId){
         return new ResponseEntity<>(dietService.recommend(userId), HttpStatus.OK);
+    }
+    @GetMapping("/{recommendId}")
+    public ResponseEntity<DietRecommendation> getRecommendationById(@PathVariable UUID recommendId){
+        return new ResponseEntity<>(dietService.getRecommendationById(recommendId), HttpStatus.OK);
     }
 }

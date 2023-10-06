@@ -1,5 +1,6 @@
 package com.healthapp.recommendationserviceauto.controller;
 
+import com.healthapp.recommendationserviceauto.domain.DietRecommendation;
 import com.healthapp.recommendationserviceauto.domain.Exercise;
 import com.healthapp.recommendationserviceauto.domain.ExerciseRecommendation;
 import com.healthapp.recommendationserviceauto.model.ExerciseRecommendationDto;
@@ -35,5 +36,9 @@ public class ExerciseController {
     @GetMapping("/get-all-recommendation")
     public ResponseEntity<List<ExerciseRecommendation>> getAllExerciseRecommendations(){
         return new ResponseEntity<>(exerciseService.getAllExerciseRecommendations(),HttpStatus.OK);
+    }
+    @GetMapping("/{recommendId}")
+    public ResponseEntity<ExerciseRecommendation> getRecommendationById(@PathVariable UUID recommendId){
+        return new ResponseEntity<>(exerciseService.getRecommendationById(recommendId), HttpStatus.OK);
     }
 }
