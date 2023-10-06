@@ -17,19 +17,15 @@ public class DietRecommendation {
     private double height;
     private double weight;
     private double goalWeight;
-    private double periodInDays;
-    private boolean allergenic;
-    private boolean vegan;
+    private Integer targetPeriod;
     private String recommendationMessage;
     private LocalDateTime recommendationTime;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Insights> insights;
+    private List<Meal> breakfast;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Breakfast> breakfast;
+    private List<Meal> lunch;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Lunch> lunch;
+    private List<Meal> dinner;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Snacks> dinner;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Dinner> snacks;
+    private List<Meal> snacks;
 }
