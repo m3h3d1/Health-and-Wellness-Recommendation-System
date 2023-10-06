@@ -39,4 +39,9 @@ public class HealthController {
         healthService.addDisease(userId,diseaseRequestDto);
         return new ResponseEntity<>("Disease Data added!", HttpStatus.CREATED);
     }
+    @PostMapping("/add-extra-data/{userId}")
+    public ResponseEntity<String> addSmokingAllergyData(@RequestBody SmokerAllergyRequestDto smokerAllergyRequestDto, @PathVariable UUID userId) {
+        healthService.addSmokerAllergyData(userId,smokerAllergyRequestDto);
+        return new ResponseEntity<>("Data added successfully!", HttpStatus.CREATED);
+    }
 }

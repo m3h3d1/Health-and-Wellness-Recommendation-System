@@ -86,6 +86,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             responseDto.setLastName(user.getLastName());
             responseDto.setRoles(user.getRoles());
             responseDto.setEmail(user.getEmail());
+            responseDto.setContact(user.getContact());
+            responseDto.setProfile(user.getProfile());
             return responseDto;
         }
         else{

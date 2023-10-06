@@ -107,7 +107,17 @@ public class HealthServiceImpl implements HealthService {
             disease.setHealth(health);
             health.getDiseases().add(disease);
             diseaseRepository.save(disease);
+            healthRepository.save(health);
+        }
+    }
 
+    @Override
+    public void addSmokerAllergyData(UUID userId, SmokerAllergyRequestDto smokerAllergyRequestDto) {
+        Optional<Health> healthOptional = healthRepository.findByUserId(userId);
+        if (healthOptional.isPresent()) {
+            Health health = healthOptional.get();
+            health.setSmokingStatus(smokerAllergyRequestDto.getIsSmoker());
+            health.setAllergies(smokerAllergyRequestDto.getAllergies());
             healthRepository.save(health);
         }
     }
