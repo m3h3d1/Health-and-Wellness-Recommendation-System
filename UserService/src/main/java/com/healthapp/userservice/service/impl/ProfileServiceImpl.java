@@ -2,14 +2,19 @@ package com.healthapp.userservice.service.impl;
 
 import com.healthapp.userservice.domain.Profile;
 import com.healthapp.userservice.domain.UserEntity;
+import com.healthapp.userservice.model.HealthRequestDto;
 import com.healthapp.userservice.model.ProfileRequestDto;
 import com.healthapp.userservice.model.ProfileResponseDto;
 import com.healthapp.userservice.model.ProfileUpdateDto;
+import com.healthapp.userservice.networkmanager.HealthFeignClient;
 import com.healthapp.userservice.repository.ProfileRepository;
 import com.healthapp.userservice.repository.UserRepository;
 import com.healthapp.userservice.service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +27,8 @@ public class ProfileServiceImpl implements ProfileService {
     private ProfileRepository profileRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private HealthFeignClient healthFeignClient;
     @Override
     public void addProfile(ProfileRequestDto profileRequestDto) {
         Optional<UserEntity> optionalUser = userRepository.findById(profileRequestDto.getUserId());
@@ -35,6 +42,16 @@ public class ProfileServiceImpl implements ProfileService {
             profile.setVegetarian(profileRequestDto.getVegetarian());
             profile.setGoalWeight(profileRequestDto.getGoalWeight());
             profile.setTargetPeriod(profileRequestDto.getTargetPeriod());
+
+            //Add Data in Health Table
+            HealthRequestDto healthRequestDto = new HealthRequestDto();
+            healthRequestDto.setUserId(profileRequestDto.getUserId());
+            healthRequestDto.setGender(profileRequestDto.getGender().toString());
+            healthRequestDto.setDateOfBirth(profileRequestDto.getDateOfBirth());
+            healthRequestDto.setGoalWeight(profileRequestDto.getGoalWeight());
+            healthRequestDto.setTargetPeriod(profileRequestDto.getTargetPeriod());
+            ResponseEntity<String> response=healthFeignClient.addHealthInfo(profileRequestDto.getUserId(),healthRequestDto);
+
             profileRepository.save(profile);
             optionalUser.get().setProfile(profile);
             userRepository.save(optionalUser.get());
@@ -45,9 +62,10 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateProfile(ProfileUpdateDto profileUpdateDto, UUID userId) {
-        Optional<UserEntity> user = userRepository.findById(userId);
-        user.ifPresent(userEntity -> profileRepository.findByUserId(userId).ifPresent(profile -> {
+    public void updateProfile(ProfileUpdateDto profileUpdateDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<UserEntity> user = userRepository.findById(UUID.fromString(authentication.getName()));
+        user.ifPresent(userEntity -> profileRepository.findByUserId(UUID.fromString(authentication.getName())).ifPresent(profile -> {
             if (profileUpdateDto.getGender() != null) {
                 profile.setGender(profileUpdateDto.getGender());
             }

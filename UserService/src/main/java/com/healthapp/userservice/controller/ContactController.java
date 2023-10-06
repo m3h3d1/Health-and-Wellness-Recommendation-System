@@ -25,12 +25,11 @@ public class ContactController {
         return new ResponseEntity<>("Contact Created successfully!", HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{userId}")
+    @PutMapping("/update")
     public ResponseEntity<String> updateContact(
-            @RequestBody ContactUpdateDto contactUpdateDto,
-            @PathVariable UUID userId
+            @RequestBody ContactUpdateDto contactUpdateDto
     ) {
-        contactService.updateContact(contactUpdateDto, userId);
+        contactService.updateContact(contactUpdateDto);
         return new ResponseEntity<>("Contact Updated Successfully!",HttpStatus.OK);
     }
 

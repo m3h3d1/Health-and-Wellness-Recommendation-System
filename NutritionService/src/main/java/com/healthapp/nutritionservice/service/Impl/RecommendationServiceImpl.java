@@ -4,6 +4,8 @@ import com.healthapp.nutritionservice.dto.RecommendationRequestDTO;
 import com.healthapp.nutritionservice.dto.FoodWithNutritionDTO;
 import com.healthapp.nutritionservice.entity.Food;
 import com.healthapp.nutritionservice.entity.Nutrition;
+import com.healthapp.nutritionservice.enums.NutritionalCriterion;
+import com.healthapp.nutritionservice.exception.InvalidNutritionalCriterionException;
 import com.healthapp.nutritionservice.repository.FoodRepository;
 import com.healthapp.nutritionservice.repository.NutritionRepository;
 import com.healthapp.nutritionservice.service.RecommendationService;
@@ -24,37 +26,52 @@ public class RecommendationServiceImpl implements RecommendationService {
     private NutritionRepository nutritionRepository;
 
     @Override
-    public List<FoodWithNutritionDTO> getRecommendedFoods(RecommendationRequestDTO requestDTO) {
+    public List<FoodWithNutritionDTO> getRecommendedFoods(String criterion) {
 
-        String criterion = requestDTO.getNutritionalCriterion();
+        NutritionalCriterion nutritionalCriterion;
+        try {
+            nutritionalCriterion = NutritionalCriterion.valueOf(criterion.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            // Handle the case where the criterion is not recognized
+            throw new InvalidNutritionalCriterionException(criterion);
+        }
+
         List<Nutrition> nutritionList = nutritionRepository.findAll();
 
-        if(criterion == "vitamin") {
-            Collections.sort(nutritionList, Comparator.comparing(Nutrition::getVitamins).reversed());
+        Comparator<Nutrition> comparator = null;
+
+        switch (nutritionalCriterion) {
+            case VITAMIN:
+                comparator = Comparator.comparing(Nutrition::getVitamins).reversed();
+                break;
+            case PROTEIN:
+                comparator = Comparator.comparing(Nutrition::getProtein).reversed();
+                break;
+            case SUGAR:
+                comparator = Comparator.comparing(Nutrition::getSugar).reversed();
+                break;
+            case CALORIE:
+                comparator = Comparator.comparing(Nutrition::getCalorie).reversed();
+                break;
+            case SODIUM:
+                comparator = Comparator.comparing(Nutrition::getSodium).reversed();
+                break;
+            case FIBER:
+                comparator = Comparator.comparing(Nutrition::getFiber).reversed();
+                break;
+            case FAT:
+                comparator = Comparator.comparing(Nutrition::getFat).reversed();
+                break;
+            case MINERALS:
+                comparator = Comparator.comparing(Nutrition::getMinerals).reversed();
+                break;
+            case CARBOHYDRATES:
+                comparator = Comparator.comparing(Nutrition::getCarbohydrates).reversed();
+                break;
         }
-        else if(criterion == "protein") {
-            Collections.sort(nutritionList, Comparator.comparing(Nutrition::getProtein).reversed());
-        }
-        else if(criterion == "sugar") {
-            Collections.sort(nutritionList, Comparator.comparing(Nutrition::getSugar).reversed());
-        }
-        else if(criterion == "calorie") {
-            Collections.sort(nutritionList, Comparator.comparing(Nutrition::getCalorie).reversed());
-        }
-        else if(criterion == "sodium") {
-            Collections.sort(nutritionList, Comparator.comparing(Nutrition::getSodium).reversed());
-        }
-        else if(criterion == "fiber") {
-            Collections.sort(nutritionList, Comparator.comparing(Nutrition::getFiber).reversed());
-        }
-        else if(criterion == "fat") {
-            Collections.sort(nutritionList, Comparator.comparing(Nutrition::getFat).reversed());
-        }
-        else if(criterion == "minerals") {
-            Collections.sort(nutritionList, Comparator.comparing(Nutrition::getMinerals).reversed());
-        }
-        else if(criterion == "carborhydrates") {
-            Collections.sort(nutritionList, Comparator.comparing(Nutrition::getCarbohydrates).reversed());
+
+        if (comparator != null) {
+            Collections.sort(nutritionList, comparator);
         }
 
         List<FoodWithNutritionDTO> recommendFoods = new ArrayList<>();

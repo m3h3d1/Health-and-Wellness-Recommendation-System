@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface ContactService {
     void addContact(ContactRequestDto contactRequestDto);
-    void updateContact(ContactUpdateDto contactUpdateDto, UUID userId);
+    void updateContact(ContactUpdateDto contactUpdateDto);
     ContactResponseDto getContactById(UUID userId);
     List<Contact> getAllContacts();
 }
