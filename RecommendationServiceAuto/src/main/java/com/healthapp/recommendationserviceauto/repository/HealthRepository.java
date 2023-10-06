@@ -8,5 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 @Repository
 public interface HealthRepository extends JpaRepository<Health, UUID> {
-    Optional<Health> findByUserId(UUID uuid);
+    Optional<Health> findByUserId(UUID userId);
 }
