@@ -9,8 +9,10 @@ import com.healthapp.userservice.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,8 +51,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updateUser(UserUpdateDto userUpdateDto, UUID userId) {
-        userRepository.findById(userId).ifPresent(user -> {
+    public void updateUser(UserUpdateDto userUpdateDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userRepository.findById(UUID.fromString(authentication.getName())).ifPresent(user -> {
             if (userUpdateDto.getFirstName() != null) {
                 user.setFirstName(userUpdateDto.getFirstName());
             }
@@ -83,6 +86,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             responseDto.setLastName(user.getLastName());
             responseDto.setRoles(user.getRoles());
             responseDto.setEmail(user.getEmail());
+            responseDto.setContact(user.getContact());
+            responseDto.setProfile(user.getProfile());
             return responseDto;
         }
         else{
@@ -96,8 +101,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void changePassword(ChangePasswordDto changePasswordDto, UUID userId) {
-        Optional<UserEntity> optionalUser=userRepository.findById(userId);
+    public void changePassword(ChangePasswordDto changePasswordDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<UserEntity> optionalUser=userRepository.findById(UUID.fromString(authentication.getName()));
         if(optionalUser.isPresent()){
             UserEntity user=optionalUser.get();
             if(user.getPassword().equals(changePasswordDto.getOldPassword())){

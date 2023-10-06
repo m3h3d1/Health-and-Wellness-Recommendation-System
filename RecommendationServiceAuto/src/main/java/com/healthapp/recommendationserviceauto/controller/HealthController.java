@@ -1,5 +1,7 @@
 package com.healthapp.recommendationserviceauto.controller;
 
+import com.healthapp.recommendationserviceauto.domain.Exercise;
+import com.healthapp.recommendationserviceauto.domain.Health;
 import com.healthapp.recommendationserviceauto.model.*;
 import com.healthapp.recommendationserviceauto.service.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -14,6 +17,10 @@ import java.util.UUID;
 public class HealthController {
     @Autowired
     private HealthService healthService;
+    @GetMapping("/{userId}")
+    public ResponseEntity<Health> getHealthData(@PathVariable UUID userId){
+        return new ResponseEntity<>(healthService.getHealthData(userId),HttpStatus.OK);
+    }
     @PostMapping("/add/{userId}")
     public ResponseEntity<String> registerUser(@RequestBody HealthRequestDto healthRequestDto, @PathVariable UUID userId) {
         healthService.addHealthData(userId,healthRequestDto);
@@ -38,5 +45,10 @@ public class HealthController {
     public ResponseEntity<String> addDisease(@RequestBody DiseaseRequestDto diseaseRequestDto, @PathVariable UUID userId) {
         healthService.addDisease(userId,diseaseRequestDto);
         return new ResponseEntity<>("Disease Data added!", HttpStatus.CREATED);
+    }
+    @PostMapping("/add-extra-data/{userId}")
+    public ResponseEntity<String> addSmokingAllergyData(@RequestBody SmokerAllergyRequestDto smokerAllergyRequestDto, @PathVariable UUID userId) {
+        healthService.addSmokerAllergyData(userId,smokerAllergyRequestDto);
+        return new ResponseEntity<>("Data added successfully!", HttpStatus.CREATED);
     }
 }

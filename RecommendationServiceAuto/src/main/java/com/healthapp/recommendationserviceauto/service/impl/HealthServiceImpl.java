@@ -7,6 +7,8 @@ import com.healthapp.recommendationserviceauto.repository.*;
 import com.healthapp.recommendationserviceauto.service.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -36,18 +38,21 @@ public class HealthServiceImpl implements HealthService {
         int ageInYears = (int) (ageInMillis / (1000L * 60 * 60 * 24 * 365));
         return ageInYears;
     }
+
+    @Override
+    public Health getHealthData(UUID userId) {
+        return healthRepository.findByUserId(userId).get();
+    }
+
     @Override
     public void addHealthData(UUID userId, HealthRequestDto healthRequestDto) {
-        ResponseEntity<ProfileResponseDto> response= userFeignClient.getProfileInfo(userId);
-        ProfileResponseDto profileResponseDto= response.getBody();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Health health = new Health();
-        health.setUserId(userId);
-        health.setAllergies(healthRequestDto.getAllergies());
-        health.setSmokingStatus(healthRequestDto.getSmokingStatus());
-        health.setGender(profileResponseDto.getGender());
-        health.setAge(calculateAge(profileResponseDto.getDateOfBirth()));
-        health.setGoalWeight(profileResponseDto.getGoalWeight());
-        health.setTargetPeriod(profileResponseDto.getTargetPeriod());
+        health.setUserId(UUID.fromString(authentication.getName()));
+        health.setGender(healthRequestDto.getGender());
+        health.setAge(calculateAge(healthRequestDto.getDateOfBirth()));
+        health.setGoalWeight(healthRequestDto.getGoalWeight());
+        health.setTargetPeriod(healthRequestDto.getTargetPeriod());
         healthRepository.save(health);
     }
 
@@ -108,6 +113,17 @@ public class HealthServiceImpl implements HealthService {
             disease.setHealth(health);
             health.getDiseases().add(disease);
             diseaseRepository.save(disease);
+            healthRepository.save(health);
+        }
+    }
+
+    @Override
+    public void addSmokerAllergyData(UUID userId, SmokerAllergyRequestDto smokerAllergyRequestDto) {
+        Optional<Health> healthOptional = healthRepository.findByUserId(userId);
+        if (healthOptional.isPresent()) {
+            Health health = healthOptional.get();
+            health.setSmokingStatus(smokerAllergyRequestDto.getIsSmoker());
+            health.setAllergies(smokerAllergyRequestDto.getAllergies());
             healthRepository.save(health);
         }
     }
