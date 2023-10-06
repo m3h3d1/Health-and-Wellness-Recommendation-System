@@ -4,6 +4,7 @@ import com.healthapp.communityservice.models.postdto.PostCreateDTO;
 import com.healthapp.communityservice.models.postdto.PostReadDTO;
 import com.healthapp.communityservice.models.postdto.PostUpdateDTO;
 import com.healthapp.communityservice.services.interfaces.PostService;
+import com.healthapp.communityservice.utilities.token.IDExtractor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class PostController {
     // Create a new post by providing post details in the request body
     @PostMapping
     public ResponseEntity<Void> createPost(@RequestBody PostCreateDTO postCreateDTO) {
+        postCreateDTO.setUserId(IDExtractor.getUserID());
         postService.create(postCreateDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -55,50 +57,50 @@ public class PostController {
 
     // Update post information by specifying the post's ID and providing updated details in the request body
     @PutMapping("/{postId}")
-    public ResponseEntity<Void> updatePost(@PathVariable UUID postId, @RequestBody PostUpdateDTO postUpdateDTO) {
-        postService.update(postId, UUID.randomUUID() ,postUpdateDTO);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> updatePost(@PathVariable UUID postId, @RequestBody PostUpdateDTO postUpdateDTO) {
+        postService.update(postId, IDExtractor.getUserID() ,postUpdateDTO);
+        return ResponseEntity.ok("Post updated successfully");
     }
 
     // Delete a post by specifying its unique ID
     @DeleteMapping("/{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable UUID postId) {
-        postService.delete(postId, UUID.randomUUID());
+        postService.delete(postId, IDExtractor.getUserID());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     // Add a like to a post by specifying the post ID and user ID
-    @PostMapping("/interactions/{postId}/add-like/{userId}")
-    public ResponseEntity<Void> addLike(@PathVariable UUID postId, @PathVariable UUID userId) {
-        postService.addLike(postId, userId);
+    @PostMapping("/interactions/{postId}/add-like")
+    public ResponseEntity<Void> addLike(@PathVariable UUID postId) {
+        postService.addLike(postId, IDExtractor.getUserID());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // Add a dislike to a post by specifying the post ID and user ID
-    @PostMapping("/interactions/{postId}/add-dislike/{userId}")
-    public ResponseEntity<Void> addDislike(@PathVariable UUID postId, @PathVariable UUID userId) {
-        postService.addDislike(postId, userId);
+    @PostMapping("/interactions/{postId}/add-dislike")
+    public ResponseEntity<Void> addDislike(@PathVariable UUID postId) {
+        postService.addDislike(postId, IDExtractor.getUserID());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // Add a follower to a post by specifying the post ID and user ID
-    @PostMapping("/interactions/{postId}/add-follower/{userId}")
-    public ResponseEntity<Void> addFollower(@PathVariable UUID postId, @PathVariable UUID userId) {
-        postService.addFollower(postId, userId);
+    @PostMapping("/interactions/{postId}/add-follower")
+    public ResponseEntity<Void> addFollower(@PathVariable UUID postId) {
+        postService.addFollower(postId, IDExtractor.getUserID());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // Remove a follower from a post by specifying the post ID and user ID
-    @PostMapping("/interactions/{postId}/remove-follower/{userId}")
-    public ResponseEntity<Void> removeFollower(@PathVariable UUID postId, @PathVariable UUID userId) {
-        postService.removeFollower(postId, userId);
+    @PostMapping("/interactions/{postId}/remove-follower")
+    public ResponseEntity<Void> removeFollower(@PathVariable UUID postId) {
+        postService.removeFollower(postId, IDExtractor.getUserID());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     // Remove a like/dislike from a post by specifying the post ID and user ID
-    @DeleteMapping("/interactions/{postId}/remove-interaction/{userId}")
-    public ResponseEntity<String> removeInteraction(@PathVariable UUID postId, @PathVariable UUID userId){
-        postService.removeInteraction(postId, userId);
+    @DeleteMapping("/interactions/{postId}/remove-interaction")
+    public ResponseEntity<String> removeInteraction(@PathVariable UUID postId){
+        postService.removeInteraction(postId, IDExtractor.getUserID());
         return new ResponseEntity<>("Interactions removed.", HttpStatus.OK);
     }
 }

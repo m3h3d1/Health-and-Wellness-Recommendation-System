@@ -1,6 +1,7 @@
 package com.healthapp.communityservice.controllers;
 
 import com.healthapp.communityservice.services.interfaces.ConnectionService;
+import com.healthapp.communityservice.utilities.token.IDExtractor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +19,15 @@ public class ConnectionController {
 
     // Follow a user by specifying the followerId and followingId
     @PostMapping("/follow")
-    public ResponseEntity<String> followUser(@RequestParam UUID followerId, @RequestParam UUID followingId) {
-        connectionService.follow(followerId, followingId);
+    public ResponseEntity<String> followUser(@RequestParam UUID followingId) {
+        connectionService.follow(IDExtractor.getUserID(), followingId);
         return ResponseEntity.ok("Successfully followed user.");
     }
 
     // Unfollow a user by specifying the followerId and followingId
     @PostMapping("/unfollow")
-    public ResponseEntity<String> unfollowUser(@RequestParam UUID followerId, @RequestParam UUID followingId) {
-        connectionService.unFollow(followerId, followingId);
+    public ResponseEntity<String> unfollowUser(@RequestParam UUID followingId) {
+        connectionService.unFollow(IDExtractor.getUserID(), followingId);
         return ResponseEntity.ok("Successfully unfollowed user.");
     }
 
@@ -37,8 +38,8 @@ public class ConnectionController {
     }
 
     // Get the feed of posts from users followed by a specific user (followerId)
-    @GetMapping("/feed/{followerId}")
-    public ResponseEntity<?> getFollowingFeed(@PathVariable UUID followerId) {
-        return ResponseEntity.ok(connectionService.followingFeed(followerId));
+    @GetMapping("/feed")
+    public ResponseEntity<?> getFollowingFeed() {
+        return ResponseEntity.ok(connectionService.followingFeed(IDExtractor.getUserID()));
     }
 }

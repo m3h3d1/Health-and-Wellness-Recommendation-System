@@ -1,23 +1,31 @@
 package com.healthapp.dataanalysisservice.controller;
 
-import com.healthapp.dataanalysisservice.model.ConvertToString;
+import com.healthapp.dataanalysisservice.service.DataCollectorService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/data-collector")
+@RequestMapping("/ml/data-collector")
 public class DataCollectorController {
+     private final DataCollectorService dataCollectorService;
 
-    @GetMapping("/test")
-    public ResponseEntity<?> collectData(@RequestBody Object x) {
+    public DataCollectorController(DataCollectorService dataCollectorService) {
+        this.dataCollectorService = dataCollectorService;
+    }
 
-        String S = new ConvertToString().objectToString(x);
-        return  ResponseEntity.ok(S);
-}
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<?> collectData(@PathVariable UUID userId) {
+//        String stringData = dataCollectorService.CollectAllData(userId);
+//        return ResponseEntity.ok(stringData);
+//    }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> collectData(@PathVariable UUID userId) {
+        Object stringData = dataCollectorService.CollectAllData(userId);
+        return ResponseEntity.ok(stringData);
+    }
 }
 

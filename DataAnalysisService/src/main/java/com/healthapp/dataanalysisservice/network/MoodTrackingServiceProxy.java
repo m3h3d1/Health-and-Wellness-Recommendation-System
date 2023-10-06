@@ -8,6 +8,8 @@ import java.util.UUID;
 
 @FeignClient(name = "MENTALHEALTH-APP", configuration = CustomErrorDecoder.class)
 public interface MoodTrackingServiceProxy {
-    @GetMapping("/mental-health/mood-tracking/user/{userId}")
+    @GetMapping("http://localhost:8700/mental-health/mood-tracking/user/{userId}")
     public ResponseEntity<Object> getMoodTracking(@PathVariable UUID userId);
+
+//    void setBaseUrl(String url);
 }

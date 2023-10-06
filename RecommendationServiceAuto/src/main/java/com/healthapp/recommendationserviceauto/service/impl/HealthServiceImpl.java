@@ -38,6 +38,12 @@ public class HealthServiceImpl implements HealthService {
         int ageInYears = (int) (ageInMillis / (1000L * 60 * 60 * 24 * 365));
         return ageInYears;
     }
+
+    @Override
+    public Health getHealthData(UUID userId) {
+        return healthRepository.findByUserId(userId).get();
+    }
+
     @Override
     public void addHealthData(UUID userId, HealthRequestDto healthRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
