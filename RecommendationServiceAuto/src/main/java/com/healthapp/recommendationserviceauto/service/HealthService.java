@@ -11,5 +11,8 @@ public interface HealthService {
     void addBloodPressureData(UUID userId, BloodPressureRequestDto bloodPressureRequestDto);
     void addSugarLevelData(UUID userId, SugarLevelDto sugarLevelDto);
     void addWeight(UUID userID, WeightRequestDto weightRequestDto);
+    void addHeight(UUID userID, HeightRequestDto heightRequestDto);
     void addDisease(UUID userID, DiseaseRequestDto diseaseRequestDto);
+    void addActivityData(ActivityRequestDto activityRequestDto);
+    void addExtraData(UUID userId, ExtraRequestDto smokerAllergyRequestDto);
 }

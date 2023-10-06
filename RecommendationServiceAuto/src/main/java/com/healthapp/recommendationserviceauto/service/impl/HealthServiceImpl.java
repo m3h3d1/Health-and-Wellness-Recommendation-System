@@ -6,7 +6,8 @@ import com.healthapp.recommendationserviceauto.networkmanager.UserFeignClient;
 import com.healthapp.recommendationserviceauto.repository.*;
 import com.healthapp.recommendationserviceauto.service.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,6 +30,10 @@ public class HealthServiceImpl implements HealthService {
     private DiseaseRepository diseaseRepository;
     @Autowired
     private WeightRepository weightRepository;
+    @Autowired
+    private ActivityFactorRepository activityFactorRepository;
+    @Autowired
+    private HeightRepository heightRepository;
     private int calculateAge(Date dateOfBirth) {
         Date currentDate = new Date();
         long timeDiff = currentDate.getTime() - dateOfBirth.getTime();
@@ -44,16 +49,13 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void addHealthData(UUID userId, HealthRequestDto healthRequestDto) {
-        ResponseEntity<ProfileResponseDto> response= userFeignClient.getProfileInfo(userId);
-        ProfileResponseDto profileResponseDto= response.getBody();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Health health = new Health();
-        health.setUserId(userId);
-        health.setAllergies(healthRequestDto.getAllergies());
-        health.setSmokingStatus(healthRequestDto.getSmokingStatus());
-        health.setGender(profileResponseDto.getGender());
-        health.setAge(calculateAge(profileResponseDto.getDateOfBirth()));
-        health.setGoalWeight(profileResponseDto.getGoalWeight());
-        health.setTargetPeriod(profileResponseDto.getTargetPeriod());
+        health.setUserId(UUID.fromString(authentication.getName()));
+        health.setGender(healthRequestDto.getGender());
+        health.setAge(calculateAge(healthRequestDto.getDateOfBirth()));
+        health.setGoalWeight(healthRequestDto.getGoalWeight());
+        health.setTargetPeriod(healthRequestDto.getTargetPeriod());
         healthRepository.save(health);
     }
 
@@ -103,6 +105,21 @@ public class HealthServiceImpl implements HealthService {
     }
 
     @Override
+    public void addHeight(UUID userID, HeightRequestDto heightRequestDto) {
+        Height height = new Height();
+        height.setHeightInCm(heightRequestDto.getHeight());
+        height.setDateTime(LocalDateTime.now());
+        Optional<Health> healthOptional = healthRepository.findByUserId(userID);
+        if (healthOptional.isPresent()) {
+            Health health = healthOptional.get();
+            height.setHealth(health);
+            health.getHeights().add(height);
+            heightRepository.save(height);
+            healthRepository.save(health);
+        }
+    }
+
+    @Override
     public void addDisease(UUID userID, DiseaseRequestDto diseaseRequestDto) {
         Disease disease = new Disease();
         disease.setDiseaseName(diseaseRequestDto.getDiseaseName());
@@ -114,6 +131,30 @@ public class HealthServiceImpl implements HealthService {
             disease.setHealth(health);
             health.getDiseases().add(disease);
             diseaseRepository.save(disease);
+            healthRepository.save(health);
+        }
+    }
+
+    @Override
+    public void addActivityData(ActivityRequestDto activityRequestDto) {
+        ActivityFactor activityFactor = new ActivityFactor();
+        activityFactor.setActivityLevel(activityRequestDto.getActivityLevel());
+        activityFactor.setFactor(activityRequestDto.getFactor());
+        activityFactorRepository.save(activityFactor);
+    }
+
+    @Override
+    public void addExtraData(UUID userId, ExtraRequestDto extraRequestDto) {
+        Optional<Health> healthOptional = healthRepository.findByUserId(userId);
+        if (healthOptional.isPresent()) {
+            Health health = healthOptional.get();
+            health.setSmokingStatus(extraRequestDto.getIsSmoker());
+            health.setAllergies(extraRequestDto.getAllergies());
+            Optional<ActivityFactor> activityFactorOptional = activityFactorRepository.findByActivityLevel(extraRequestDto.getActivityLevel());
+            if(activityFactorOptional.isEmpty()){
+
+            }
+            health.setDailyActivity(activityFactorOptional.get());
             healthRepository.save(health);
         }
     }

@@ -25,12 +25,11 @@ public class ProfileController {
         return new ResponseEntity<>("Profile Created Successfully!", HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{userId}")
+    @PutMapping("/update")
     public ResponseEntity<String> updateProfile(
-            @RequestBody ProfileUpdateDto profileUpdateDto,
-            @PathVariable UUID userId
+            @RequestBody ProfileUpdateDto profileUpdateDto
     ) {
-        profileService.updateProfile(profileUpdateDto, userId);
+        profileService.updateProfile(profileUpdateDto);
         return new ResponseEntity<>("Profile Updated Successfully!",HttpStatus.OK);
     }
 

@@ -8,6 +8,9 @@ import java.util.UUID;
 
 @FeignClient(name = "USER-APP", configuration = CustomErrorDecoder.class)
 public interface UserServiceProxy {
-    @GetMapping("/users/profile/read-by-id/{userId}")
+//    @GetMapping("/user-app/users/read-by-id/{userId}")
+    @GetMapping("http://localhost:9090/user-app/users/read-by-id/{userId}")
     public ResponseEntity<Object> getUser(@PathVariable UUID userId);
+
+//    void setBaseUrl(String url);
 }

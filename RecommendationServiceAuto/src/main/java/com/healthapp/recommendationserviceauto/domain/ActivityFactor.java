@@ -17,6 +17,6 @@ public class ActivityFactor {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String name;
+    private String activityLevel;
     private Double factor;
 }

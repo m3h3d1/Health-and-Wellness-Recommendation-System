@@ -14,4 +14,5 @@ public interface ExerciseService {
     void addExerciseData(ExerciseRequestDto exerciseRequestDto);
     List<Exercise> getAllExercise();
     List<ExerciseRecommendation> getAllExerciseRecommendations();
+    ExerciseRecommendation getRecommendationById(UUID recommendationId);
 }
