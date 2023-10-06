@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class SmokerAllergyRequestDto {
-    private Boolean allergies;
-    private Boolean isSmoker;
+public class HeightRequestDto {
+    private Double height;
 }
