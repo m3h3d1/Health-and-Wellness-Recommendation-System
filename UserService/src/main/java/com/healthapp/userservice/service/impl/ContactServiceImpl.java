@@ -11,6 +11,8 @@ import com.healthapp.userservice.service.ContactService;
 import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,9 +49,10 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void updateContact(ContactUpdateDto contactUpdateDto, UUID userId) {
-        Optional<UserEntity> user = userRepository.findById(userId);
-        user.ifPresent(userEntity -> contactRepository.findByUserId(userId).ifPresent(contact -> {
+    public void updateContact(ContactUpdateDto contactUpdateDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<UserEntity> user = userRepository.findById(UUID.fromString(authentication.getName()));
+        user.ifPresent(userEntity -> contactRepository.findByUserId(UUID.fromString(authentication.getName())).ifPresent(contact -> {
             if (contactUpdateDto.getPrimaryPhoneNumber() != null) {
                 contact.setPrimaryPhoneNumber(contactUpdateDto.getPrimaryPhoneNumber());
             }

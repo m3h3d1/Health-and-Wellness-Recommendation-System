@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface ProfileService {
     void addProfile(ProfileRequestDto profileRequestDto);
-    void updateProfile(ProfileUpdateDto profileUpdateDto, UUID userId);
+    void updateProfile(ProfileUpdateDto profileUpdateDto);
     ProfileResponseDto findById(UUID userId);
     List<Profile> getAllProfiles();
 }
