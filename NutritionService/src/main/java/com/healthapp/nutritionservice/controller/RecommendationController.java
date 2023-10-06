@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/nutrition")
@@ -16,9 +17,9 @@ public class RecommendationController {
     @Autowired
     RecommendationService recommendationService;
 
-    @GetMapping("/recommendation")
-    public ResponseEntity<?> getAllRecipies(@RequestBody RecommendationRequestDTO requestDTO) {
-        List<FoodWithNutritionDTO> foodWithNutritionDTOs = recommendationService.getRecommendedFoods(requestDTO);
+    @GetMapping("/recommendation/{criterion}")
+    public ResponseEntity<?> getAllRecipies(@PathVariable String criterion) {
+        List<FoodWithNutritionDTO> foodWithNutritionDTOs = recommendationService.getRecommendedFoods(criterion);
         return new ResponseEntity<>(foodWithNutritionDTOs, HttpStatus.OK);
     }
 }
