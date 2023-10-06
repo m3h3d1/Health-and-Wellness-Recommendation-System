@@ -40,8 +40,11 @@ public class MoodLogServiceImpl implements MoodLogService {
         Optional<MoodLog> moodLogOptional = moodLogRepository.findById(id);
         if (moodLogOptional.isPresent()) {
             MoodLog moodLog = moodLogOptional.get();
-            // Update properties of moodLog based on moodLogDTO
-            moodLog.setDate(moodLogDTO.getDate());
+
+            // Set the 'date' field to the current time in Bangladesh
+            ZoneId zoneId = ZoneId.of("Asia/Dhaka");
+            LocalDateTime currentDateTime = LocalDateTime.now(zoneId);
+            moodLog.setDate(currentDateTime);
             moodLog.setMoodRating(moodLogDTO.getMoodRating());
             moodLog.setNote(moodLogDTO.getNote());
             moodLog.setUserId(moodLogDTO.getUserId());
