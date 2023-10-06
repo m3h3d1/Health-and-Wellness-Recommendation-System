@@ -1,6 +1,8 @@
 package com.healthapp.recommendationservicemanual.service.impl;
 
 import com.healthapp.recommendationservicemanual.entities.SleepRecommendation;
+import com.healthapp.recommendationservicemanual.exceptions.EntityNotFoundException;
+import com.healthapp.recommendationservicemanual.exceptions.InternalServerErrorException;
 import com.healthapp.recommendationservicemanual.repositories.SleepRecRepository;
 import com.healthapp.recommendationservicemanual.service.interfaces.SleepRecService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +21,34 @@ public class SleepRecServiceImpl implements SleepRecService {
 
     @Override
     public void create(SleepRecommendation sleepRecommendation) {
-        sleepRecRepository.save(sleepRecommendation);
+        try {
+            sleepRecRepository.save(sleepRecommendation);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Failed to create sleep recommendation.");
+        }
     }
 
     @Override
     public SleepRecommendation readById(UUID recId) {
-        return sleepRecRepository.findById(recId).orElse(null);
+        return sleepRecRepository.findById(recId)
+                .orElseThrow(() -> new EntityNotFoundException("Sleep recommendation not found with ID: " + recId));
     }
 
     @Override
     public void update(SleepRecommendation sleepRecommendation) {
-        sleepRecRepository.save(sleepRecommendation);
+        try {
+            sleepRecRepository.save(sleepRecommendation);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Failed to update sleep recommendation.");
+        }
     }
 
     @Override
     public void delete(SleepRecommendation sleepRecommendation) {
-        sleepRecRepository.delete(sleepRecommendation);
+        try {
+            sleepRecRepository.delete(sleepRecommendation);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Failed to delete sleep recommendation.");
+        }
     }
 }

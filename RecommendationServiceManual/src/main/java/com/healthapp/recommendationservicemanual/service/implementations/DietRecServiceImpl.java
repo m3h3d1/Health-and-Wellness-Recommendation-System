@@ -1,6 +1,9 @@
 package com.healthapp.recommendationservicemanual.service.impl;
 
 import com.healthapp.recommendationservicemanual.entities.DietRecommendation;
+import com.healthapp.recommendationservicemanual.exceptions.EntityNotFoundException;
+import com.healthapp.recommendationservicemanual.exceptions.InternalServerErrorException;
+import com.healthapp.recommendationservicemanual.exceptions.ValidationException;
 import com.healthapp.recommendationservicemanual.repositories.DietRecRepository;
 import com.healthapp.recommendationservicemanual.service.interfaces.DietRecService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,21 +22,34 @@ public class DietRecServiceImpl implements DietRecService {
 
     @Override
     public void create(DietRecommendation dietRecommendation) {
-        dietRecRepository.save(dietRecommendation);
+        try {
+            dietRecRepository.save(dietRecommendation);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Failed to create diet recommendation.");
+        }
     }
 
     @Override
     public DietRecommendation readById(UUID recId) {
-        return dietRecRepository.findById(recId).orElse(null);
+        return dietRecRepository.findById(recId)
+                .orElseThrow(() -> new EntityNotFoundException("Diet recommendation not found with ID: " + recId));
     }
 
     @Override
     public void update(DietRecommendation dietRecommendation) {
-        dietRecRepository.save(dietRecommendation);
+        try {
+            dietRecRepository.save(dietRecommendation);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Failed to update diet recommendation.");
+        }
     }
 
     @Override
     public void delete(DietRecommendation dietRecommendation) {
-        dietRecRepository.delete(dietRecommendation);
+        try {
+            dietRecRepository.delete(dietRecommendation);
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Failed to delete diet recommendation.");
+        }
     }
 }
