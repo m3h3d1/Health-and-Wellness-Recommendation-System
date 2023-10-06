@@ -14,6 +14,7 @@ public class DietRecommendation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID dietRecommendationId;
+    private UUID userId;
     private double height;
     private double weight;
     private double goalWeight;

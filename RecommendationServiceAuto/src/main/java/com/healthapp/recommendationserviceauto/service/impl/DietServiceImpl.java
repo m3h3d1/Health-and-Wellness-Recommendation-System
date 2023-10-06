@@ -5,7 +5,9 @@ import com.healthapp.recommendationserviceauto.model.DietRecommendationDto;
 import com.healthapp.recommendationserviceauto.model.SleepRecommendationDto;
 import com.healthapp.recommendationserviceauto.model.SuggestedFoodListDto;
 import com.healthapp.recommendationserviceauto.networkmanager.FoodFeignClient;
+import com.healthapp.recommendationserviceauto.repository.DietRecommendationRepository;
 import com.healthapp.recommendationserviceauto.repository.HealthRepository;
+import com.healthapp.recommendationserviceauto.repository.MealRepository;
 import com.healthapp.recommendationserviceauto.service.DietService;
 import com.healthapp.recommendationserviceauto.service.SleepService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,10 @@ public class DietServiceImpl implements DietService {
     private HealthRepository healthRepository;
     @Autowired
     private FoodFeignClient foodFeignClient;
+    @Autowired
+    private MealRepository mealRepository;
+    @Autowired
+    private DietRecommendationRepository dietRecommendationRepository;
     private String message;
     @Override
     public DietRecommendationDto recommend(UUID userId) {
@@ -78,6 +84,7 @@ public class DietServiceImpl implements DietService {
             List<Meal> dinnerMealList = preferFood(dinnerCalories, "carbohydrates");
             List<Meal> snacksMealList = preferFood(snacksCalories, "vitamin");
             //Save in DietRecommendation
+            dietRecommendation.setUserId(userId);
             dietRecommendation.setHeight(latestHeight);
             dietRecommendation.setWeight(latestWeight);
             dietRecommendation.setGoalWeight(goalWeight);
@@ -88,6 +95,7 @@ public class DietServiceImpl implements DietService {
             dietRecommendation.setLunch(lunchMealList);
             dietRecommendation.setDinner(dinnerMealList);
             dietRecommendation.setSnacks(snacksMealList);
+            dietRecommendationRepository.save(dietRecommendation);
 
             //Send response as DTO
             dietRecommendationDto.setDate(LocalDateTime.now());
@@ -96,13 +104,17 @@ public class DietServiceImpl implements DietService {
             dietRecommendationDto.setLunch(lunchMealList);
             dietRecommendationDto.setSnacks(snacksMealList);
             dietRecommendationDto.setDinner(dinnerMealList);
+
             return dietRecommendationDto;
+
+
         }
         return null;
     }
 
 
     private List<Meal> preferFood(Double targetCalorie, String category){
+
         ResponseEntity<List<SuggestedFoodListDto>> foodList = foodFeignClient.getFoodByCategory(category);
         List<SuggestedFoodListDto> suggestedFoodList=foodList.getBody();
         List<Meal> mealList = new ArrayList<>();
@@ -119,6 +131,7 @@ public class DietServiceImpl implements DietService {
                 Meal meal = new Meal();
                 meal.setDescription(foodListResponse.getDescription());
                 meal.setCalories(foodListResponse.getCalorie());
+                mealRepository.save(meal);
                 mealList.add(meal);
             }
         return mealList;
