@@ -52,7 +52,7 @@ public class DetailsController {
     }
 
     @GetMapping("/food/{foodId}")
-    public ResponseEntity<Food> getNutritionById(@PathVariable UUID foodId) {
+    public ResponseEntity<Food> getFoodById(@PathVariable UUID foodId) {
         Food food = foodService.getFoodById(foodId);
 
         if (food != null) {
