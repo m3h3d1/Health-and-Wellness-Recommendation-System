@@ -39,7 +39,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Transactional
     public Feedback updateFeedback(UUID feedbackId, Feedback updatedFeedback) {
         Feedback existingFeedback = feedbackRepository.findById(feedbackId)
-                .orElseThrow(() -> new FeedbackNotFoundException("Food data not found with ID: " + feedbackId));
+                .orElseThrow(() -> new FeedbackNotFoundException("Feedback data not found with ID: " + feedbackId));
 
         existingFeedback.setRating(updatedFeedback.getRating());
         existingFeedback.setComment(updatedFeedback.getComment());
@@ -55,7 +55,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
             feedbackRepository.delete(existingFeedback);
         } catch (Exception e) {
-            throw new FeedbackServiceException("Failed to delete food data. " + e.getMessage());
+            throw new FeedbackServiceException("Failed to delete feedback data. " + e.getMessage());
         }
     }
 
