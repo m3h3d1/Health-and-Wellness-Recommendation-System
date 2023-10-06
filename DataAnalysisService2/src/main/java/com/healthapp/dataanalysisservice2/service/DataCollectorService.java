@@ -1,9 +1,8 @@
-package com.healthapp.dataanalysisservice.service;
+package com.healthapp.dataanalysisservice2.service;
 
-import com.healthapp.dataanalysisservice.model.ConvertToString;
-import com.healthapp.dataanalysisservice.network.MentalHealthExerciseServiceProxy;
-import com.healthapp.dataanalysisservice.network.MoodTrackingServiceProxy;
-import com.healthapp.dataanalysisservice.network.UserServiceProxy;
+import com.healthapp.dataanalysisservice2.network.MentalHealthExerciseServiceProxy;
+import com.healthapp.dataanalysisservice2.network.MoodTrackingServiceProxy;
+import com.healthapp.dataanalysisservice2.network.UserServiceProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -51,9 +50,6 @@ public class DataCollectorService {
 
 
 
-        // Convert unitedData to JSON string
-//        ConvertToString converter = new ConvertToString();
-//        return converter.objectToString(unitedData);
 
         return  unitedData;
 

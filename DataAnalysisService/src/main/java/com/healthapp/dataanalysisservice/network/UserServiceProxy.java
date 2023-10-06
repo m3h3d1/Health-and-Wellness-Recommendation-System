@@ -11,6 +11,4 @@ public interface UserServiceProxy {
 //    @GetMapping("/user-app/users/read-by-id/{userId}")
     @GetMapping("http://localhost:9090/user-app/users/read-by-id/{userId}")
     public ResponseEntity<Object> getUser(@PathVariable UUID userId);
-
-//    void setBaseUrl(String url);
 }

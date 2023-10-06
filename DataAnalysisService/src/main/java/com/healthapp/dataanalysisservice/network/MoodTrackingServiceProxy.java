@@ -10,6 +10,4 @@ import java.util.UUID;
 public interface MoodTrackingServiceProxy {
     @GetMapping("http://localhost:8700/mental-health/mood-tracking/user/{userId}")
     public ResponseEntity<Object> getMoodTracking(@PathVariable UUID userId);
-
-//    void setBaseUrl(String url);
 }

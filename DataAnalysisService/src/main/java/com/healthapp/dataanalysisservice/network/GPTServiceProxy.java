@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @FeignClient(name = "GPT-APP", configuration = CustomErrorDecoder.class)
 public interface GPTServiceProxy {
-@GetMapping("http://localhost:8010/bot/chat?prompt={prompt}")
-ResponseEntity<Object> getData(@RequestParam("prompt") String prompt);
-
+@GetMapping("http://localhost:9090/gpt-app/bot/chat?prompt={prompt}")
+    ResponseEntity<Object> getData(@RequestParam("prompt") String prompt);
 }

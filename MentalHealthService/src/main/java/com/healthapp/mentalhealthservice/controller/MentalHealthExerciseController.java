@@ -1,6 +1,5 @@
 package com.healthapp.mentalhealthservice.controller;
 
-
 import com.healthapp.mentalhealthservice.dto.MentalHealthExerciseDTO;
 import com.healthapp.mentalhealthservice.entity.MentalHealthExercise;
 import com.healthapp.mentalhealthservice.exception.DataNotFindByUserIdException;
@@ -40,16 +39,6 @@ public class MentalHealthExerciseController {
         return new ResponseEntity<>(exercises, HttpStatus.OK);
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<MentalHealthExercise> getMentalHealthExerciseById(@PathVariable UUID id) {
-//        MentalHealthExercise exercise = exerciseServiceImp.getMentalHealthExerciseById(id);
-//        if (exercise != null) {
-//            return new ResponseEntity<>(exercise, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<MentalHealthExercise> getMentalHealthExerciseById(@PathVariable UUID id) {
         MentalHealthExercise exercise = exerciseServiceImp.getMentalHealthExerciseById(id);
@@ -74,20 +63,21 @@ public class MentalHealthExerciseController {
     public ResponseEntity<MentalHealthExercise> updateMentalHealthExercise(@PathVariable UUID id, @RequestBody MentalHealthExerciseDTO exerciseDTO) {
         MentalHealthExercise updatedExercise = exerciseServiceImp.updateMentalHealthExercise(id, exerciseDTO);
         if (updatedExercise != null) {
+            String successMessage = "MentalHealthExercise updated successfully";
             return new ResponseEntity<>(updatedExercise, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new DataNotFindByUserIdException("No MentalHealth Exercise By this userId");
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMentalHealthExercise(@PathVariable UUID id) {
+    public ResponseEntity<String> deleteMentalHealthExercise(@PathVariable UUID id) {
         boolean deleted = exerciseServiceImp.deleteMentalHealthExercise(id);
         if (deleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            String successMessage = "MentalHealthExercise deleted successfully";
+            return new ResponseEntity<>(successMessage, HttpStatus.NO_CONTENT);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new DataNotFindByUserIdException("No MentalHealth Exercise By this userId");
         }
     }
 }
-

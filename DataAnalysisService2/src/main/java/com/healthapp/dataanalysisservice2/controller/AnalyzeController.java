@@ -1,6 +1,7 @@
-package com.healthapp.dataanalysisservice.controller;
+package com.healthapp.dataanalysisservice2.controller;
 
-import com.healthapp.dataanalysisservice.service.AnalyzeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.healthapp.dataanalysisservice2.service.AnalyzeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +17,12 @@ import java.util.UUID;
 public class AnalyzeController {
     private final AnalyzeService analyzeService;
 
-    @Autowired
     public AnalyzeController(AnalyzeService analyzeService) {
         this.analyzeService = analyzeService;
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<String> analyzeData(@PathVariable UUID userId) {
+    public ResponseEntity<String> analyzeData(@PathVariable UUID userId) throws JsonProcessingException {
         String analysisResult = analyzeService.AnalyzeData(userId);
         return ResponseEntity.ok(analysisResult);
     }

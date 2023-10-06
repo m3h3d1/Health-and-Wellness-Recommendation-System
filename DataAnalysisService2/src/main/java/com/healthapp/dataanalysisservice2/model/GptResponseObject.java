@@ -1,4 +1,4 @@
-package com.healthapp.dataanalysisservice.model;
+package com.healthapp.dataanalysisservice2.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

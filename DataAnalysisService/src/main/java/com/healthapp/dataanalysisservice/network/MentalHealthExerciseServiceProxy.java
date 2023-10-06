@@ -10,6 +10,4 @@ import java.util.UUID;
 public interface MentalHealthExerciseServiceProxy {
     @GetMapping("http://localhost:8700/mental-health/exercises/user/{userId}")
     public ResponseEntity<Object> getMentalHealthExercise(@PathVariable UUID userId);
-
-//    void setBaseUrl(String url);
 }

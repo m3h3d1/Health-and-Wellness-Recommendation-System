@@ -1,8 +1,9 @@
-package com.healthapp.dataanalysisservice.service;
+package com.healthapp.dataanalysisservice2.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.healthapp.dataanalysisservice.model.GptResponseObject;
-import com.healthapp.dataanalysisservice.network.GPTServiceProxy;
+import com.healthapp.dataanalysisservice2.model.GptResponseObject;
+import com.healthapp.dataanalysisservice2.network.GPTServiceProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,12 @@ import java.util.UUID;
 
 @Service
 public class AnalyzeService {
+
+    private final String prefix = "The following text is a string of json data of a particular user,\n" +
+                "now observe the data carefully, what is there. Then analyse those and\n" +
+                "provide your insights. Do not write/reply with any additional message such as\n" +
+                "'I understood your request and here is the analyse data.'  Just write like this:\n";
+
 
     private final DataCollectorService dataCollectorService;
     private final GPTServiceProxy gptServiceProxy;
@@ -21,25 +28,17 @@ public class AnalyzeService {
         this.gptServiceProxy = gptServiceProxy;
     }
 
-    public String AnalyzeData(UUID userId) {
-        try {
+    public String AnalyzeData(UUID userId) throws JsonProcessingException {
+
             // Step 1: Collect JSON data using DataCollectorService
             Object jsonData = dataCollectorService.CollectAllData(userId);
 
             // Serialize jsonData to JSON string
             String jsonDataString = new ObjectMapper().writeValueAsString(jsonData);
             // Step 2: Call the GPT service to analyze the data
-            ResponseEntity<Object> gptResponse = gptServiceProxy.getData(jsonDataString);
+            String gptResponse = gptServiceProxy.getData(prefix+" Here is data: "+jsonDataString);
 
-            // Step 3: Extract the response data from GPT service
-            String analyzedData = extractAnalyzedData(gptResponse);
-
-            return analyzedData;
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Handle exceptions appropriately
-            return "Error occurred during analysis";
-        }
+            return gptResponse;
     }
 
     private String extractAnalyzedData(ResponseEntity<Object> gptResponse) {

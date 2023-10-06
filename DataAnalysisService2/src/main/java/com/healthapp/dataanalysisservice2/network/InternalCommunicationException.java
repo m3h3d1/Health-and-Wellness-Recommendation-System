@@ -1,4 +1,4 @@
-package com.healthapp.dataanalysisservice.network;
+package com.healthapp.dataanalysisservice2.network;
 
 public class InternalCommunicationException extends Exception {
     public InternalCommunicationException(){
