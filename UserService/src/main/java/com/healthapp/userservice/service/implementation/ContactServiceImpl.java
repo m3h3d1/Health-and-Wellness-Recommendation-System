@@ -3,6 +3,8 @@ package com.healthapp.userservice.service.implementation;
 import com.healthapp.userservice.domain.Contact;
 import com.healthapp.userservice.domain.UserEntity;
 import com.healthapp.userservice.exception.ContactUpdateException;
+import com.healthapp.userservice.exception.EmptyResultException;
+import com.healthapp.userservice.exception.UnauthorizedUserException;
 import com.healthapp.userservice.model.Requestdto.ContactRequestDto;
 import com.healthapp.userservice.model.Responsedto.ContactResponseDto;
 import com.healthapp.userservice.model.updatedeletedto.ContactUpdateDto;
@@ -44,7 +46,7 @@ public class ContactServiceImpl implements ContactService {
             userRepository.save(optionalUser.get());
         }
         else{
-            throw new EmptyResultDataAccessException("User",1);
+            throw new EmptyResultException();
         }
     }
 
@@ -91,6 +93,11 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public ContactResponseDto getContactById(UUID userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID authenticatedUserId = UUID.fromString(authentication.getName());
+        if(authenticatedUserId != userId){
+            throw new UnauthorizedUserException();
+        }
         Optional<Contact> optionalContact=contactRepository.findByUserId(userId);
         if(optionalContact.isPresent()){
             Contact contact = optionalContact.get();
@@ -106,7 +113,7 @@ public class ContactServiceImpl implements ContactService {
             return responseDto;
         }
         else{
-            throw new EmptyResultDataAccessException("User",1);
+            throw new EmptyResultException();
         }
     }
 

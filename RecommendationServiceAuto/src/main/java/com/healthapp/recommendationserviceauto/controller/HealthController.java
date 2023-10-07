@@ -1,8 +1,9 @@
 package com.healthapp.recommendationserviceauto.controller;
 
 import com.healthapp.recommendationserviceauto.domain.Health;
-import com.healthapp.recommendationserviceauto.model.*;
-import com.healthapp.recommendationserviceauto.service.HealthService;
+import com.healthapp.recommendationserviceauto.model.entrydatadto.ActivityRequestDto;
+import com.healthapp.recommendationserviceauto.model.requestdto.*;
+import com.healthapp.recommendationserviceauto.service.interfaces.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,4 +60,10 @@ public class HealthController {
         healthService.addActivityData(activityRequestDto);
         return new ResponseEntity<>("Data added successfully!", HttpStatus.CREATED);
     }
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<String> updateHealth(@RequestBody HealthUpdateRequestDto healthUpdateRequestDto, @PathVariable UUID userId) {
+        healthService.updateHealthData(userId, healthUpdateRequestDto);
+        return new ResponseEntity<>("Health data updated!", HttpStatus.OK);
+    }
+
 }

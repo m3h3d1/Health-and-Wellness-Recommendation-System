@@ -18,6 +18,5 @@ public interface UserService {
     List<UserEntity> getAllUsers();
     void changePassword(ChangePasswordDto changePasswordDto);
     void assignRole(AssignRoleDto assignRoleDto, UUID userId);
-    UserResponseDto getUserByEmail(String email);
     void removeRole(UUID userId);
 }

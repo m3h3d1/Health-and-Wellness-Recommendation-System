@@ -1,10 +1,8 @@
 package com.healthapp.recommendationserviceauto.controller;
 
-import com.healthapp.recommendationserviceauto.domain.DietRecommendation;
 import com.healthapp.recommendationserviceauto.domain.SleepRecommendation;
-import com.healthapp.recommendationserviceauto.model.ExerciseRecommendationDto;
-import com.healthapp.recommendationserviceauto.model.SleepRecommendationDto;
-import com.healthapp.recommendationserviceauto.service.SleepService;
+import com.healthapp.recommendationserviceauto.model.recommendationdto.SleepRecommendationDto;
+import com.healthapp.recommendationserviceauto.service.interfaces.SleepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

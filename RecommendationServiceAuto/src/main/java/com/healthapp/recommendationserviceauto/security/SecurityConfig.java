@@ -28,8 +28,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .requestMatchers(HttpMethod.POST, AppConstants.ADD_HEALTH).hasRole("USER")
-                            .anyRequest().permitAll();
+                            .requestMatchers(HttpMethod.POST, AppConstants.ACTIVITY_DATA).hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.POST, AppConstants.EXERCISE_DATA).hasRole("TRAINER")
+                            .requestMatchers(HttpMethod.GET, AppConstants.EXERCISE_RECOMMENDATION).permitAll()
+                            .requestMatchers(HttpMethod.GET, AppConstants.SLEEP_RECOMMENDATION).permitAll()
+                            .requestMatchers(HttpMethod.GET, AppConstants.DIET_RECOMMENDATION).permitAll()
+                            .anyRequest().authenticated();
                 })
                 .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
         ;
