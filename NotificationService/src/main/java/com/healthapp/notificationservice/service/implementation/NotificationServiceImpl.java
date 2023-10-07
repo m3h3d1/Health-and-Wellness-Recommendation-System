@@ -1,11 +1,13 @@
 package com.healthapp.notificationservice.service.implementation;
 
-import com.healthapp.notificationservice.TokenConstants;
 import com.healthapp.notificationservice.entities.Notification;
 import com.healthapp.notificationservice.entities.Preference;
+import com.healthapp.notificationservice.exceptions.ExternalCallForbiddenException;
 import com.healthapp.notificationservice.repository.NotificationRepository;
 import com.healthapp.notificationservice.service.interfaces.NotificationService;
 import com.healthapp.notificationservice.service.interfaces.PreferenceService;
+import com.healthapp.notificationservice.utilities.constants.TokenConstants;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,10 +22,12 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final PreferenceService preferenceService;
+    private final PasswordEncoder passwordEncoder;
 
-    public NotificationServiceImpl(NotificationRepository notificationRepository, PreferenceService preferenceService) {
+    public NotificationServiceImpl(NotificationRepository notificationRepository, PreferenceService preferenceService, PasswordEncoder passwordEncoder) {
         this.notificationRepository = notificationRepository;
         this.preferenceService = preferenceService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -36,7 +40,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void create(UUID userId, String key, Notification notification) {
         if (!key.equals(TokenConstants.TOKEN_SECRET)) {
-            return;
+            throw new ExternalCallForbiddenException();
         }
         notification.setUserId(userId);
         notification.setTimeCreate(LocalDateTime.now());

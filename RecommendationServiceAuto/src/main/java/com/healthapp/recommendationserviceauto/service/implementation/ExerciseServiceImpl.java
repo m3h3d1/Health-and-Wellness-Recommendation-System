@@ -243,4 +243,8 @@ public class ExerciseServiceImpl implements ExerciseService {
     public ExerciseRecommendation getRecommendationById(UUID recommendationId) {
         return exerciseRecommendationRepository.findById(recommendationId).get();
     }
+    @Override
+    public boolean ifExists(UUID recommendationId){
+        return exerciseRecommendationRepository.existsById(recommendationId);
+    }
 }

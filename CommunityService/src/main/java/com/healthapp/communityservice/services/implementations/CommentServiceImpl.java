@@ -7,8 +7,11 @@ import com.healthapp.communityservice.exceptions.NotFoundException;
 import com.healthapp.communityservice.models.commentdto.CommentCreateDTO;
 import com.healthapp.communityservice.models.commentdto.CommentReadDTO;
 import com.healthapp.communityservice.models.commentdto.CommentUpdateDTO;
+import com.healthapp.communityservice.networks.NotificationDTO;
+import com.healthapp.communityservice.networks.NotificationServiceProxy;
 import com.healthapp.communityservice.repositories.CommentRepository;
 import com.healthapp.communityservice.services.interfaces.CommentService;
+import com.healthapp.communityservice.utilities.constants.TokenConstants;
 import com.healthapp.communityservice.utilities.mapping.CommentMapper;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +25,12 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
+    private final NotificationServiceProxy notificationServiceProxy;
 
-    public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper) {
+    public CommentServiceImpl(CommentRepository commentRepository, CommentMapper commentMapper, NotificationServiceProxy notificationServiceProxy) {
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
+        this.notificationServiceProxy = notificationServiceProxy;
     }
 
     /**
@@ -138,6 +143,10 @@ public class CommentServiceImpl implements CommentService {
             throw new InteractionBlockedException("Comment is already liked by the user.");
         }
         commentRepository.save(comment);
+        // Send notification
+        NotificationDTO notification = new NotificationDTO();
+        notification.setText("Your comment \"" + (comment.getContent().length() < 8 ? comment.getContent() : comment.getContent().substring(0, 8)) + "...\" has got a new follower.");
+        notificationServiceProxy.send(comment.getUserId(), TokenConstants.TOKEN_SECRET, notification);
     }
 
     /**

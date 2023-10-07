@@ -179,4 +179,8 @@ public class DietServiceImpl implements DietService {
         return message;
     }
 
+    @Override
+    public boolean ifExists(UUID recommendationId){
+        return dietRecommendationRepository.existsById(recommendationId);
+    }
 }

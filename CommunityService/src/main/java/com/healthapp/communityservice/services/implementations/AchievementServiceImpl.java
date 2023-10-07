@@ -8,9 +8,12 @@ import com.healthapp.communityservice.models.acheivementdto.AchievementDTO;
 import com.healthapp.communityservice.models.acheivementdto.AchievementProgressCreateDTO;
 import com.healthapp.communityservice.models.acheivementdto.AchievementProgressReadDTO;
 import com.healthapp.communityservice.models.acheivementdto.AchievementStatisticsReadDTO;
+import com.healthapp.communityservice.networks.NotificationDTO;
+import com.healthapp.communityservice.networks.NotificationServiceProxy;
 import com.healthapp.communityservice.repositories.AchievementRepository;
 import com.healthapp.communityservice.repositories.AchievementStatisticsRepository;
 import com.healthapp.communityservice.services.interfaces.AchievementService;
+import com.healthapp.communityservice.utilities.constants.TokenConstants;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,10 +27,12 @@ public class AchievementServiceImpl implements AchievementService {
 
     private final AchievementRepository achievementRepository;
     private final AchievementStatisticsRepository achievementStatisticsRepository;
+    private final NotificationServiceProxy notificationServiceProxy;
 
-    public AchievementServiceImpl(AchievementRepository achievementRepository, AchievementStatisticsRepository achievementStatisticsRepository) {
+    public AchievementServiceImpl(AchievementRepository achievementRepository, AchievementStatisticsRepository achievementStatisticsRepository, NotificationServiceProxy notificationServiceProxy) {
         this.achievementRepository = achievementRepository;
         this.achievementStatisticsRepository = achievementStatisticsRepository;
+        this.notificationServiceProxy = notificationServiceProxy;
     }
 
     /**
@@ -121,9 +126,19 @@ public class AchievementServiceImpl implements AchievementService {
             statistics.setProgresses(new ArrayList<>());
         }
         for (AchievementProgress existingProgress : statistics.getProgresses()) {
-            if (existingProgress.getAchievement().getAchievementId()
-                    .equals(achievementProgressDTO.getAchievementId())) {
+            if (existingProgress.getAchievement().getAchievementId().equals(achievementProgressDTO.getAchievementId())) {
+                double previousScore = existingProgress.getScore();
                 existingProgress.setScore(existingProgress.getScore() + achievementProgressDTO.getScore());
+                double currentScore = existingProgress.getScore();
+                if(previousScore < existingProgress.getAchievement().getGoalScore() && currentScore >= existingProgress.getAchievement().getGoalScore()){
+                    // Send notification
+                    NotificationDTO notification = new NotificationDTO();
+                    // Send a notification to the user congratulating for the new achievement
+                    notification.setText("Congratulations, you just achieved a new milestone \"" +
+                            existingProgress.getAchievement().getTitle()
+                            + "\"! Keep up the incredible effort!");
+                    notificationServiceProxy.send(achievementProgressDTO.getUserId(), TokenConstants.TOKEN_SECRET, notification);
+                }
                 achievementStatisticsRepository.save(statistics);
                 return;
             }

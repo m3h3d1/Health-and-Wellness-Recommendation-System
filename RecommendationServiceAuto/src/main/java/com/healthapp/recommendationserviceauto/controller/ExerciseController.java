@@ -39,4 +39,8 @@ public class ExerciseController {
     public ResponseEntity<ExerciseRecommendation> getRecommendationById(@PathVariable UUID recommendId){
         return new ResponseEntity<>(exerciseService.getRecommendationById(recommendId), HttpStatus.OK);
     }
+    @GetMapping("/recommend/if-exists/{recommendId}")
+    public ResponseEntity<Boolean> checkIfRecordExists(@PathVariable UUID recommendId){
+        return new ResponseEntity<Boolean>(exerciseService.ifExists(recommendId), HttpStatus.OK);
+    }
 }

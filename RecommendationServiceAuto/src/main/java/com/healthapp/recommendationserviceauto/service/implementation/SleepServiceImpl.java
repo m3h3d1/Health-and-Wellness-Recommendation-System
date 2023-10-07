@@ -188,4 +188,9 @@ public class SleepServiceImpl implements SleepService {
         return recommendedWakeTime.minusHours(sleepDuration);
     }
 
+    @Override
+    public boolean ifExists(UUID recommendationId){
+        return sleepRecommendationRepository.existsById(recommendationId);
+    }
+
 }
