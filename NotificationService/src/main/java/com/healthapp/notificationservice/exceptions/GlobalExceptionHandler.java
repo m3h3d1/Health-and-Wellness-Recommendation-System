@@ -48,4 +48,21 @@ public class GlobalExceptionHandler {
         // Return an HTTP response with a status code indicating a bad request.
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
+
+    // Exception handler for handling ExternalCallForbiddenException
+    @ExceptionHandler({ExternalCallForbiddenException.class})
+    public ResponseEntity<ErrorResponse> handleExternalCallForbiddenException(ExternalCallForbiddenException e, HttpServletRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getClass().getSimpleName(),
+                "External Call Forbidden",
+                "Forbidden",
+                e.getMessage(),
+                HttpStatus.FORBIDDEN.toString(),
+                new Date(),
+                request.getRequestURI()
+        );
+
+        // Return an HTTP response with a status code indicating a forbidden request.
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+    }
 }
