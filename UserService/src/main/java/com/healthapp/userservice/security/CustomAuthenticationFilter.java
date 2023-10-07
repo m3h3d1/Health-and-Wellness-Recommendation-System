@@ -3,10 +3,9 @@ package com.healthapp.userservice.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.healthapp.userservice.SpringApplicationContext;
-import com.healthapp.userservice.model.UserLoginRequestDto;
-import com.healthapp.userservice.model.UserResponseDto;
-import com.healthapp.userservice.service.UserService;
-import com.healthapp.userservice.service.impl.UserServiceImpl;
+import com.healthapp.userservice.model.Requestdto.UserLoginRequestDto;
+import com.healthapp.userservice.model.Responsedto.UserResponseDto;
+import com.healthapp.userservice.service.interfaces.UserService;
 import com.healthapp.userservice.utils.JWTUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

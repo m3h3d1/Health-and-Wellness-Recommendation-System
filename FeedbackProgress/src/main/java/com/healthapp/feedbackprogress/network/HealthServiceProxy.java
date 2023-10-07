@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
-@FeignClient(name = "recommendation-app", configuration = CustomErrorDecoder.class)
+@FeignClient(name = "RECOMMENDATION-APP", configuration = CustomErrorDecoder.class)
 public interface HealthServiceProxy {
     @GetMapping("/health/{userId}")
     public ResponseEntity<HealthDTO> getHealth(@PathVariable UUID userId);

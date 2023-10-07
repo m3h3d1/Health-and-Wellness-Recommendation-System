@@ -1,6 +1,6 @@
 package com.healthapp.recommendationserviceauto.networkmanager;
 
-import com.healthapp.recommendationserviceauto.model.ProfileResponseDto;
+import com.healthapp.recommendationserviceauto.model.responsedto.ProfileResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,11 +1,10 @@
 package com.healthapp.userservice.controller;
 
 import com.healthapp.userservice.domain.Contact;
-import com.healthapp.userservice.domain.UserEntity;
-import com.healthapp.userservice.model.ContactRequestDto;
-import com.healthapp.userservice.model.ContactResponseDto;
-import com.healthapp.userservice.model.ContactUpdateDto;
-import com.healthapp.userservice.service.ContactService;
+import com.healthapp.userservice.model.Requestdto.ContactRequestDto;
+import com.healthapp.userservice.model.Responsedto.ContactResponseDto;
+import com.healthapp.userservice.model.updatedeletedto.ContactUpdateDto;
+import com.healthapp.userservice.service.interfaces.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

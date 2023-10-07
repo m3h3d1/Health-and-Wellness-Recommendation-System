@@ -1,15 +1,14 @@
 package com.healthapp.recommendationserviceauto.controller;
 
-import com.healthapp.recommendationserviceauto.domain.Exercise;
 import com.healthapp.recommendationserviceauto.domain.Health;
-import com.healthapp.recommendationserviceauto.model.*;
-import com.healthapp.recommendationserviceauto.service.HealthService;
+import com.healthapp.recommendationserviceauto.model.entrydatadto.ActivityRequestDto;
+import com.healthapp.recommendationserviceauto.model.requestdto.*;
+import com.healthapp.recommendationserviceauto.service.interfaces.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -41,14 +40,30 @@ public class HealthController {
         healthService.addWeight(userId,weightRequestDto);
         return new ResponseEntity<>("Weight Data added!", HttpStatus.CREATED);
     }
+    @PostMapping("/add-height/{userId}")
+    public ResponseEntity<String> addHeight(@RequestBody HeightRequestDto heightRequestDto, @PathVariable UUID userId) {
+        healthService.addHeight(userId,heightRequestDto);
+        return new ResponseEntity<>("Height Data added!", HttpStatus.CREATED);
+    }
     @PostMapping("/add-disease/{userId}")
     public ResponseEntity<String> addDisease(@RequestBody DiseaseRequestDto diseaseRequestDto, @PathVariable UUID userId) {
         healthService.addDisease(userId,diseaseRequestDto);
         return new ResponseEntity<>("Disease Data added!", HttpStatus.CREATED);
     }
     @PostMapping("/add-extra-data/{userId}")
-    public ResponseEntity<String> addSmokingAllergyData(@RequestBody SmokerAllergyRequestDto smokerAllergyRequestDto, @PathVariable UUID userId) {
-        healthService.addSmokerAllergyData(userId,smokerAllergyRequestDto);
+    public ResponseEntity<String> addSmokingAllergyData(@RequestBody ExtraRequestDto smokerAllergyRequestDto, @PathVariable UUID userId) {
+        healthService.addExtraData(userId,smokerAllergyRequestDto);
         return new ResponseEntity<>("Data added successfully!", HttpStatus.CREATED);
     }
+    @PostMapping("/add-activity")
+    public ResponseEntity<String> addActivity(@RequestBody ActivityRequestDto activityRequestDto) {
+        healthService.addActivityData(activityRequestDto);
+        return new ResponseEntity<>("Data added successfully!", HttpStatus.CREATED);
+    }
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<String> updateHealth(@RequestBody HealthUpdateRequestDto healthUpdateRequestDto, @PathVariable UUID userId) {
+        healthService.updateHealthData(userId, healthUpdateRequestDto);
+        return new ResponseEntity<>("Health data updated!", HttpStatus.OK);
+    }
+
 }

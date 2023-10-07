@@ -3,6 +3,7 @@ package com.healthapp.communityservice.controllers;
 import com.healthapp.communityservice.models.commentdto.CommentCreateDTO;
 import com.healthapp.communityservice.models.commentdto.CommentUpdateDTO;
 import com.healthapp.communityservice.services.interfaces.CommentService;
+import com.healthapp.communityservice.utilities.token.IDExtractor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,23 +59,23 @@ public class CommentController {
     }
 
     // Add a "like" interaction to a comment
-    @PostMapping("/interactions/{commentId}/add-like/{userId}")
-    public ResponseEntity<String> addLike(@PathVariable UUID commentId, @PathVariable UUID userId){
-        commentService.addLike(commentId, userId);
+    @PostMapping("/interactions/{commentId}/add-like")
+    public ResponseEntity<String> addLike(@PathVariable UUID commentId){
+        commentService.addLike(commentId, IDExtractor.getUserID());
         return new ResponseEntity<>("Comment liked.", HttpStatus.OK);
     }
 
     // Add a "dislike" interaction to a comment
-    @PostMapping("/interactions/{commentId}/add-dislike/{userId}")
-    public ResponseEntity<String> addDislike(@PathVariable UUID commentId, @PathVariable UUID userId){
-        commentService.addDislike(commentId, userId);
+    @PostMapping("/interactions/{commentId}/add-dislike")
+    public ResponseEntity<String> addDislike(@PathVariable UUID commentId){
+        commentService.addDislike(commentId, IDExtractor.getUserID());
         return new ResponseEntity<>("Comment disliked.", HttpStatus.OK);
     }
 
     // Remove a like or dislike interaction from a comment
-    @DeleteMapping("/interactions/{commentId}/remove-interaction/{userId}")
-    public ResponseEntity<String> removeInteraction(@PathVariable UUID commentId, @PathVariable UUID userId){
-        commentService.removeInteraction(commentId, userId);
+    @DeleteMapping("/interactions/{commentId}/remove-interaction")
+    public ResponseEntity<String> removeInteraction(@PathVariable UUID commentId){
+        commentService.removeInteraction(commentId, IDExtractor.getUserID());
         return new ResponseEntity<>("Like/Dislike removed.", HttpStatus.OK);
     }
 }

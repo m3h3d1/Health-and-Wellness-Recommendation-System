@@ -15,7 +15,8 @@ public class BloodPressure {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private LocalDateTime dateTime;
-    private Double pressure;
+    private Double highPressure;
+    private Double lowPressure;
 
     @ManyToOne
     @JsonIgnore

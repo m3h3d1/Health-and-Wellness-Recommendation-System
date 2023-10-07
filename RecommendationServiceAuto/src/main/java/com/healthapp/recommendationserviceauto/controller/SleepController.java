@@ -1,8 +1,8 @@
 package com.healthapp.recommendationserviceauto.controller;
 
-import com.healthapp.recommendationserviceauto.model.ExerciseRecommendationDto;
-import com.healthapp.recommendationserviceauto.model.SleepRecommendationDto;
-import com.healthapp.recommendationserviceauto.service.SleepService;
+import com.healthapp.recommendationserviceauto.domain.SleepRecommendation;
+import com.healthapp.recommendationserviceauto.model.recommendationdto.SleepRecommendationDto;
+import com.healthapp.recommendationserviceauto.service.interfaces.SleepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,5 +21,13 @@ public class SleepController {
     @GetMapping("/recommend/{userId}")
     public ResponseEntity<SleepRecommendationDto> getRecommendation(@PathVariable UUID userId){
         return new ResponseEntity<>(sleepService.recommend(userId), HttpStatus.OK);
+    }
+    @GetMapping("/{recommendId}")
+    public ResponseEntity<SleepRecommendation> getRecommendationById(@PathVariable UUID recommendId){
+        return new ResponseEntity<>(sleepService.getRecommendationById(recommendId), HttpStatus.OK);
+    }
+    @GetMapping("/recommend/if-exists/{recommendId}")
+    public ResponseEntity<Boolean> checkIfRecordExists(@PathVariable UUID recommendId){
+        return new ResponseEntity<Boolean>(sleepService.ifExists(recommendId), HttpStatus.OK);
     }
 }
