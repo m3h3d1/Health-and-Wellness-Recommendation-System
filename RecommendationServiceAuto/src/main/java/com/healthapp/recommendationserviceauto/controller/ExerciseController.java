@@ -1,12 +1,10 @@
 package com.healthapp.recommendationserviceauto.controller;
 
-import com.healthapp.recommendationserviceauto.domain.DietRecommendation;
 import com.healthapp.recommendationserviceauto.domain.Exercise;
 import com.healthapp.recommendationserviceauto.domain.ExerciseRecommendation;
-import com.healthapp.recommendationserviceauto.model.ExerciseRecommendationDto;
-import com.healthapp.recommendationserviceauto.model.ExerciseRequestDto;
-import com.healthapp.recommendationserviceauto.model.HealthRequestDto;
-import com.healthapp.recommendationserviceauto.service.ExerciseService;
+import com.healthapp.recommendationserviceauto.model.recommendationdto.ExerciseRecommendationDto;
+import com.healthapp.recommendationserviceauto.model.entrydatadto.ExerciseRequestDto;
+import com.healthapp.recommendationserviceauto.service.interfaces.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

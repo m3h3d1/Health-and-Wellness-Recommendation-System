@@ -3,6 +3,7 @@ package com.healthapp.userservice.service.implementation;
 import com.healthapp.userservice.domain.BloodGroupEnum;
 import com.healthapp.userservice.domain.Profile;
 import com.healthapp.userservice.domain.UserEntity;
+import com.healthapp.userservice.exception.EmptyResultException;
 import com.healthapp.userservice.exception.ProfileUpdateException;
 import com.healthapp.userservice.model.Requestdto.HealthRequestDto;
 import com.healthapp.userservice.model.Requestdto.ProfileRequestDto;
@@ -59,7 +60,7 @@ public class ProfileServiceImpl implements ProfileService {
             userRepository.save(optionalUser.get());
         }
         else{
-            throw new EmptyResultDataAccessException("User",1);
+            throw new EmptyResultException();
         }
     }
 
@@ -91,6 +92,19 @@ public class ProfileServiceImpl implements ProfileService {
                 profileRepository.save(profile);
                 userEntity.setProfile(profile);
                 userRepository.save(userEntity);
+
+                // Update health data using the Feign client
+                healthFeignClient.updateHealthInfo(
+                        UUID.fromString(authentication.getName()),
+                        new ProfileUpdateDto(
+                                profile.getGender(),
+                                profile.getDateOfBirth(),
+                                profile.getBloodGroup().toString(),
+                                profile.getVegetarian(),
+                                profile.getGoalWeight(),
+                                profile.getTargetPeriod()
+                        )
+                );
             } catch (Exception ex) {
                 throw new ProfileUpdateException();
             }
@@ -113,7 +127,7 @@ public class ProfileServiceImpl implements ProfileService {
             return responseDto;
         }
         else{
-            throw new EmptyResultDataAccessException("User",1);
+            throw new EmptyResultException();
         }
     }
 

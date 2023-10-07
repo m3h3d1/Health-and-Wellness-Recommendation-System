@@ -3,6 +3,7 @@ package com.healthapp.userservice.service.implementation;
 import com.healthapp.userservice.domain.Role;
 import com.healthapp.userservice.domain.RoleEnum;
 import com.healthapp.userservice.domain.UserEntity;
+import com.healthapp.userservice.exception.EmptyResultException;
 import com.healthapp.userservice.exception.PasswordException;
 import com.healthapp.userservice.exception.UserUpdateException;
 import com.healthapp.userservice.model.Requestdto.*;
@@ -104,7 +105,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return responseDto;
         }
         else{
-            throw new EmptyResultDataAccessException("User",1);
+            throw new EmptyResultException();
         }
     }
 
@@ -125,7 +126,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             }
         }
         else{
-            throw new EmptyResultDataAccessException("User",1);
+            throw new EmptyResultException();
         }
     }
 
@@ -138,17 +139,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             userRepository.save(user);
         }
         else{
-            throw new EmptyResultDataAccessException("User",1);
+            throw new EmptyResultException();
         }
-    }
-
-    @Override
-    public UserResponseDto getUserByEmail(String email) {
-        Optional<UserEntity> user = userRepository.findByEmail(email);
-        if (user.isEmpty()) throw new UsernameNotFoundException("No record found");
-        UserResponseDto returnValue = new UserResponseDto();
-        BeanUtils.copyProperties(user, returnValue);
-        return returnValue;
     }
 
     @Override

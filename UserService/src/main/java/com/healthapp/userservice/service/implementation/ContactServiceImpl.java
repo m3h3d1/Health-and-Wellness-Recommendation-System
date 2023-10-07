@@ -3,6 +3,7 @@ package com.healthapp.userservice.service.implementation;
 import com.healthapp.userservice.domain.Contact;
 import com.healthapp.userservice.domain.UserEntity;
 import com.healthapp.userservice.exception.ContactUpdateException;
+import com.healthapp.userservice.exception.EmptyResultException;
 import com.healthapp.userservice.model.Requestdto.ContactRequestDto;
 import com.healthapp.userservice.model.Responsedto.ContactResponseDto;
 import com.healthapp.userservice.model.updatedeletedto.ContactUpdateDto;
@@ -44,7 +45,7 @@ public class ContactServiceImpl implements ContactService {
             userRepository.save(optionalUser.get());
         }
         else{
-            throw new EmptyResultDataAccessException("User",1);
+            throw new EmptyResultException();
         }
     }
 
@@ -106,7 +107,7 @@ public class ContactServiceImpl implements ContactService {
             return responseDto;
         }
         else{
-            throw new EmptyResultDataAccessException("User",1);
+            throw new EmptyResultException();
         }
     }
 

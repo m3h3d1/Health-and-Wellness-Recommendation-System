@@ -35,6 +35,16 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler({EmptyResultException.class})
+    public ResponseEntity<ErrorResponse> handleEmptyDataException(EmptyResultException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "EmptyResultException",
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.toString(),
+                new Date()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(ContactUpdateException.class)
     public ResponseEntity<ErrorResponse> handleContactUpdateException(ContactUpdateException ex) {
