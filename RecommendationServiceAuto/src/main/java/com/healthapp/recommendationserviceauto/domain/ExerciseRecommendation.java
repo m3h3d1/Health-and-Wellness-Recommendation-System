@@ -23,7 +23,8 @@ public class ExerciseRecommendation {
     private UUID userId;
     private LocalDateTime dateTime;
     private Double sugarLevel;
-    private Double bloodPressure;
+    private Double lowBloodPressure;
+    private Double highBloodPressure;
     private Integer age;
     private Double weight;
     private Integer goalWeight;
