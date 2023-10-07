@@ -15,4 +15,5 @@ public interface ExerciseService {
     List<Exercise> getAllExercise();
     List<ExerciseRecommendation> getAllExerciseRecommendations();
     ExerciseRecommendation getRecommendationById(UUID recommendationId);
+    boolean ifExists(UUID recommendationId);
 }

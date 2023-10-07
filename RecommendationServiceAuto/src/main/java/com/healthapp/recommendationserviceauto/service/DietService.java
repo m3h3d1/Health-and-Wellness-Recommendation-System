@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface DietService {
     DietRecommendationDto recommend(UUID userId);
     DietRecommendation getRecommendationById(UUID recommendationId);
+    boolean ifExists(UUID recommendationId);
 }
