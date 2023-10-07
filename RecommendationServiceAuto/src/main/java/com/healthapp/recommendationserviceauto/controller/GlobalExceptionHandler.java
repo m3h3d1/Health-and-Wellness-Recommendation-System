@@ -1,10 +1,6 @@
-package com.healthapp.userservice.controller;
+package com.healthapp.recommendationserviceauto.controller;
 
-import com.healthapp.userservice.exception.*;
-import jakarta.validation.Constraint;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import org.springframework.dao.DataIntegrityViolationException;
+import com.healthapp.recommendationserviceauto.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,27 +20,6 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorResponse> handleValidationException(ConstraintViolationException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                "ConstraintViolationException",
-                "Please provide the valid and required data",
-                HttpStatus.BAD_REQUEST.toString(),
-                new Date()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler({DataIntegrityViolationException.class})
-    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                "DataIntegrityViolationException",
-                "Duplicate entry is not allowed",
-                HttpStatus.BAD_REQUEST.toString(),
-                new Date()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
     @ExceptionHandler({EmptyResultException.class})
     public ResponseEntity<ErrorResponse> handleEmptyDataException(EmptyResultException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
@@ -55,43 +30,40 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(ContactUpdateException.class)
-    public ResponseEntity<ErrorResponse> handleContactUpdateException(ContactUpdateException ex) {
+    @ExceptionHandler({BloodPressureException.class})
+    public ResponseEntity<ErrorResponse> handleBloodPressureException(BloodPressureException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
-                "ContactUpdateException",
+                "BloodPressureException",
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST.toString(),
                 new Date()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(ProfileUpdateException.class)
-    public ResponseEntity<ErrorResponse> handleProfileUpdateException(ProfileUpdateException ex) {
+    @ExceptionHandler({SugarLevelException.class})
+    public ResponseEntity<ErrorResponse> handleSugarLevelException(SugarLevelException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
-                "ProfileUpdateException",
+                "SugarLevelException",
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST.toString(),
                 new Date()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(UserUpdateException.class)
-    public ResponseEntity<ErrorResponse> handleUserUpdateException(UserUpdateException ex) {
+    @ExceptionHandler({WeightException.class})
+    public ResponseEntity<ErrorResponse> handleWeightException(WeightException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
-                "UserUpdateException",
+                "WeightException",
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST.toString(),
                 new Date()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(PasswordException.class)
-    public ResponseEntity<ErrorResponse> handlePasswordException(PasswordException ex) {
+    @ExceptionHandler({HeightException.class})
+    public ResponseEntity<ErrorResponse> handleHeightException(HeightException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
-                "PasswordException",
+                "HeightException",
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST.toString(),
                 new Date()
