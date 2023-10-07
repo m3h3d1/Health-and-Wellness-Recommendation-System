@@ -52,8 +52,12 @@ public class HealthServiceImpl implements HealthService {
     @Override
     public void addHealthData(UUID userId, HealthRequestDto healthRequestDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID authenticatedUserId = UUID.fromString(authentication.getName());
+        if(authenticatedUserId != userId){
+            throw new UnauthorizedUserException();
+        }
         Health health = new Health();
-        health.setUserId(UUID.fromString(authentication.getName()));
+        health.setUserId(authenticatedUserId);
         health.setGender(healthRequestDto.getGender());
         health.setAge(calculateAge(healthRequestDto.getDateOfBirth()));
         health.setGoalWeight(healthRequestDto.getGoalWeight());
@@ -63,6 +67,11 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void addBloodPressureData(UUID userId, BloodPressureRequestDto bloodPressureRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID authenticatedUserId = UUID.fromString(authentication.getName());
+        if(authenticatedUserId != userId){
+            throw new UnauthorizedUserException();
+        }
         if (bloodPressureRequestDto.getHighPressure() > 190) {
             throw new BloodPressureException(BloodPressureException.HIGH_PRESSURE_MESSAGE);
         }
@@ -90,6 +99,11 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void addSugarLevelData(UUID userId, SugarLevelDto sugarLevelDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID authenticatedUserId = UUID.fromString(authentication.getName());
+        if(authenticatedUserId != userId){
+            throw new UnauthorizedUserException();
+        }
         if (sugarLevelDto.getSugarLevel() > 250.0) {
             throw new SugarLevelException(SugarLevelException.HIGH_SUGAR_MESSAGE);
         }
@@ -116,6 +130,12 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void addWeight(UUID userId, WeightRequestDto weightRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID authenticatedUserId = UUID.fromString(authentication.getName());
+        if(authenticatedUserId != userId){
+            throw new UnauthorizedUserException();
+        }
+
         double weightInKg = weightRequestDto.getWeightInKg();
 
         if (weightInKg <5.0) {
@@ -144,6 +164,11 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void addHeight(UUID userId, HeightRequestDto heightRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID authenticatedUserId = UUID.fromString(authentication.getName());
+        if(authenticatedUserId != userId){
+            throw new UnauthorizedUserException();
+        }
         Double heightInCm = heightRequestDto.getHeight();
 
         if (heightInCm < 100) {
@@ -172,6 +197,11 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void addDisease(UUID userID, DiseaseRequestDto diseaseRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID authenticatedUserId = UUID.fromString(authentication.getName());
+        if(authenticatedUserId != userID){
+            throw new UnauthorizedUserException();
+        }
         Disease disease = new Disease();
         disease.setDiseaseName(diseaseRequestDto.getDiseaseName());
         disease.setNote(diseaseRequestDto.getNote());
@@ -197,6 +227,11 @@ public class HealthServiceImpl implements HealthService {
 
     @Override
     public void addExtraData(UUID userId, ExtraRequestDto extraRequestDto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID authenticatedUserId = UUID.fromString(authentication.getName());
+        if(authenticatedUserId != userId){
+            throw new UnauthorizedUserException();
+        }
         Optional<Health> healthOptional = healthRepository.findByUserId(userId);
         if (healthOptional.isPresent()) {
             Health health = healthOptional.get();

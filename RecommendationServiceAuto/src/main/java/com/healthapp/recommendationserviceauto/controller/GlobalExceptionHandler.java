@@ -10,6 +10,16 @@ import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "UnhandledException",
+                "An unhandled exception occurred: " + ex.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR.toString(),
+                new Date()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     @ExceptionHandler({EmptyResultException.class})
     public ResponseEntity<ErrorResponse> handleEmptyDataException(EmptyResultException ex) {
         ErrorResponse errorResponse = new ErrorResponse(
@@ -59,5 +69,15 @@ public class GlobalExceptionHandler {
                 new Date()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(UnauthorizedUserException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedUserException(UnauthorizedUserException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "UnauthorizedUserException",
+                ex.getMessage(),
+                HttpStatus.FORBIDDEN.toString(),
+                new Date()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
 }

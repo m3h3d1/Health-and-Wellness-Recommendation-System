@@ -5,6 +5,7 @@ import com.healthapp.userservice.domain.Profile;
 import com.healthapp.userservice.domain.UserEntity;
 import com.healthapp.userservice.exception.EmptyResultException;
 import com.healthapp.userservice.exception.ProfileUpdateException;
+import com.healthapp.userservice.exception.UnauthorizedUserException;
 import com.healthapp.userservice.model.Requestdto.HealthRequestDto;
 import com.healthapp.userservice.model.Requestdto.ProfileRequestDto;
 import com.healthapp.userservice.model.Responsedto.ProfileResponseDto;
@@ -114,6 +115,11 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileResponseDto findById(UUID userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID authenticatedUserId = UUID.fromString(authentication.getName());
+        if(authenticatedUserId != userId){
+            throw new UnauthorizedUserException();
+        }
         Optional<Profile> optionalProfile=profileRepository.findByUserId(userId);
         if(optionalProfile.isPresent()){
             Profile profile = optionalProfile.get();
