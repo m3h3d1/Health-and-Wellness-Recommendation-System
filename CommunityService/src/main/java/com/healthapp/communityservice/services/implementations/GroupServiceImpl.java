@@ -6,9 +6,12 @@ import com.healthapp.communityservice.enums.GroupMemberRole;
 import com.healthapp.communityservice.exceptions.InteractionBlockedException;
 import com.healthapp.communityservice.exceptions.NotFoundException;
 import com.healthapp.communityservice.models.groupdto.GroupDTO;
+import com.healthapp.communityservice.networks.NotificationDTO;
+import com.healthapp.communityservice.networks.NotificationServiceProxy;
 import com.healthapp.communityservice.repositories.GroupRepository;
 import com.healthapp.communityservice.repositories.MembershipRepository;
 import com.healthapp.communityservice.services.interfaces.GroupService;
+import com.healthapp.communityservice.utilities.constants.TokenConstants;
 import com.healthapp.communityservice.utilities.mapping.GroupMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +24,13 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final MembershipRepository membershipRepository;
     private final GroupMapper groupMapping;
+    private final NotificationServiceProxy notificationServiceProxy;
 
-    public GroupServiceImpl(GroupRepository groupRepository, MembershipRepository membershipRepository, GroupMapper groupMapping) {
+    public GroupServiceImpl(GroupRepository groupRepository, MembershipRepository membershipRepository, GroupMapper groupMapping, NotificationServiceProxy notificationServiceProxy) {
         this.groupRepository = groupRepository;
         this.membershipRepository = membershipRepository;
         this.groupMapping = groupMapping;
+        this.notificationServiceProxy = notificationServiceProxy;
     }
 
     /**
@@ -89,6 +94,13 @@ public class GroupServiceImpl implements GroupService {
         group.setName(groupDTO.getName());
         group.setDescription(groupDTO.getDescription());
         groupRepository.save(group);
+
+        // Send notification
+        NotificationDTO notification = new NotificationDTO();
+        group.getMembers().forEach(member -> {
+            notification.setText("Your group \"" + (group.getName().length()+ "\" has been updated its info. Go and have a look!"));
+            notificationServiceProxy.send(member.getUserId(), TokenConstants.TOKEN_SECRET, notification);
+        });
     }
 
     /**
@@ -125,6 +137,19 @@ public class GroupServiceImpl implements GroupService {
         membership.setRole(role);
         membership.setCommunity(group);
         membershipRepository.save(membership);
+
+        // Send notification
+        NotificationDTO notification = new NotificationDTO();
+        // Send a notification to the user who joined the group
+        notification.setText("Welcome to \"" + group.getName() + "\". Connect and grow with the community!");
+        notificationServiceProxy.send(userId, TokenConstants.TOKEN_SECRET, notification);
+        // Send notification to all admin and moderators
+        group.getMembers().forEach(member -> {
+            if(member.getRole().equals(GroupMemberRole.ADMIN) || member.getRole().equals(GroupMemberRole.MODERATOR)){
+                notification.setText("Your group \"" + (group.getName().length()+ "\" has got a new member."));
+                notificationServiceProxy.send(member.getUserId(), TokenConstants.TOKEN_SECRET, notification);
+            }
+        });
     }
 
     /**
@@ -144,5 +169,11 @@ public class GroupServiceImpl implements GroupService {
         group.getMembers().remove(member);
         // Delete the record from the database
         membershipRepository.delete(member);
+
+        // Send notification
+        NotificationDTO notification = new NotificationDTO();
+        // Send a notification to the user who got kicked out of the group
+        notification.setText("You are removed from the group \"" + group.getName() + "\".");
+        notificationServiceProxy.send(userId, TokenConstants.TOKEN_SECRET, notification);
     }
 }
