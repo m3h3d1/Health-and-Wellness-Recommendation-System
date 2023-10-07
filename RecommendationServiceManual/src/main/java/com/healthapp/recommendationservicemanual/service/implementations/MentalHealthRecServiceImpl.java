@@ -13,16 +13,33 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * MentalHealthRecServiceImpl is the implementation of the MentalHealthRecService interface for managing MentalHealthRecommendation entities.
+ */
 @Service
 public class MentalHealthRecServiceImpl implements MentalHealthRecService {
     private final MentalHealthRecRepository mentalHealthRecRepository;
     private final RecommendationAutoMentalProxy recommendationAutoMentalProxy;
 
+    /**
+     * Constructs a MentalHealthRecServiceImpl instance with the required dependencies.
+     *
+     * @param mentalHealthRecRepository     The repository for managing MentalHealthRecommendation entities.
+     * @param recommendationAutoMentalProxy The proxy for making remote calls to the mental health recommendation service.
+     */
     public MentalHealthRecServiceImpl(MentalHealthRecRepository mentalHealthRecRepository, RecommendationAutoMentalProxy recommendationAutoMentalProxy) {
         this.mentalHealthRecRepository = mentalHealthRecRepository;
         this.recommendationAutoMentalProxy = recommendationAutoMentalProxy;
     }
 
+    /**
+     * Creates a new MentalHealthRecommendation entity.
+     *
+     * @param mentalHealthRecommendation The MentalHealthRecommendation to create.
+     * @throws InternalServerErrorException If there is an issue communicating with the auto recommendation service.
+     * @throws EntityNotFoundException     If no automated recommendation record exists with the given ID.
+     * @throws DuplicateEntityException     If a recommendation with the same ID already exists.
+     */
     @Override
     public void create(MentalHealthRecommendation mentalHealthRecommendation) {
         ResponseEntity<Boolean> response = recommendationAutoMentalProxy.ifExistsMentalHealthRec(mentalHealthRecommendation.getMentalHealthRecId());
@@ -39,18 +56,37 @@ public class MentalHealthRecServiceImpl implements MentalHealthRecService {
         mentalHealthRecRepository.save(mentalHealthRecommendation);
     }
 
+    /**
+     * Reads a MentalHealthRecommendation entity by its ID.
+     *
+     * @param recId The ID of the MentalHealthRecommendation to read.
+     * @return The MentalHealthRecommendation with the specified ID.
+     * @throws EntityNotFoundException If no MentalHealthRecommendation is found with the given ID.
+     */
     @Override
     public MentalHealthRecommendation readById(UUID recId) {
         return mentalHealthRecRepository.findById(recId)
                 .orElseThrow(() -> new EntityNotFoundException("Mental health recommendation not found with ID: " + recId));
     }
 
+    /**
+     * Updates a MentalHealthRecommendation entity.
+     *
+     * @param mentalHealthRecommendation The MentalHealthRecommendation to update.
+     * @throws EntityNotFoundException If no MentalHealthRecommendation is found with the ID of the provided MentalHealthRecommendation.
+     */
     @Override
     public void update(MentalHealthRecommendation mentalHealthRecommendation) {
         readById(mentalHealthRecommendation.getMentalHealthRecId());
         mentalHealthRecRepository.save(mentalHealthRecommendation);
     }
 
+    /**
+     * Deletes a MentalHealthRecommendation entity.
+     *
+     * @param mentalHealthRecommendation The MentalHealthRecommendation to delete.
+     * @throws EntityNotFoundException If no MentalHealthRecommendation is found with the ID of the provided MentalHealthRecommendation.
+     */
     @Override
     public void delete(MentalHealthRecommendation mentalHealthRecommendation) {
         readById(mentalHealthRecommendation.getMentalHealthRecId());

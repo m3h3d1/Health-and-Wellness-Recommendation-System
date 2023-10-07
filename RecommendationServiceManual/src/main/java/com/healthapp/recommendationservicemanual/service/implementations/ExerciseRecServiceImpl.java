@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+/**
+ * ExerciseRecServiceImpl is the implementation of the ExerciseRecService interface for managing ExerciseRecommendation entities.
+ */
 @Service
 public class ExerciseRecServiceImpl implements ExerciseRecService {
     private final ExerciseRecRepository exerciseRecRepository;
@@ -25,6 +28,14 @@ public class ExerciseRecServiceImpl implements ExerciseRecService {
         this.recommendationAutoProxy = recommendationAutoProxy;
     }
 
+    /**
+     * Creates a new ExerciseRecommendation entity.
+     *
+     * @param exerciseRecommendation The ExerciseRecommendation to create.
+     * @throws InternalServerErrorException If there is an issue communicating with the auto recommendation service.
+     * @throws EntityNotFoundException     If no automated recommendation record exists with the given ID.
+     * @throws DuplicateEntityException     If a recommendation with the same ID already exists.
+     */
     @Override
     public void create(ExerciseRecommendation exerciseRecommendation) {
         ResponseEntity<Boolean> response = recommendationAutoProxy.ifExistsExerciseRec(exerciseRecommendation.getExerciseRecommendationId());
@@ -41,18 +52,37 @@ public class ExerciseRecServiceImpl implements ExerciseRecService {
         exerciseRecRepository.save(exerciseRecommendation);
     }
 
+    /**
+     * Reads an ExerciseRecommendation entity by its ID.
+     *
+     * @param recId The ID of the ExerciseRecommendation to read.
+     * @return The ExerciseRecommendation with the specified ID.
+     * @throws EntityNotFoundException If no ExerciseRecommendation is found with the given ID.
+     */
     @Override
     public ExerciseRecommendation readById(UUID recId) {
         return exerciseRecRepository.findById(recId)
                 .orElseThrow(() -> new EntityNotFoundException("Exercise recommendation not found with ID: " + recId));
     }
 
+    /**
+     * Updates an ExerciseRecommendation entity.
+     *
+     * @param exerciseRecommendation The ExerciseRecommendation to update.
+     * @throws EntityNotFoundException If no ExerciseRecommendation is found with the ID of the provided ExerciseRecommendation.
+     */
     @Override
     public void update(ExerciseRecommendation exerciseRecommendation) {
         readById(exerciseRecommendation.getExerciseRecommendationId());
         exerciseRecRepository.save(exerciseRecommendation);
     }
 
+    /**
+     * Deletes an ExerciseRecommendation entity.
+     *
+     * @param exerciseRecommendation The ExerciseRecommendation to to delete.
+     * @throws EntityNotFoundException If no ExerciseRecommendation is found with the ID of the provided ExerciseRecommendation.
+     */
     @Override
     public void delete(ExerciseRecommendation exerciseRecommendation) {
         readById(exerciseRecommendation.getExerciseRecommendationId());
