@@ -1,4 +1,4 @@
-package com.healthapp.notificationservice.config;
+package com.healthapp.recommendationservicemanual.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,12 +1,15 @@
-package com.healthapp.recommendationservicemanual.service.impl;
+package com.healthapp.recommendationservicemanual.service.implementations;
 
 import com.healthapp.recommendationservicemanual.entities.ExerciseRecommendation;
+import com.healthapp.recommendationservicemanual.exceptions.DuplicateEntityException;
 import com.healthapp.recommendationservicemanual.exceptions.EntityNotFoundException;
 import com.healthapp.recommendationservicemanual.exceptions.InternalServerErrorException;
-import com.healthapp.recommendationservicemanual.exceptions.ValidationException;
+import com.healthapp.recommendationservicemanual.networks.RecommendationAutoProxy;
 import com.healthapp.recommendationservicemanual.repositories.ExerciseRecRepository;
 import com.healthapp.recommendationservicemanual.service.interfaces.ExerciseRecService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,19 +17,28 @@ import java.util.UUID;
 @Service
 public class ExerciseRecServiceImpl implements ExerciseRecService {
     private final ExerciseRecRepository exerciseRecRepository;
+    private final RecommendationAutoProxy recommendationAutoProxy;
 
     @Autowired
-    public ExerciseRecServiceImpl(ExerciseRecRepository exerciseRecRepository) {
+    public ExerciseRecServiceImpl(ExerciseRecRepository exerciseRecRepository, RecommendationAutoProxy recommendationAutoProxy) {
         this.exerciseRecRepository = exerciseRecRepository;
+        this.recommendationAutoProxy = recommendationAutoProxy;
     }
 
     @Override
     public void create(ExerciseRecommendation exerciseRecommendation) {
-        try {
-            exerciseRecRepository.save(exerciseRecommendation);
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Failed to create exercise recommendation.");
+        ResponseEntity<Boolean> response = recommendationAutoProxy.ifExistsExerciseRec(exerciseRecommendation.getExerciseRecommendationId());
+        if(response.getStatusCode() != HttpStatus.OK) {
+            throw new InternalServerErrorException("Failed to communicate with auto recommendation service");
         }
+        if(!response.getBody()) {
+            throw new EntityNotFoundException("There is no automated recommendation record exists with given ID"
+                    + exerciseRecommendation.getExerciseRecommendationId());
+        }
+        if(exerciseRecRepository.existsById(exerciseRecommendation.getExerciseRecommendationId())){
+            throw new DuplicateEntityException("Can't create recommendation as the recommendation already exists, try to update!");
+        }
+        exerciseRecRepository.save(exerciseRecommendation);
     }
 
     @Override
@@ -37,19 +49,13 @@ public class ExerciseRecServiceImpl implements ExerciseRecService {
 
     @Override
     public void update(ExerciseRecommendation exerciseRecommendation) {
-        try {
-            exerciseRecRepository.save(exerciseRecommendation);
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Failed to update exercise recommendation.");
-        }
+        readById(exerciseRecommendation.getExerciseRecommendationId());
+        exerciseRecRepository.save(exerciseRecommendation);
     }
 
     @Override
     public void delete(ExerciseRecommendation exerciseRecommendation) {
-        try {
-            exerciseRecRepository.delete(exerciseRecommendation);
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Failed to delete exercise recommendation.");
-        }
+        readById(exerciseRecommendation.getExerciseRecommendationId());
+        exerciseRecRepository.delete(exerciseRecommendation);
     }
 }

@@ -1,4 +1,4 @@
-package com.healthapp.notificationservice.config;
+package com.healthapp.recommendationservicemanual.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

@@ -1,4 +1,4 @@
-package com.healthapp.communityservice.networks;
+package com.healthapp.recommendationservicemanual.networks;
 
 import feign.FeignException;
 import feign.Response;

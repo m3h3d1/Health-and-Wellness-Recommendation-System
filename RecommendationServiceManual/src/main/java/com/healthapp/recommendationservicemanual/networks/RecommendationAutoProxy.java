@@ -9,6 +9,13 @@ import java.util.UUID;
 
 @FeignClient(name = "RECOMMENDATION-APP", configuration = CustomErrorDecoder.class)
 public interface RecommendationAutoProxy {
-    @GetMapping("/users/read-by-id/{recommendationId}")
-    public ResponseEntity<Boolean> ifExistsDietRec(@PathVariable UUID recommendationId);
+    @GetMapping("/health/diet/recommend/if-exists/{recommendId}")
+    public ResponseEntity<Boolean> ifExistsDietRec(@PathVariable UUID recommendId);
+
+    @GetMapping("/health/exercise/recommend/if-exists/{recommendId}")
+    public ResponseEntity<Boolean> ifExistsExerciseRec(@PathVariable UUID recommendId);
+
+    @GetMapping("/health/sleep/recommend/if-exists/{recommendId}")
+    public ResponseEntity<Boolean> ifExistsSleepRec(@PathVariable UUID recommendId);
 }
+

@@ -54,7 +54,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // Add more @ExceptionHandler methods for other custom exceptions and built-in exceptions here
+    @ExceptionHandler(DuplicateEntityException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateEntityException(DuplicateEntityException ex, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getClass().getSimpleName(),
+                "Duplicate Entity",
+                "Creation",
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.toString(),
+                new Date(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleOtherExceptions(Exception ex, WebRequest request) {

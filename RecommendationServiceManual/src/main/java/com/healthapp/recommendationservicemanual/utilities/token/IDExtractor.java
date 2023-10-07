@@ -1,4 +1,4 @@
-package com.healthapp.notificationservice.utilities.token;
+package com.healthapp.recommendationservicemanual.utilities.token;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 

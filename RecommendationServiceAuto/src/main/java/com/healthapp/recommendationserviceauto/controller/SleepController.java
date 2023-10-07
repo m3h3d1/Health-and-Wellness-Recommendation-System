@@ -30,7 +30,6 @@ public class SleepController {
     }
     @GetMapping("/recommend/if-exists/{recommendId}")
     public ResponseEntity<Boolean> checkIfRecordExists(@PathVariable UUID recommendId){
-        return sleepService.ifExists(recommendId) ?
-                new ResponseEntity<Boolean>(true, HttpStatus.OK) : new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Boolean>(sleepService.ifExists(recommendId), HttpStatus.OK);
     }
 }

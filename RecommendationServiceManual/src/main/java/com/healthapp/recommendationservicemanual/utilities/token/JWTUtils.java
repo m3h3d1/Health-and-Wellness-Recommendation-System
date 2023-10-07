@@ -1,6 +1,6 @@
-package com.healthapp.notificationservice.utilities.token;
+package com.healthapp.recommendationservicemanual.utilities.token;
 
-import com.healthapp.notificationservice.utilities.constants.TokenConstants;
+import com.healthapp.recommendationservicemanual.utilities.constants.TokenConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -47,7 +47,6 @@ public class JWTUtils {
 
     /**
      * Generates a random user ID of the specified length.
-     *
      * @param length The length of the generated user ID.
      * @return The generated user ID.
      */

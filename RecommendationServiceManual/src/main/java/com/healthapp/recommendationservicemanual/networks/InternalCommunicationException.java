@@ -1,4 +1,4 @@
-package com.healthapp.communityservice.networks;
+package com.healthapp.recommendationservicemanual.networks;
 
 public class InternalCommunicationException extends Exception {
     public InternalCommunicationException(){

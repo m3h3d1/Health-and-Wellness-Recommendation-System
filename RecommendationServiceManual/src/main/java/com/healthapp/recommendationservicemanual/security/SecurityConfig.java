@@ -1,4 +1,4 @@
-package com.healthapp.notificationservice.security;
+package com.healthapp.recommendationservicemanual.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,13 +30,22 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth
-                            // Require authentication for these endpoints with specific HTTP methods.
-                            .requestMatchers(HttpMethod.GET, "/preferences/**").authenticated()
-                            .requestMatchers(HttpMethod.POST, "/preferences/**").authenticated()
-                            .requestMatchers(HttpMethod.POST, "/notifications/all").authenticated()
-                            .requestMatchers(HttpMethod.DELETE, "/notifications/filtered").authenticated()
-                            .requestMatchers(HttpMethod.PUT, "/notifications/set-seen/**").authenticated()
-                            // Allow any other requests without authentication.
+                            // Allow access to recommendations for all authenticated users
+                            .requestMatchers(HttpMethod.GET, "/diet-recommendations/**", "/exercise-recommendations/**", "/mental-health-recommendations/**", "/sleep-recommendations/**")
+                            .authenticated()
+                            // Only users with specific roles can create/update recommendations
+                            .requestMatchers(HttpMethod.POST, "/diet-recommendations/**").hasRole("DOCTOR")
+                            .requestMatchers(HttpMethod.PUT, "/diet-recommendations/**").hasRole("DOCTOR")
+                            .requestMatchers(HttpMethod.POST, "/exercise-recommendations/**").hasRole("TRAINER")
+                            .requestMatchers(HttpMethod.PUT, "/exercise-recommendations/**").hasRole("TRAINER")
+                            .requestMatchers(HttpMethod.POST, "/mental-health-recommendations/**").hasRole("PSYCHOLOGIST")
+                            .requestMatchers(HttpMethod.PUT, "/mental-health-recommendations/**").hasRole("PSYCHOLOGIST")
+                            // Allow DOCTOR, TRAINER, and PSYCHOLOGIST to update sleep recommendations
+                            .requestMatchers(HttpMethod.PUT, "/sleep-recommendations/**").hasAnyRole("DOCTOR", "TRAINER", "PSYCHOLOGIST")
+                            // Only ADMIN can delete recommendations
+                            .requestMatchers(HttpMethod.DELETE, "/diet-recommendations/**", "/exercise-recommendations/**", "/mental-health-recommendations/**", "/sleep-recommendations/**")
+                            .hasRole("ADMIN")
+                            // Allow all other requests without authentication
                             .anyRequest().permitAll();
                 })
                 // Add the custom authorization filter before the UsernamePasswordAuthenticationFilter.
