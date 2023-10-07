@@ -1,3 +1,5 @@
+package com.healthapp.recommendationservicemanual.utilities.constants;
+
 /**
  * TokenConstants provides constants related to authentication tokens.
  */
