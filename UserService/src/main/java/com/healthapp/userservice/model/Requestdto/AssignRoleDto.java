@@ -1,7 +1,6 @@
-package com.healthapp.userservice.model;
+package com.healthapp.userservice.model.Requestdto;
 
 import com.healthapp.userservice.domain.RoleEnum;
-import com.healthapp.userservice.domain.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

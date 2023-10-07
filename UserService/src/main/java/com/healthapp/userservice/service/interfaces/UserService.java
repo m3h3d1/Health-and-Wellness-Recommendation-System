@@ -1,7 +1,11 @@
-package com.healthapp.userservice.service;
+package com.healthapp.userservice.service.interfaces;
 
 import com.healthapp.userservice.domain.UserEntity;
-import com.healthapp.userservice.model.*;
+import com.healthapp.userservice.model.Requestdto.*;
+import com.healthapp.userservice.model.Responsedto.UserResponseDto;
+import com.healthapp.userservice.model.updatedeletedto.UserDeleteDto;
+import com.healthapp.userservice.model.updatedeletedto.UserRequestDto;
+import com.healthapp.userservice.model.updatedeletedto.UserUpdateDto;
 
 import java.util.List;
 import java.util.UUID;
