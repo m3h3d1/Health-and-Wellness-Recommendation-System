@@ -9,11 +9,15 @@ import com.healthapp.communityservice.exceptions.PostPrivacyException;
 import com.healthapp.communityservice.models.postdto.PostCreateDTO;
 import com.healthapp.communityservice.models.postdto.PostReadDTO;
 import com.healthapp.communityservice.models.postdto.PostUpdateDTO;
+import com.healthapp.communityservice.networks.NotificationDTO;
+import com.healthapp.communityservice.networks.NotificationServiceProxy;
 import com.healthapp.communityservice.repositories.PostRepository;
 import com.healthapp.communityservice.services.interfaces.PostService;
+import com.healthapp.communityservice.utilities.constants.TokenConstants;
 import com.healthapp.communityservice.utilities.mapping.PostMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,10 +28,12 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final PostMapper postMapper;
+    private final NotificationServiceProxy notificationServiceProxy;
 
-    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper) {
+    public PostServiceImpl(PostRepository postRepository, PostMapper postMapper, NotificationServiceProxy notificationServiceProxy) {
         this.postRepository = postRepository;
         this.postMapper = postMapper;
+        this.notificationServiceProxy = notificationServiceProxy;
     }
 
     /**
@@ -146,6 +152,11 @@ public class PostServiceImpl implements PostService {
             throw new InteractionBlockedException("Post is already liked by the user.");
         }
         postRepository.save(post);
+
+        // Send notification
+        NotificationDTO notification = new NotificationDTO();
+        notification.setText("Your post \"" + (post.getContent().length() < 8 ? post.getContent() : post.getContent().substring(0, 8)) + "...\" has got a new like.");
+        notificationServiceProxy.send(post.getUserId(), TokenConstants.TOKEN_SECRET, notification);
     }
 
     /**
@@ -197,6 +208,11 @@ public class PostServiceImpl implements PostService {
             throw new InteractionBlockedException("Post is already followed by the user.");
         }
         postRepository.save(post);
+
+        // Send notification
+        NotificationDTO notification = new NotificationDTO();
+        notification.setText("Your post \"" + (post.getContent().length() < 8 ? post.getContent() : post.getContent().substring(0, 8)) + "...\" has got a new follower.");
+        notificationServiceProxy.send(post.getUserId(), TokenConstants.TOKEN_SECRET, notification);
     }
 
     /**

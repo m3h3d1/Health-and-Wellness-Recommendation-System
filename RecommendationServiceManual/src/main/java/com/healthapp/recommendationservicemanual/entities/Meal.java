@@ -10,14 +10,12 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-@Entity
+// Entity class representing a Meal
+@Getter @Setter @RequiredArgsConstructor @Entity
 public class Meal {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String description;
-    private Double calories;
+    private String description; // Description of the meal
+    private Double calories;   // Calorie content of the meal
 }

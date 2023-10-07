@@ -5,9 +5,12 @@ import com.healthapp.communityservice.entities.Following;
 import com.healthapp.communityservice.exceptions.InvalidUnfollowException;
 import com.healthapp.communityservice.exceptions.MultipleFollowRequestException;
 import com.healthapp.communityservice.models.postdto.PostReadDTO;
+import com.healthapp.communityservice.networks.NotificationDTO;
+import com.healthapp.communityservice.networks.NotificationServiceProxy;
 import com.healthapp.communityservice.repositories.ConnectionRepository;
 import com.healthapp.communityservice.services.interfaces.ConnectionService;
 import com.healthapp.communityservice.services.interfaces.PostService;
+import com.healthapp.communityservice.utilities.constants.TokenConstants;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -20,10 +23,12 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     private final ConnectionRepository connectionRepository;
     private final PostService postService;
+    private final NotificationServiceProxy notificationServiceProxy;
 
-    public ConnectionServiceImpl(ConnectionRepository connectionRepository, PostService postService) {
+    public ConnectionServiceImpl(ConnectionRepository connectionRepository, PostService postService, NotificationServiceProxy notificationServiceProxy) {
         this.connectionRepository = connectionRepository;
         this.postService = postService;
+        this.notificationServiceProxy = notificationServiceProxy;
     }
 
     /**
@@ -58,6 +63,11 @@ public class ConnectionServiceImpl implements ConnectionService {
 
         connection.getFollowing().add(newFollow);
         connectionRepository.save(connection);
+
+        // Send notification
+        NotificationDTO notification = new NotificationDTO();
+        notification.setText("You have a new follower.");
+        notificationServiceProxy.send(followingId, TokenConstants.TOKEN_SECRET, notification);
     }
 
     /**

@@ -42,6 +42,12 @@ public class ProgressServiceImpl implements ProgressService {
 
         ProgressInsightDTO progressInsightDTO = new ProgressInsightDTO();
 
+        progressInsightDTO.setUserId(health.getUserId());
+        progressInsightDTO.setAge(health.getAge());
+        progressInsightDTO.setGender(health.getGender());
+        progressInsightDTO.setGoalWeight(health.getGoalWeight());
+        progressInsightDTO.setTargetPeriod(health.getTargetPeriod());
+
         progressInsightDTO.setHeightInsight(generateHeightInsights(health.getHeights()));
         progressInsightDTO.setWeightInsight(generateWeightInsights(health.getWeights(), health.getGoalWeight()));
         progressInsightDTO.setDiabetesInsight(generateDiabetesInsights(health.getDiabetes()));
@@ -63,21 +69,21 @@ public class ProgressServiceImpl implements ProgressService {
         }
 
         StringBuilder insights = new StringBuilder();
-        insights.append("Height Insights:\n");
+        insights.append("Height Insights: ");
 
         double initialHeight = heights.get(0).getHeightInCm();
         double currentHeight = heights.get(heights.size() - 1).getHeightInCm();
         double heightChange = currentHeight - initialHeight;
 
-        insights.append("Initial Height: ").append(initialHeight).append(" cm\n");
-        insights.append("Current Height: ").append(currentHeight).append(" cm\n");
+        insights.append("Initial Height: ").append(initialHeight).append(" cm. ");
+        insights.append("Current Height: ").append(currentHeight).append(" cm. ");
 
         if (heightChange > 0) {
-            insights.append("You have grown by ").append(heightChange).append(" cm since you started tracking your height.\n");
+            insights.append("You have grown by ").append(heightChange).append(" cm since you started tracking your height. ");
         } else if (heightChange < 0) {
-            insights.append("Your height has decreased by ").append(-heightChange).append(" cm since you started tracking your height.\n");
+            insights.append("Your height has decreased by ").append(-heightChange).append(" cm since you started tracking your height. ");
         } else {
-            insights.append("Your height has remained the same since you started tracking.\n");
+            insights.append("Your height has remained the same since you started tracking. ");
         }
 
         return insights.toString();
@@ -90,30 +96,30 @@ public class ProgressServiceImpl implements ProgressService {
         }
 
         StringBuilder insights = new StringBuilder();
-        insights.append("Weight Insights:\n");
+        insights.append("Weight Insights: ");
 
         double initialWeight = weights.get(0).getWeightInKg();
         double currentWeight = weights.get(weights.size() - 1).getWeightInKg();
         double weightChange = currentWeight - initialWeight;
 
-        insights.append("Initial Weight: ").append(initialWeight).append(" kg\n");
-        insights.append("Current Weight: ").append(currentWeight).append(" kg\n");
-        insights.append("Weight Change: ").append(weightChange).append(" kg\n");
+        insights.append("Initial Weight: ").append(initialWeight).append(" kg. ");
+        insights.append("Current Weight: ").append(currentWeight).append(" kg. ");
+        insights.append("Weight Change: ").append(weightChange).append(" kg. ");
 
         if (weightChange > 0) {
-            insights.append("You have gained ").append(weightChange).append(" kg since you started tracking your weight.\n");
+            insights.append("You have gained ").append(weightChange).append(" kg since you started tracking your weight. ");
         } else if (weightChange < 0) {
-            insights.append("Congratulations! You have lost ").append(-weightChange).append(" kg since you started tracking your weight.\n");
+            insights.append("Congratulations! You have lost ").append(-weightChange).append(" kg since you started tracking your weight. ");
         } else {
-            insights.append("Your weight has remained the same since you started tracking.\n");
+            insights.append("Your weight has remained the same since you started tracking. ");
         }
 
         if (currentWeight < goalWeight) {
-            insights.append("You are ").append(goalWeight - currentWeight).append(" kg away from your goal weight.\n");
+            insights.append("You are ").append(goalWeight - currentWeight).append(" kg away from your goal weight. ");
         } else if (currentWeight > goalWeight) {
-            insights.append("You have exceeded your goal weight by ").append(currentWeight - goalWeight).append(" kg.\n");
+            insights.append("You have exceeded your goal weight by ").append(currentWeight - goalWeight).append(" kg. ");
         } else {
-            insights.append("Congratulations! You have reached your goal weight.\n");
+            insights.append("Congratulations! You have reached your goal weight. ");
         }
 
         return insights.toString();
@@ -129,7 +135,7 @@ public class ProgressServiceImpl implements ProgressService {
         double sugarLevel = latestReading.getSugarLevel();
 
         StringBuilder insight = new StringBuilder();
-        insight.append("Current blood sugar level: ").append(sugarLevel).append(" mg/dL\n");
+        insight.append("Current blood sugar level: ").append(sugarLevel).append(" mg/dL. ");
 
         if (sugarLevel <= 70) {
             insight.append("Your blood sugar level is low. Please consider having a snack or glucose to raise your sugar level.");
@@ -152,7 +158,7 @@ public class ProgressServiceImpl implements ProgressService {
         double pressure = latestReading.getPressure();
 
         StringBuilder insight = new StringBuilder();
-        insight.append("Current blood pressure: ").append(pressure).append(" mmHg\n");
+        insight.append("Current blood pressure: ").append(pressure).append(" mmHg. ");
 
         if (pressure < 90) {
             insight.append("Your blood pressure is low. Please consider consulting a healthcare professional.");
@@ -177,7 +183,7 @@ public class ProgressServiceImpl implements ProgressService {
         String beatsPerMinute = latestReading.getBeatsPerMin();
 
         StringBuilder insight = new StringBuilder();
-        insight.append("Current heart rate: ").append(beatsPerMinute).append(" bpm\n");
+        insight.append("Current heart rate: ").append(beatsPerMinute).append(" bpm. ");
 
         int heartRateValue = Integer.parseInt(beatsPerMinute);
 
@@ -199,16 +205,16 @@ public class ProgressServiceImpl implements ProgressService {
         }
 
         StringBuilder insights = new StringBuilder();
-        insights.append("Disease Insights:\n");
+        insights.append("Disease Insights: ");
 
         for (Disease disease : diseases) {
             String diseaseName = disease.getDiseaseName();
             LocalDate date = disease.getDate();
             String note = disease.getNote();
 
-            insights.append("Date: ").append(date).append("\n");
-            insights.append("Disease: ").append(diseaseName).append("\n");
-            insights.append("Note: ").append(note).append("\n\n");
+            insights.append("Date: ").append(date).append(". ");
+            insights.append("Disease: ").append(diseaseName).append(". ");
+            insights.append("Note: ").append(note).append(". ");
         }
 
         return insights.toString();

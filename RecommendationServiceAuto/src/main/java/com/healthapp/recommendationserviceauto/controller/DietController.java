@@ -5,6 +5,7 @@ import com.healthapp.recommendationserviceauto.model.DietRecommendationDto;
 import com.healthapp.recommendationserviceauto.model.SleepRecommendationDto;
 import com.healthapp.recommendationserviceauto.service.DietService;
 import com.healthapp.recommendationserviceauto.service.SleepService;
+import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,9 @@ public class DietController {
     @GetMapping("/{recommendId}")
     public ResponseEntity<DietRecommendation> getRecommendationById(@PathVariable UUID recommendId){
         return new ResponseEntity<>(dietService.getRecommendationById(recommendId), HttpStatus.OK);
+    }
+    @GetMapping("/recommend/if-exists/{recommendId}")
+    public ResponseEntity<Boolean> checkIfRecordExists(@PathVariable UUID recommendId){
+        return new ResponseEntity<Boolean>(dietService.ifExists(recommendId), HttpStatus.OK);
     }
 }
