@@ -12,12 +12,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
-@Entity
-@Setter
-@Getter
-@RequiredArgsConstructor
+// Entity class representing a Mental Health Recommendation
+@Entity @Setter @Getter @RequiredArgsConstructor
 public class MentalHealthRecommendation {
     @Id
     private UUID mentalHealthRecId;
-    String description;
+    String description;             // Description or message for the recommendation
 }

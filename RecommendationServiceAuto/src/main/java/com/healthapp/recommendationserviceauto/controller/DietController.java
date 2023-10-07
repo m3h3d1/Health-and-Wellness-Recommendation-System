@@ -31,7 +31,6 @@ public class DietController {
     }
     @GetMapping("/recommend/if-exists/{recommendId}")
     public ResponseEntity<Boolean> checkIfRecordExists(@PathVariable UUID recommendId){
-        return dietService.ifExists(recommendId) ?
-                new ResponseEntity<Boolean>(true, HttpStatus.OK) : new ResponseEntity<Boolean>(false, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<Boolean>(dietService.ifExists(recommendId), HttpStatus.OK);
     }
 }

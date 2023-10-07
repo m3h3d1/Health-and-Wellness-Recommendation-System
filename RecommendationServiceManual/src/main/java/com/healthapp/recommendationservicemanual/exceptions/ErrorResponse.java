@@ -6,15 +6,14 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Getter
-@Setter
-@AllArgsConstructor
+// Class representing an ErrorResponse
+@Getter @Setter @AllArgsConstructor
 public class ErrorResponse {
-    private String exception;
-    private String operation;
-    private String type;
-    private String message;
-    private String status;
-    private Date timeStamp;
-    private String apiPath;
+    private String exception;    // The type of exception or error
+    private String operation;    // The operation or action that triggered the error
+    private String type;         // The type or category of the error
+    private String message;      // A descriptive message explaining the error
+    private String status;       // The HTTP status code associated with the error
+    private Date timeStamp;      // The timestamp when the error occurred
+    private String apiPath;      // The API endpoint or path where the error occurred
 }

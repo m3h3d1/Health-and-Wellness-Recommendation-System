@@ -10,13 +10,11 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter
-@Setter
-@RequiredArgsConstructor
-@Entity
+// Entity class representing Insights
+@Getter @Setter @RequiredArgsConstructor @Entity
 public class Insights {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private String text;
+    private String text; // Textual content of the insight
 }
