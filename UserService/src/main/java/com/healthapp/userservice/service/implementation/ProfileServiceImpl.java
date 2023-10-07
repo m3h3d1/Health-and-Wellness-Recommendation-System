@@ -1,15 +1,17 @@
-package com.healthapp.userservice.service.impl;
+package com.healthapp.userservice.service.implementation;
 
+import com.healthapp.userservice.domain.BloodGroupEnum;
 import com.healthapp.userservice.domain.Profile;
 import com.healthapp.userservice.domain.UserEntity;
-import com.healthapp.userservice.model.HealthRequestDto;
-import com.healthapp.userservice.model.ProfileRequestDto;
-import com.healthapp.userservice.model.ProfileResponseDto;
-import com.healthapp.userservice.model.ProfileUpdateDto;
+import com.healthapp.userservice.exception.ProfileUpdateException;
+import com.healthapp.userservice.model.Requestdto.HealthRequestDto;
+import com.healthapp.userservice.model.Requestdto.ProfileRequestDto;
+import com.healthapp.userservice.model.Responsedto.ProfileResponseDto;
+import com.healthapp.userservice.model.updatedeletedto.ProfileUpdateDto;
 import com.healthapp.userservice.networkmanager.HealthFeignClient;
 import com.healthapp.userservice.repository.ProfileRepository;
 import com.healthapp.userservice.repository.UserRepository;
-import com.healthapp.userservice.service.ProfileService;
+import com.healthapp.userservice.service.interfaces.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +38,7 @@ public class ProfileServiceImpl implements ProfileService {
             Profile profile = new Profile();
             profile.setUserId(profileRequestDto.getUserId());
             profile.setGender(profileRequestDto.getGender());
-            Profile.BloodGroup bloodGroup = Profile.BloodGroup.fromString(profileRequestDto.getBloodGroup());
+            BloodGroupEnum bloodGroup = BloodGroupEnum.fromString(profileRequestDto.getBloodGroup());
             profile.setBloodGroup(bloodGroup);
             profile.setDateOfBirth(profileRequestDto.getDateOfBirth());
             profile.setVegetarian(profileRequestDto.getVegetarian());
@@ -66,30 +68,35 @@ public class ProfileServiceImpl implements ProfileService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findById(UUID.fromString(authentication.getName()));
         user.ifPresent(userEntity -> profileRepository.findByUserId(UUID.fromString(authentication.getName())).ifPresent(profile -> {
-            if (profileUpdateDto.getGender() != null) {
-                profile.setGender(profileUpdateDto.getGender());
+            try {
+                if (profileUpdateDto.getGender() != null) {
+                    profile.setGender(profileUpdateDto.getGender());
+                }
+                if (profileUpdateDto.getBloodGroup() != null) {
+                    BloodGroupEnum bloodGroup = BloodGroupEnum.fromString(profileUpdateDto.getBloodGroup());
+                    profile.setBloodGroup(bloodGroup);
+                }
+                if (profileUpdateDto.getVegetarian() != null) {
+                    profile.setVegetarian(profileUpdateDto.getVegetarian());
+                }
+                if (profileUpdateDto.getDateOfBirth() != null) {
+                    profile.setDateOfBirth(profileUpdateDto.getDateOfBirth());
+                }
+                if (profileUpdateDto.getGoalWeight() != null) {
+                    profile.setGoalWeight(profileUpdateDto.getGoalWeight());
+                }
+                if (profileUpdateDto.getTargetPeriod() != null) {
+                    profile.setTargetPeriod(profileUpdateDto.getTargetPeriod());
+                }
+                profileRepository.save(profile);
+                userEntity.setProfile(profile);
+                userRepository.save(userEntity);
+            } catch (Exception ex) {
+                throw new ProfileUpdateException();
             }
-            if (profileUpdateDto.getBloodGroup() != null) {
-                Profile.BloodGroup bloodGroup = Profile.BloodGroup.fromString(profileUpdateDto.getBloodGroup());
-                profile.setBloodGroup(bloodGroup);
-            }
-            if (profileUpdateDto.getVegetarian() != null) {
-                profile.setVegetarian(profileUpdateDto.getVegetarian());
-            }
-            if (profileUpdateDto.getDateOfBirth() != null) {
-                profile.setDateOfBirth(profileUpdateDto.getDateOfBirth());
-            }
-            if (profileUpdateDto.getGoalWeight() != null) {
-                profile.setGoalWeight(profileUpdateDto.getGoalWeight());
-            }
-            if (profileUpdateDto.getTargetPeriod() != null) {
-                profile.setTargetPeriod(profileUpdateDto.getTargetPeriod());
-            }
-            profileRepository.save(profile);
-            userEntity.setProfile(profile);
-            userRepository.save(userEntity);
         }));
     }
+
 
     @Override
     public ProfileResponseDto findById(UUID userId) {

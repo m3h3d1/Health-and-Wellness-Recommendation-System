@@ -1,4 +1,4 @@
-package com.healthapp.userservice.model;
+package com.healthapp.userservice.model.Requestdto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

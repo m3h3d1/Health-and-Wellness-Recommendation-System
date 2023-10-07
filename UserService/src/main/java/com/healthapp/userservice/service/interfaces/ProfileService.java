@@ -1,9 +1,9 @@
-package com.healthapp.userservice.service;
+package com.healthapp.userservice.service.interfaces;
 
 import com.healthapp.userservice.domain.Profile;
-import com.healthapp.userservice.model.ProfileRequestDto;
-import com.healthapp.userservice.model.ProfileResponseDto;
-import com.healthapp.userservice.model.ProfileUpdateDto;
+import com.healthapp.userservice.model.Requestdto.ProfileRequestDto;
+import com.healthapp.userservice.model.Responsedto.ProfileResponseDto;
+import com.healthapp.userservice.model.updatedeletedto.ProfileUpdateDto;
 
 import java.util.List;
 import java.util.UUID;

@@ -50,8 +50,6 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.GET, AppConstants.GET_CONTACT_BY_ID).hasRole("USER")
                             .requestMatchers(HttpMethod.GET, AppConstants.GET_ALL_CONTACTS).hasRole("ADMIN")
 
-
-//                            .requestMatchers(HttpMethod.GET, "books/all").authenticated()
                             .anyRequest().permitAll();
                 })
                 .addFilter(new CustomAuthenticationFilter(authenticationManager))

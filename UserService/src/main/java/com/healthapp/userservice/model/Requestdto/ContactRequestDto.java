@@ -1,15 +1,18 @@
-package com.healthapp.userservice.model;
+package com.healthapp.userservice.model.Requestdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ContactResponseDto {
+public class ContactRequestDto {
+    private UUID userId;
     private String primaryPhoneNumber;
     private String optionalPhoneNumber;
     private String country;

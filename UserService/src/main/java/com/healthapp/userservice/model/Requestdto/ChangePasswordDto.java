@@ -1,15 +1,17 @@
-package com.healthapp.userservice.model;
+package com.healthapp.userservice.model.Requestdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserLoginRequestDto {
-    private String email;
-    private String password;
+public class ChangePasswordDto {
+    private String oldPassword;
+    private String newPassword;
 }

@@ -21,18 +21,23 @@ public class UserEntity {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID userId;
     @Column(name = "first-name", nullable = false)
+    @NotEmpty
     @Pattern(regexp = "^(|[^\\d]+)$", message = "First name cannot contain digits")
     private String firstName;
     @Column(name = "last-name", nullable = false)
+    @NotEmpty
     @Pattern(regexp = "^(|[^\\d]+)$", message = "Last name cannot contain digits")
     private String lastName;
-    @Column(name = "user-name", nullable = false)
+    @Column(name = "user-name", nullable = false, unique = true)
+    @NotEmpty
     @Pattern(regexp = "^(|[a-z0-9]+)$", message = "Username can only contain lowercase letters and numbers")
     private String userName;
     @Column(name = "password", nullable = false)
-    @Size(min = 5, message = "Password must be 5 characters long")
+    @NotEmpty
     private String password;
     @Column(name = "email", nullable = false, unique = true)
+    @NotEmpty
+    @Email
     private String email;
     @Enumerated(EnumType.STRING)
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

@@ -1,6 +1,6 @@
-package com.healthapp.userservice.model;
+package com.healthapp.userservice.model.updatedeletedto;
 
-import com.healthapp.userservice.domain.Profile;
+import com.healthapp.userservice.domain.GenderEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class ProfileUpdateDto {
-    private Profile.Gender gender;
+    private GenderEnum gender;
     private Date dateOfBirth;
     private String bloodGroup;
     private Boolean vegetarian;

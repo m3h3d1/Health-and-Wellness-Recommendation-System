@@ -1,4 +1,4 @@
-package com.healthapp.userservice.model;
+package com.healthapp.userservice.model.updatedeletedto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

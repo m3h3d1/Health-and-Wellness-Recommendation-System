@@ -1,8 +1,12 @@
 package com.healthapp.userservice.controller;
 
 import com.healthapp.userservice.domain.UserEntity;
-import com.healthapp.userservice.model.*;
-import com.healthapp.userservice.service.UserService;
+import com.healthapp.userservice.model.Requestdto.*;
+import com.healthapp.userservice.model.Responsedto.UserResponseDto;
+import com.healthapp.userservice.model.updatedeletedto.UserDeleteDto;
+import com.healthapp.userservice.model.updatedeletedto.UserRequestDto;
+import com.healthapp.userservice.model.updatedeletedto.UserUpdateDto;
+import com.healthapp.userservice.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

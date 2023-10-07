@@ -1,14 +1,14 @@
-package com.healthapp.userservice.service.impl;
+package com.healthapp.userservice.service.implementation;
 
 import com.healthapp.userservice.domain.Contact;
 import com.healthapp.userservice.domain.UserEntity;
-import com.healthapp.userservice.model.ContactRequestDto;
-import com.healthapp.userservice.model.ContactResponseDto;
-import com.healthapp.userservice.model.ContactUpdateDto;
+import com.healthapp.userservice.exception.ContactUpdateException;
+import com.healthapp.userservice.model.Requestdto.ContactRequestDto;
+import com.healthapp.userservice.model.Responsedto.ContactResponseDto;
+import com.healthapp.userservice.model.updatedeletedto.ContactUpdateDto;
 import com.healthapp.userservice.repository.ContactRepository;
 import com.healthapp.userservice.repository.UserRepository;
-import com.healthapp.userservice.service.ContactService;
-import com.netflix.discovery.converters.Auto;
+import com.healthapp.userservice.service.interfaces.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
@@ -53,35 +53,40 @@ public class ContactServiceImpl implements ContactService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findById(UUID.fromString(authentication.getName()));
         user.ifPresent(userEntity -> contactRepository.findByUserId(UUID.fromString(authentication.getName())).ifPresent(contact -> {
-            if (contactUpdateDto.getPrimaryPhoneNumber() != null) {
-                contact.setPrimaryPhoneNumber(contactUpdateDto.getPrimaryPhoneNumber());
+            try {
+                if (contactUpdateDto.getPrimaryPhoneNumber() != null) {
+                    contact.setPrimaryPhoneNumber(contactUpdateDto.getPrimaryPhoneNumber());
+                }
+                if (contactUpdateDto.getOptionalPhoneNumber() != null) {
+                    contact.setOptionalPhoneNumber(contactUpdateDto.getOptionalPhoneNumber());
+                }
+                if (contactUpdateDto.getCountry() != null) {
+                    contact.setCountry(contactUpdateDto.getCountry());
+                }
+                if (contactUpdateDto.getCity() != null) {
+                    contact.setCity(contactUpdateDto.getCity());
+                }
+                if (contactUpdateDto.getArea() != null) {
+                    contact.setArea(contactUpdateDto.getArea());
+                }
+                if (contactUpdateDto.getRoadNumber() != null) {
+                    contact.setRoadNumber(contactUpdateDto.getRoadNumber());
+                }
+                if (contactUpdateDto.getBlockNumber() != null) {
+                    contact.setBlockNumber(contactUpdateDto.getBlockNumber());
+                }
+                if (contactUpdateDto.getHouseNumber() != null) {
+                    contact.setHouseNumber(contactUpdateDto.getHouseNumber());
+                }
+                contactRepository.save(contact);
+                userEntity.setContact(contact);
+                userRepository.save(userEntity);
+            } catch (Exception ex) {
+                throw new ContactUpdateException();
             }
-            if (contactUpdateDto.getOptionalPhoneNumber() != null) {
-                contact.setOptionalPhoneNumber(contactUpdateDto.getOptionalPhoneNumber());
-            }
-            if (contactUpdateDto.getCountry() != null) {
-                contact.setCountry(contactUpdateDto.getCountry());
-            }
-            if (contactUpdateDto.getCity() != null) {
-                contact.setCity(contactUpdateDto.getCity());
-            }
-            if (contactUpdateDto.getArea() != null) {
-                contact.setArea(contactUpdateDto.getArea());
-            }
-            if (contactUpdateDto.getRoadNumber() != null) {
-                contact.setRoadNumber(contactUpdateDto.getRoadNumber());
-            }
-            if (contactUpdateDto.getBlockNumber() != null) {
-                contact.setBlockNumber(contactUpdateDto.getBlockNumber());
-            }
-            if (contactUpdateDto.getHouseNumber() != null) {
-                contact.setHouseNumber(contactUpdateDto.getHouseNumber());
-            }
-            contactRepository.save(contact);
-            userEntity.setContact(contact);
-            userRepository.save(userEntity);
         }));
     }
+
 
 
     @Override

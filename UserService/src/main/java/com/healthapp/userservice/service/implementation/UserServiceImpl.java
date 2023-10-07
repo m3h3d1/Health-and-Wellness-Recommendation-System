@@ -1,11 +1,17 @@
-package com.healthapp.userservice.service.impl;
+package com.healthapp.userservice.service.implementation;
 
 import com.healthapp.userservice.domain.Role;
 import com.healthapp.userservice.domain.RoleEnum;
 import com.healthapp.userservice.domain.UserEntity;
-import com.healthapp.userservice.model.*;
+import com.healthapp.userservice.exception.PasswordException;
+import com.healthapp.userservice.exception.UserUpdateException;
+import com.healthapp.userservice.model.Requestdto.*;
+import com.healthapp.userservice.model.Responsedto.UserResponseDto;
+import com.healthapp.userservice.model.updatedeletedto.UserDeleteDto;
+import com.healthapp.userservice.model.updatedeletedto.UserRequestDto;
+import com.healthapp.userservice.model.updatedeletedto.UserUpdateDto;
 import com.healthapp.userservice.repository.UserRepository;
-import com.healthapp.userservice.service.UserService;
+import com.healthapp.userservice.service.interfaces.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -36,13 +42,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userEntity.setUserName(userRequestDto.getUserName());
         userEntity.setFirstName(userRequestDto.getFirstName());
         userEntity.setLastName(userRequestDto.getLastName());
+        if(userRequestDto.getPassword().length()<5){
+            throw new PasswordException();
+        }
         userEntity.setPassword(bCryptPasswordEncoder.encode(userRequestDto.getPassword()));
         userEntity.setEmail(userRequestDto.getEmail());
         List<Role> roles = new ArrayList<>();
         roles.add(new Role(RoleEnum.USER.toString()));
 
-        // For testing...
-        if(userEntity.getEmail().toLowerCase().equals("admin")){
+        // Set the admin role when username equals admin...
+        if(userEntity.getUserName().toLowerCase().equals("admin")){
             roles.add(new Role(RoleEnum.ADMIN.toString()));
         }
 
@@ -50,25 +59,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(userEntity);
     }
 
-    @Override
     public void updateUser(UserUpdateDto userUpdateDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userRepository.findById(UUID.fromString(authentication.getName())).ifPresent(user -> {
-            if (userUpdateDto.getFirstName() != null) {
-                user.setFirstName(userUpdateDto.getFirstName());
+            try {
+                if (userUpdateDto.getFirstName() != null) {
+                    user.setFirstName(userUpdateDto.getFirstName());
+                }
+                if (userUpdateDto.getLastName() != null) {
+                    user.setLastName(userUpdateDto.getLastName());
+                }
+                if (userUpdateDto.getUserName() != null) {
+                    user.setUserName(userUpdateDto.getUserName());
+                }
+                if (userUpdateDto.getEmail() != null) {
+                    user.setEmail(userUpdateDto.getEmail());
+                }
+                userRepository.save(user);
+            } catch (Exception ex) {
+                throw new UserUpdateException();
             }
-            if (userUpdateDto.getLastName() != null) {
-                user.setLastName(userUpdateDto.getLastName());
-            }
-            if (userUpdateDto.getUserName() != null) {
-                user.setUserName(userUpdateDto.getUserName());
-            }
-            if (userUpdateDto.getEmail() != null) {
-                user.setEmail(userUpdateDto.getEmail());
-            }
-            userRepository.save(user);
         });
     }
+
 
     @Override
     public void deleteUser(UserDeleteDto userDeleteDto) {
@@ -110,6 +123,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.setPassword(changePasswordDto.getNewPassword());
                 userRepository.save(user);
             }
+        }
+        else{
+            throw new EmptyResultDataAccessException("User",1);
         }
     }
 
