@@ -154,9 +154,6 @@ public class DietServiceImpl implements DietService {
                 if(caloriesCalculatedFromFood>=targetCalorie){
                     break;
                 }
-                if(i==suggestedFoodList.size()-1){
-                    i=0;
-                }
                 Meal meal = new Meal();
                 meal.setDescription(foodListResponse.getDescription());
                 meal.setCalories(foodListResponse.getCalorie());

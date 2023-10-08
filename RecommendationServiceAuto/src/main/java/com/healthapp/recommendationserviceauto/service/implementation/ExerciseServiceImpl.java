@@ -127,7 +127,8 @@ public class ExerciseServiceImpl implements ExerciseService {
         return insights.toString();
     }
 
-    private String generateRecommendationText(Double latestHighBloodPressure, Double latestLowBloodPressure, Double latestWeight, Double latestSugarLevel, String insights) {
+    private String generateRecommendationText(Double latestHighBloodPressure, Double latestLowBloodPressure,
+                                              Double latestWeight, Double latestSugarLevel, String insights) {
         StringBuilder recommendationText = new StringBuilder();
 
         if (!insights.isEmpty()) {
@@ -167,7 +168,8 @@ public class ExerciseServiceImpl implements ExerciseService {
         return recommendationText.toString();
     }
 
-    private String determineExerciseIntensity(Double latestHighBloodPressure, Double latestLowBloodPressure, Double latestWeight, Double latestSugarLevel) {
+    private String determineExerciseIntensity(Double latestHighBloodPressure, Double latestLowBloodPressure,
+                                              Double latestWeight, Double latestSugarLevel) {
         String exerciseIntensity = "Medium";
 
         if (latestHighBloodPressure != null && latestHighBloodPressure > 140.0) {
@@ -187,7 +189,11 @@ public class ExerciseServiceImpl implements ExerciseService {
         return exerciseIntensity;
     }
 
-    private ExerciseRecommendation createExerciseRecommendation(UUID userId, Double latestSugarLevel, Double latestHighBloodPressure, Double latestLowBloodPressure, Integer age, Double latestWeight, Integer goalWeight, Integer targetPeriod, List<Disease> diseases, String insights, String recommendationText, List<Exercise> exercises) {
+    private ExerciseRecommendation createExerciseRecommendation(UUID userId, Double latestSugarLevel,
+                                                                Double latestHighBloodPressure, Double latestLowBloodPressure,
+                                                                Integer age, Double latestWeight, Integer goalWeight,
+                                                                Integer targetPeriod, List<Disease> diseases, String insights,
+                                                                String recommendationText, List<Exercise> exercises) {
         ExerciseRecommendation exerciseRecommendation = new ExerciseRecommendation();
         exerciseRecommendation.setDateTime(LocalDateTime.now());
         exerciseRecommendation.setUserId(userId);

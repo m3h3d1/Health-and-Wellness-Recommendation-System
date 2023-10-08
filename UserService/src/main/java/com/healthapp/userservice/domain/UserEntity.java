@@ -8,12 +8,11 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
-@Data
-@Table(name = "User")
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Table(name = "User")
 public class UserEntity {
     @Id
     @Column(name = "user-id")

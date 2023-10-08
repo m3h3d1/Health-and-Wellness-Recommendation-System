@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 "UnhandledException",
-                "An unhandled exception occurred: " + ex.getMessage(),
+                "Sorry the requested operation is not possible",
                 HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                 new Date()
         );

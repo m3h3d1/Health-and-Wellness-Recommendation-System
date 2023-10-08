@@ -3,17 +3,13 @@ package com.healthapp.userservice.model.Responsedto;
 import com.healthapp.userservice.domain.BloodGroupEnum;
 import com.healthapp.userservice.domain.GenderEnum;
 import com.healthapp.userservice.domain.Profile;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class ProfileResponseDto {
     private GenderEnum gender;
     private Date dateOfBirth;

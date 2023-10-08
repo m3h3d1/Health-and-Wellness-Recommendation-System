@@ -23,14 +23,6 @@ public class JWTUtils {
         Date today = new Date();
         return tokenExpirationDate.before(today);
     }
-
-//    public static String generateToken(String id) {
-//        return Jwts.builder()
-//                .setSubject(id)
-//                .setExpiration(new Date(System.currentTimeMillis() + AppConstants.EXPIRATION_TIME))
-//                .signWith(SignatureAlgorithm.HS256, AppConstants.TOKEN_SECRET)
-//                .compact();
-//    }
     public static String generateToken(String id, List<String> roles){
         return Jwts.builder()
                 .setSubject(id)

@@ -2,21 +2,17 @@ package com.healthapp.userservice.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
-@Data
-@Table(name = "Contact")
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Table(name = "Contact")
 public class Contact {
     @Id
     @GeneratedValue(generator = "UUID")

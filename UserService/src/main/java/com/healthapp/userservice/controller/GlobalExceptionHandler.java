@@ -18,11 +18,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse(
                 "UnhandledException",
-                "An unhandled exception occurred: " + ex.getMessage(),
+                "Sorry the requested operation is not possible",
                 HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                 new Date()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(UnmatchedPasswordException.class)
+    public ResponseEntity<ErrorResponse> handleUnmatchedPasswordException(UnmatchedPasswordException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "UnmatchedPasswordException",
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST.toString(),
+                new Date()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(ConstraintViolationException ex) {

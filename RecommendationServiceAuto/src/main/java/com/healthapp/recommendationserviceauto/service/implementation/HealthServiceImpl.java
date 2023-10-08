@@ -237,7 +237,8 @@ public class HealthServiceImpl implements HealthService {
             Health health = healthOptional.get();
             health.setSmokingStatus(extraRequestDto.getIsSmoker());
             health.setAllergies(extraRequestDto.getAllergies());
-            Optional<ActivityFactor> activityFactorOptional = activityFactorRepository.findByActivityLevel(extraRequestDto.getActivityLevel());
+            Optional<ActivityFactor> activityFactorOptional = activityFactorRepository
+                    .findByActivityLevel(extraRequestDto.getActivityLevel());
             if(activityFactorOptional.isEmpty()){
 
             }

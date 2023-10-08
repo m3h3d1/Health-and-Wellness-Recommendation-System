@@ -1,18 +1,14 @@
 package com.healthapp.userservice.model.Requestdto;
 
 import com.healthapp.userservice.domain.GenderEnum;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.UUID;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class ProfileRequestDto {
     private UUID userId;
     private GenderEnum gender;

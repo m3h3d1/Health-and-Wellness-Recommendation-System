@@ -5,17 +5,17 @@ import com.healthapp.userservice.domain.RoleEnum;
 import com.healthapp.userservice.domain.UserEntity;
 import com.healthapp.userservice.exception.EmptyResultException;
 import com.healthapp.userservice.exception.PasswordException;
+import com.healthapp.userservice.exception.UnmatchedPasswordException;
 import com.healthapp.userservice.exception.UserUpdateException;
 import com.healthapp.userservice.model.Requestdto.*;
 import com.healthapp.userservice.model.Responsedto.UserResponseDto;
+import com.healthapp.userservice.model.updatedeletedto.AssignDeleteRoleDto;
 import com.healthapp.userservice.model.updatedeletedto.UserDeleteDto;
-import com.healthapp.userservice.model.updatedeletedto.UserRequestDto;
+import com.healthapp.userservice.model.Requestdto.UserRequestDto;
 import com.healthapp.userservice.model.updatedeletedto.UserUpdateDto;
 import com.healthapp.userservice.repository.UserRepository;
 import com.healthapp.userservice.service.interfaces.UserService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role(RoleEnum.USER.toString()));
 
-        // Set the admin role when username equals admin...
+        // Set the admin role when username equals admin.
         if(userEntity.getUserName().toLowerCase().equals("admin")){
             roles.add(new Role(RoleEnum.ADMIN.toString()));
         }
@@ -117,21 +117,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void changePassword(ChangePasswordDto changePasswordDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<UserEntity> optionalUser=userRepository.findById(UUID.fromString(authentication.getName()));
-        if(optionalUser.isPresent()){
-            UserEntity user=optionalUser.get();
-            if(user.getPassword().equals(changePasswordDto.getOldPassword())){
-                user.setPassword(changePasswordDto.getNewPassword());
+        Optional<UserEntity> optionalUser = userRepository.findById(UUID.fromString(authentication.getName()));
+
+        if (optionalUser.isPresent()) {
+            UserEntity user = optionalUser.get();
+            if (bCryptPasswordEncoder.matches(changePasswordDto.getOldPassword(), user.getPassword())) {
+                user.setPassword(bCryptPasswordEncoder.encode(changePasswordDto.getNewPassword()));
                 userRepository.save(user);
+            } else {
+                throw new UnmatchedPasswordException();
             }
-        }
-        else{
+        } else {
             throw new EmptyResultException();
         }
     }
 
     @Override
-    public void assignRole(AssignRoleDto assignRoleDto, UUID userId) {
+    public void assignRole(AssignDeleteRoleDto assignRoleDto, UUID userId) {
         Optional<UserEntity> optionalUser= userRepository.findById(userId);
         if(optionalUser.isPresent()){
             UserEntity user=optionalUser.get();
@@ -144,9 +146,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void removeRole(UUID userId) {
+    public void removeRole(UUID userId, AssignDeleteRoleDto assignDeleteRoleDto) {
         Optional<UserEntity> optionalUser= userRepository.findById(userId);
-        optionalUser.ifPresent(userEntity -> userEntity.setRoles(null));
+        optionalUser.ifPresent(userEntity ->
+        {
+            userEntity.getRoles().remove(assignDeleteRoleDto.getRole());
+            userRepository.save(userEntity);
+        });
+
     }
      @Override
      public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

@@ -94,7 +94,10 @@ public class SleepServiceImpl implements SleepService {
         }
     }
 
-    private SleepRecommendation createAndSaveSleepRecommendation(Double latestWeight, Integer age, String gender, Boolean isSmoker, List<Disease> diseases, String insights, String recommendationMessage, int recommendedSleepDuration, LocalTime recommendedWakeTime, LocalTime recommendedBedTime) {
+    private SleepRecommendation createAndSaveSleepRecommendation(Double latestWeight, Integer age, String gender,
+                                                                 Boolean isSmoker, List<Disease> diseases, String insights,
+                                                                 String recommendationMessage, int recommendedSleepDuration,
+                                                                 LocalTime recommendedWakeTime, LocalTime recommendedBedTime) {
         SleepRecommendation sleepRecommendation = new SleepRecommendation();
         sleepRecommendation.setAge(age);
         sleepRecommendation.setMessage(recommendationMessage);

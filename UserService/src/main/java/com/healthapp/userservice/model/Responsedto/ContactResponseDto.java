@@ -1,14 +1,10 @@
 package com.healthapp.userservice.model.Responsedto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class ContactResponseDto {
     private String primaryPhoneNumber;
     private String optionalPhoneNumber;

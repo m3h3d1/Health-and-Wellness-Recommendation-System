@@ -1,15 +1,12 @@
-package com.healthapp.userservice.model.updatedeletedto;
+package com.healthapp.userservice.model.Requestdto;
 
 import com.healthapp.userservice.domain.Contact;
 import com.healthapp.userservice.domain.Profile;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+import lombok.*;
+
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class UserRequestDto {
     private String firstName;
     private String lastName;

@@ -1,15 +1,11 @@
 package com.healthapp.userservice.model.updatedeletedto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class UserDeleteDto {
     private UUID userId;
 }

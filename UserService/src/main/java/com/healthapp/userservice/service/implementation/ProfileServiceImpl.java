@@ -69,7 +69,8 @@ public class ProfileServiceImpl implements ProfileService {
     public void updateProfile(ProfileUpdateDto profileUpdateDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<UserEntity> user = userRepository.findById(UUID.fromString(authentication.getName()));
-        user.ifPresent(userEntity -> profileRepository.findByUserId(UUID.fromString(authentication.getName())).ifPresent(profile -> {
+        user.ifPresent(userEntity -> profileRepository.findByUserId(UUID.fromString(
+                authentication.getName())).ifPresent(profile -> {
             try {
                 if (profileUpdateDto.getGender() != null) {
                     profile.setGender(profileUpdateDto.getGender());

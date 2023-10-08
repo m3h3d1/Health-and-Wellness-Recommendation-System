@@ -3,8 +3,9 @@ package com.healthapp.userservice.controller;
 import com.healthapp.userservice.domain.UserEntity;
 import com.healthapp.userservice.model.Requestdto.*;
 import com.healthapp.userservice.model.Responsedto.UserResponseDto;
+import com.healthapp.userservice.model.updatedeletedto.AssignDeleteRoleDto;
 import com.healthapp.userservice.model.updatedeletedto.UserDeleteDto;
-import com.healthapp.userservice.model.updatedeletedto.UserRequestDto;
+import com.healthapp.userservice.model.Requestdto.UserRequestDto;
 import com.healthapp.userservice.model.updatedeletedto.UserUpdateDto;
 import com.healthapp.userservice.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,13 +60,13 @@ public class UserController {
     @PostMapping("/assign-role/{userId}")
     public ResponseEntity<String> assignRole(
             @PathVariable UUID userId,
-            @RequestBody AssignRoleDto assignRoleDto) {
+            @RequestBody AssignDeleteRoleDto assignRoleDto) {
         userService.assignRole(assignRoleDto, userId);
         return new ResponseEntity<>("User role assigned successfully", HttpStatus.OK);
     }
     @DeleteMapping("/remove-role/{userId}")
-    public ResponseEntity<String> removeRole(@PathVariable UUID userId) {
-        userService.removeRole(userId);
+    public ResponseEntity<String> removeRole(@PathVariable UUID userId, @RequestBody AssignDeleteRoleDto assignDeleteRoleDto) {
+        userService.removeRole(userId, assignDeleteRoleDto);
         return new ResponseEntity<>("User role removed successfully!", HttpStatus.OK);
     }
 }
