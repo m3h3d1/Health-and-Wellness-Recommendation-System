@@ -1,7 +1,8 @@
-# HealthApp
-### 🔵 Each service is described below, follow the design & described guidelines for rapid development.
-### 🟢 Add more info if needed. 
-### 🟣 Please follow naming conventions perfectly for conflit-free development.
+# HealthApp - Contributors
+### 🔵 Shartaz Yeasar Feeham - Community service, Notification service, Manual Recommendation service
+### 🟢 Prato Dewan - User service, Automated Recommendation service 
+### 🔵 Abdullah Al Mamun - Mental Health service, GPT service, Data Analysis service
+### 🟢 Mehedi Hasan - Nutrition service, Feedback service, Admin dashboard service
 
 <br><hr><hr>
 
